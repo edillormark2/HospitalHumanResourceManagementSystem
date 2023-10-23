@@ -93,20 +93,15 @@ const CreateLeavePopup = (props) => {
       })
       .then((result) => {
         toast.success("Employee leave created successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+          className: isMobile ? "mobile-toast" : "desktop-toast",
         });
         props.onLeaveCreated();
         setOpenPopup(false);
       })
       .catch((err) => {
-        toast.error("Error creating employee leave" + err.message);
+        toast.error("Error creating employee leave" + err.message, {
+          className: isMobile ? "mobile-toast" : "desktop-toast",
+        });
         // Handle error and show an error message
       });
   };
@@ -117,22 +112,27 @@ const CreateLeavePopup = (props) => {
     });
   }, []);
 
+  const mobilePopupHeight = "92vh";
+
+  const dynamicPopupStyle = {
+    position: "absolute",
+    top: isMobile ? "49%" : "40%",
+    left: "50%",
+    width: isMobile ? "90%" : "40%",
+    height: isMobile ? mobilePopupHeight : "70%",
+    transform: "translate(-50%, -50%)",
+    overflowY: "auto",
+    p: 4,
+  };
+
+
   return (
     <div>
       <Modal open={openPopup}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: isMobile ? "49%" : "40%",
-            left: "50%",
-            width: isMobile ? "90%" : "40%",
-            height: isMobile ? "92%" : "70%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: (theme) => theme.shadows[5],
-            p: 4,
-          }}
-          className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md drop-shadow-xl "
+      <Box
+          sx={dynamicPopupStyle}
+          style={isMobile || (window.innerWidth <= window.innerHeight * 2) ? dynamicPopupStyle : null}
+          className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md  "
         >
           <ModalClose variant="outlined" onClick={() => setOpenPopup(false)} />
           <CardTitle title="Create New Leave" />
@@ -203,7 +203,7 @@ const CreateLeavePopup = (props) => {
                   className="w-full"
                   onChange={handleStartDateChange}
                   renderInput={(params) => (
-                    <TextField {...params} variant="outlined" /> // Adjust the width
+                    <TextField {...params} variant="outlined" />
                   )}
                 />
               </LocalizationProvider>
@@ -215,7 +215,7 @@ const CreateLeavePopup = (props) => {
                   className="w-full"
                   onChange={handleEndDateChange}
                   renderInput={(params) => (
-                    <TextField {...params} variant="outlined" /> // Adjust the width
+                    <TextField {...params} variant="outlined" />
                   )}
                 />
               </LocalizationProvider>
@@ -227,7 +227,7 @@ const CreateLeavePopup = (props) => {
               className="w-full p-2 border rounded"
               value={leaveReason}
               onChange={handleLeaveReasonChange}
-              minRows={isMobile ? 2 : 3} // Adjust the number of rows as needed
+              minRows={isMobile ? 2 : 3}
             />
           </div>
           <div className="mt-5">
@@ -236,7 +236,7 @@ const CreateLeavePopup = (props) => {
               className="w-full p-2 border rounded"
               value={remarks}
               onChange={handleRemarksChange}
-              minRows={isMobile ? 2 : 3} // Adjust the number of rows as needed
+              minRows={isMobile ? 2 : 3}
             />
           </div>
           <div class="mt-6 flex justify-end items-center gap-3">
@@ -247,7 +247,7 @@ const CreateLeavePopup = (props) => {
                 borderRadius: "10px",
                 width: "100px",
               }}
-              className={`text-md p-3 hover:drop-shadow-xl drop-shadow-xl bg-gray-300`}
+              className={`text-md p-3  bg-gray-300`}
               onClick={() => setOpenPopup(false)}
             >
               Close
@@ -261,7 +261,7 @@ const CreateLeavePopup = (props) => {
                 borderRadius: "10px",
                 width: "100px",
               }}
-              className={`text-md p-3 hover:drop-shadow-xl drop-shadow-xl`}
+              className={`text-md p-3`}
             >
               Create
             </button>

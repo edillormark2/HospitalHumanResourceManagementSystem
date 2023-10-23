@@ -72,10 +72,14 @@ const EditLeavePopup = (props) => {
           setRemarks(userDataItem.Remarks);
         } else {
           // Handle the case where no data is found for the given EmployeeID
-          toast.error("No employee leave records found for this ID.");
+          toast.error("No employee leave records found for this ID.", {
+            className: isMobile ? "mobile-toast" : "desktop-toast",
+          });
         }
       } catch (error) {
-        toast.error("Error fetching employee data: " + error.message);
+        toast.error("Error fetching employee data: " + error.message, {
+          className: isMobile ? "mobile-toast" : "desktop-toast",
+        });
       }
     };
 
@@ -104,39 +108,37 @@ const EditLeavePopup = (props) => {
         );
 
         toast.success("Employee data updated successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+          className: isMobile ? "mobile-toast" : "desktop-toast",
         });
         props.onLeaveCreated();
         setOpenPopup(false);
       } catch (error) {
-        toast.error("Error updating employee data: " + error.message);
+        toast.error("Error updating employee data: " + error.message,  {
+          className: isMobile ? "mobile-toast" : "desktop-toast",
+        });
       }
     }
+  };
+  
+  const mobilePopupHeight = "92vh";
+  const dynamicPopupStyle = {
+    position: "absolute",
+    top: isMobile ? "49%" : "40%",
+    left: "50%",
+    width: isMobile ? "90%" : "40%",
+    height: isMobile ? mobilePopupHeight : "70%",
+    transform: "translate(-50%, -50%)",
+    overflowY: "auto",
+    p: 4,
   };
 
   return (
     <div>
       <Modal open={openPopup}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: isMobile ? "49%" : "40%",
-            left: "50%",
-            width: isMobile ? "90%" : "40%",
-            height: isMobile ? "92%" : "70%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: (theme) => theme.shadows[5],
-            p: 4,
-          }}
-          className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md drop-shadow-xl "
+      <Box
+          sx={dynamicPopupStyle}
+          style={isMobile || (window.innerWidth <= window.innerHeight * 2) ? dynamicPopupStyle : null}
+          className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md  "
         >
           <ModalClose variant="outlined" onClick={() => setOpenPopup(false)} />
           <CardTitle title="Edit Leave" />
@@ -236,7 +238,7 @@ const EditLeavePopup = (props) => {
                 borderRadius: "10px",
                 width: "100px",
               }}
-              className={`text-md p-3 hover:drop-shadow-xl drop-shadow-xl bg-gray-300`}
+              className={`text-md p-3 bg-gray-300`}
               onClick={() => setOpenPopup(false)}
             >
               Close
@@ -249,7 +251,7 @@ const EditLeavePopup = (props) => {
                 borderRadius: "10px",
                 width: "100px",
               }}
-              className={`text-md p-3 hover:drop-shadow-xl drop-shadow-xl`}
+              className={`text-md p-3 `}
               onClick={handleUpdateEmployeeLeave}
             >
               Update

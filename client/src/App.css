@@ -7,7 +7,7 @@
 .navbar {
   z-index: 10000;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1500px) {
   .sidebar {
     z-index: 10000000;
   }
@@ -67,4 +67,15 @@
   top: 50%; /* Center vertically */
   transform: translateY(-50%); /* Center vertically */
   border-radius: 0 3px 3px 0;
+}
+
+.mobile-toast {
+  position: top-right;
+  z-index: 1000;
+  top: 50px;
+}
+
+.desktop-toast {
+  position: top-right;
+  z-index: 1000;
 }

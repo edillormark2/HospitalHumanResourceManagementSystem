@@ -38,8 +38,9 @@ const ActionLeavePopup = (props) => {
           }
         }
       } catch (error) {
-        console.error("Error fetching employee leave data: ", error);
-        toast.error("Error fetching employee leave data");
+        toast.error("Error fetching employee leave data", {
+          className: isMobile ? "mobile-toast" : "desktop-toast",
+        });
       }
     };
 
@@ -64,7 +65,9 @@ const ActionLeavePopup = (props) => {
 
   const handleApprove = async () => {
     if (!leaveData.EmployeeID) {
-      toast.error("Invalid EmployeeLeaveID");
+      toast.error("Invalid EmployeeLeaveID",{
+        className: isMobile ? "mobile-toast" : "desktop-toast",
+      });
       return;
     }
 
@@ -77,17 +80,23 @@ const ActionLeavePopup = (props) => {
         }
       );
       setLeaveData({ ...leaveData, status: "Approved", statusBg: "#2ECC71" });
-      toast.success("Employee leave approved");
+      toast.success("Employee leave approved", {
+        className: isMobile ? "mobile-toast" : "desktop-toast",
+      });
       props.onLeaveCreated();
       setOpenPopup(false);
     } catch (error) {
-      toast.error("Error approving employee leave", error);
+      toast.error("Error approving employee leave", error,{
+        className: isMobile ? "mobile-toast" : "desktop-toast",
+      });
     }
   };
 
   const handleReject = async () => {
     if (!leaveData.EmployeeID) {
-      toast.error("Invalid EmployeeLeaveID");
+      toast.error("Invalid EmployeeLeaveID",{
+        className: isMobile ? "mobile-toast" : "desktop-toast",
+      });
       return;
     }
 
@@ -100,7 +109,9 @@ const ActionLeavePopup = (props) => {
         }
       );
       setLeaveData({ ...leaveData, status: "Rejected", statusBg: "#DE3163" });
-      toast.success("Employee leave rejected ");
+      toast.success("Employee leave rejected " , {
+        className: isMobile ? "mobile-toast" : "desktop-toast",
+      });
       props.onLeaveCreated();
       setOpenPopup(false);
     } catch (error) {
@@ -130,10 +141,9 @@ const ActionLeavePopup = (props) => {
             height: isMobile ? "70%" : "60%",
             transform: "translate(-50%, -50%)",
             bgcolor: "background.paper",
-            boxShadow: (theme) => theme.shadows[5],
             p: 4,
           }}
-          className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md drop-shadow-xl "
+          className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md  "
         >
           <ModalClose variant="outlined" onClick={() => setOpenPopup(false)} />
           <CardTitle title="Leave Action" />
@@ -224,7 +234,7 @@ const ActionLeavePopup = (props) => {
                 borderRadius: "10px",
                 width: "100px",
               }}
-              className={`text-md p-3 hover:drop-shadow-xl drop-shadow-xl `}
+              className={`text-md p-3  `}
               onClick={handleApprove}
             >
               Approved
@@ -237,7 +247,7 @@ const ActionLeavePopup = (props) => {
                 borderRadius: "10px",
                 width: "100px",
               }}
-              className={`text-md p-3 hover:drop-shadow-xl drop-shadow-xl`}
+              className={`text-md p-3 `}
               onClick={handleReject}
             >
               Reject

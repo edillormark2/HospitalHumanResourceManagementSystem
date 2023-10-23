@@ -59,7 +59,8 @@ const CreateEmployee = () => {
   const dateFormat = dayjs().format("MM/DD/YYYY");
   const [genderError, setGenderError] = useState("");
   const [designationError, setDesignationError] = useState("");
-
+  const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
+  
   const handleDepartmentChange = (event) => {
     const selectedDepartment = event.target.value;
     setDepartment(selectedDepartment);
@@ -188,14 +189,7 @@ const CreateEmployee = () => {
       })
       .then((result) => {
         toast.success("Employee created successfully:", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+          className: isMobile ? "mobile-toast" : "desktop-toast",
         });
 
         // Clear input fields after successful submission
@@ -210,7 +204,9 @@ const CreateEmployee = () => {
         setSelectedGender("");
       })
       .catch((err) => {
-        toast.error("Error creating employee" + err.message);
+        toast.error("Error creating employee" + err.message, {
+          className: isMobile ? "mobile-toast" : "desktop-toast",
+        });
         // Handle error and show an error message
       });
   };

@@ -10,4 +10,3 @@ need niyo i clone yung github link sa local computer niyo or laptop. sundan niyo
 
    then okay na yan na save na yan sa desktop niyo tignan niyo nalang. 
 
-test

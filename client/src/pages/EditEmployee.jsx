@@ -25,12 +25,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const designationOptions = {
   Medical: ["Surgery", "Pediatrics", "Anesthesiology", "Pathology"],
   Emergency: ["Nurse", "Med Tech", "Emergency Physician"],
   Administrative: ["Finance", "IT", "Compliance", "Quality"],
   Specialized: ["Dermatology"],
 };
+const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 const EditEmployee = () => {
   const { currentColor } = useStateContext();
   const { EmployeeID } = useParams();
@@ -74,7 +76,9 @@ const EditEmployee = () => {
           setHireDate(userData.HireDate);
         }
       } catch (error) {
-        toast.error("Error fetching employee data", error);
+        toast.error("Error fetching employee data", error, {
+          className: isMobile ? "mobile-toast" : "desktop-toast",
+        });
       }
     };
 
@@ -116,18 +120,13 @@ const EditEmployee = () => {
         updatedEmployeeData
       );
 
-      toast.success("Employee data updated successfully", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+      toast.success("Employee data updated successfully",{
+        className: isMobile ? "mobile-toast" : "desktop-toast",
       });
     } catch (error) {
-      toast.error("Error updating employee data", error);
+      toast.error("Error updating employee data", error,{
+        className: isMobile ? "mobile-toast" : "desktop-toast",
+      });
     }
   };
 
