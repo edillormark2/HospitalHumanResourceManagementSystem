@@ -11,16 +11,16 @@ import {
   Edit,
   Selection,
   Sort,
-  PageSettingsModel,
+  PageSettingsModel
 } from "@syncfusion/ej2-react-grids";
-import Breadcrumbs from "../components/Breadcrumbs";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import { Link } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import EditEmployeeAB from "../components/EditEmployeeAB";
+import EditEmployeeAB from "../../components/EmployeesComponents/EditEmployeeAB";
 import { AiOutlineDelete } from "react-icons/ai";
-import DeletePopup from "../components/DeletePopup";
+import DeletePopup from "../../components/EmployeesComponents/DeletePopup";
 
 const Employees = ({ EmployeeID }) => {
   const { currentColor, currentMode } = useStateContext();
@@ -30,14 +30,14 @@ const Employees = ({ EmployeeID }) => {
 
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
-    { to: "/employees", label: "Employee" },
+    { to: "/employees", label: "Employee" }
   ];
 
-  const handleEditClick = (id) => {
+  const handleEditClick = id => {
     console.log("Edit clicked for EmployeeID:", id);
   };
 
-  const handleDeletePopup = (EmployeeID) => {
+  const handleDeletePopup = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
     setOpenPopup(true);
   };
@@ -47,25 +47,25 @@ const Employees = ({ EmployeeID }) => {
       field: "EmployeeID",
       headerText: "Employee ID",
       width: "125",
-      textAlign: "Center",
+      textAlign: "Center"
     },
     {
       field: "Name",
       headerText: "Employee",
       width: "140",
-      textAlign: "Center",
+      textAlign: "Center"
     },
     {
       field: "Department",
       headerText: "Department",
       width: "140",
-      textAlign: "Center",
+      textAlign: "Center"
     },
     {
       field: "Designation",
       headerText: "Designation",
       width: "120",
-      textAlign: "Center",
+      textAlign: "Center"
     },
 
     {
@@ -73,7 +73,7 @@ const Employees = ({ EmployeeID }) => {
       headerText: "Hire Date",
       width: "135",
       format: "yMd",
-      textAlign: "Center",
+      textAlign: "Center"
     },
 
     {
@@ -81,7 +81,7 @@ const Employees = ({ EmployeeID }) => {
       headerText: "Action",
       width: "125",
       textAlign: "Center",
-      template: (props) => (
+      template: props =>
         <div className="flex justify-center">
           <EditEmployeeAB
             EmployeeID={props.EmployeeID}
@@ -101,20 +101,19 @@ const Employees = ({ EmployeeID }) => {
               cursor: "pointer",
               borderRadius: "30%", // To make it a circle
               textDecoration: "none",
-              backgroundColor: "#DE3163",
+              backgroundColor: "#DE3163"
             }}
           >
             <AiOutlineDelete
               title="Delete"
               style={{
                 color: "white",
-                fontSize: "18px",
+                fontSize: "18px"
               }}
             />
           </button>
         </div>
-      ),
-    },
+    }
   ];
 
   const fetchEmployeeData = async () => {
@@ -138,11 +137,11 @@ const Employees = ({ EmployeeID }) => {
   const pageSizes = [9, 20, 50];
   const [pageSize, setPageSize] = useState(9);
 
-  const handlePageSizeChange = (e) => {
+  const handlePageSizeChange = e => {
     setPageSize(e.value);
   };
 
-  const template = () => (
+  const template = () =>
     <div style={{ display: "flex", alignItems: "center" }}>
       <DropDownListComponent
         dataSource={pageSizes}
@@ -151,19 +150,15 @@ const Employees = ({ EmployeeID }) => {
         style={{ width: "20px", marginLeft: "20px" }} // Adjust the width as needed
       />
       <span style={{ marginLeft: "10px" }}>Entries per page</span>
-    </div>
-  );
+    </div>;
   return (
-    <div
-      className="m-2 sm:mx-4 md:m-6 mt-24 p-2 md:p-6 bg-white sm:rounded-3xl rounded-md drop-shadow-2xl"
-
-    >
+    <div className="m-2 sm:mx-4 md:m-6 mt-24 p-2 md:p-6 bg-white sm:rounded-3xl rounded-md drop-shadow-2xl">
       {/* Add 'z-index: 1' to ensure the content appears above the sidebar */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "center"
         }}
       >
         <div className="mb-5">
@@ -186,7 +181,7 @@ const Employees = ({ EmployeeID }) => {
               border: "none",
               cursor: "pointer",
               borderRadius: "8px",
-              textDecoration: "none", // Remove underline for Link
+              textDecoration: "none" // Remove underline for Link
             }}
             className={`text-sm p-3 hover:drop-shadow-lg `}
           >
@@ -198,7 +193,7 @@ const Employees = ({ EmployeeID }) => {
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
-                color: "white",
+                color: "white"
               }}
             >
               <FiPlus style={{ marginRight: "5px", color: "white" }} /> Add
@@ -223,15 +218,15 @@ const Employees = ({ EmployeeID }) => {
           "Search",
           {
             text: "",
-            template: template,
-          },
+            template: template
+          }
         ]}
         width="auto"
       >
         <ColumnsDirective>
-          {employeesGrid.map((item, index) => (
+          {employeesGrid.map((item, index) =>
             <ColumnDirective key={index} {...item} />
-          ))}
+          )}
         </ColumnsDirective>
         <Inject services={[Page, Search, Toolbar, Selection, Sort]} />
       </GridComponent>

@@ -11,18 +11,18 @@ import {
   Selection,
   Sort
 } from "@syncfusion/ej2-react-grids";
-import Popup from "../components/LeaveComponents/CreateLeavePopup";
-import Breadcrumbs from "../components/Breadcrumbs";
+import Popup from "../../components/LeaveComponents/CreateLeavePopup";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import { FiPlus } from "react-icons/fi";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { BsPlay } from "react-icons/bs";
-import ActionPopup from "../components/LeaveComponents/ActionLeavePopup";
-import DeleteLeavePopup from "../components/LeaveComponents/DeleteLeavePopup";
-import EditLeavePopup from "../components/LeaveComponents/EditLeavePopup";
+import { AiOutlineEye } from "react-icons/ai";
+import ActionPopup from "../../components/LeaveComponents/ActionLeavePopup";
+import DeleteLeavePopup from "../../components/LeaveComponents/DeleteLeavePopup";
+import EditLeavePopup from "../../components/LeaveComponents/EditLeavePopup";
+import ViewEmpSalary from "../../components/PayrollComponents/ViewEmpSalary";
 
-const ManageLeave = ({ EmployeeID }) => {
+const SetSalary = ({ EmployeeID }) => {
   const { currentColor, currentMode } = useStateContext();
   const [openPopup, setOpenPopup] = useState(false);
   const [employeesLeaveData, setEmployeeData] = useState([]); // State to store employee data
@@ -31,28 +31,13 @@ const ManageLeave = ({ EmployeeID }) => {
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
   const [openEditPopup, setOpenEditPopup] = useState(false);
 
-  const handleOpenView = EmployeeID => {
-    setSelectedEmployeeID(EmployeeID); // Set the selected employee ID
-    setOpenViewPopup(true);
-  };
-
-  const handleOpenEdit = EmployeeID => {
-    setSelectedEmployeeID(EmployeeID);
-    setOpenEditPopup(true);
-  };
-
-  const handleDeletePopup = EmployeeID => {
-    setSelectedEmployeeID(EmployeeID);
-    setOpenDeletePopup(true);
-  };
-
-  const handleOpenAdd = () => {
-    setOpenPopup(true);
+  const handleEditClick = id => {
+    console.log("Edit clicked for EmployeeID:", id);
   };
 
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
-    { to: "/manage leave", label: "Manage Leave" }
+    { to: "/set salary", label: "Set Salary" }
   ];
 
   const fetchEmployeeData = async () => {
@@ -166,81 +151,10 @@ const ManageLeave = ({ EmployeeID }) => {
       textAlign: "Center",
       template: props =>
         <div className="flex justify-center gap-1">
-          <button
-            onClick={() => {
-              handleOpenView(props.EmployeeID); // Pass the EmployeeID to the handler
-            }}
-            style={{
-              backgroundColor: "#2ECC71",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px", // Set a fixed width
-              height: "28px", // Set a fixed height
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "30%", // To make it a circle
-              textDecoration: "none"
-            }}
-          >
-            <BsPlay
-              title="View"
-              style={{
-                color: "white",
-                fontSize: "18px" // You can adjust the size as needed
-              }}
-            />
-          </button>
-          <button
-            onClick={() => {
-              handleOpenEdit(props.EmployeeID); // Pass the EmployeeID to the handler
-            }}
-            style={{
-              backgroundColor: "#03C9D7",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px", // Set a fixed width
-              height: "28px", // Set a fixed height
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "30%", // To make it a circle
-              textDecoration: "none"
-            }}
-          >
-            <AiOutlineEdit
-              title="Edit"
-              style={{
-                color: "white",
-                fontSize: "18px"
-              }}
-            />
-          </button>
-          <button
-            onClick={() => {
-              handleDeletePopup(props.EmployeeID); // Pass the EmployeeID to the handler
-            }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px", // Set a fixed width
-              height: "28px", // Set a fixed height
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "30%", // To make it a circle
-              textDecoration: "none",
-              backgroundColor: "#DE3163"
-            }}
-          >
-            <AiOutlineDelete
-              title="Delete"
-              style={{
-                color: "white",
-                fontSize: "18px"
-              }}
-            />
-          </button>
+          <ViewEmpSalary
+            EmployeeID={props.EmployeeID}
+            onEditClick={handleEditClick}
+          />
         </div>
     }
   ];
@@ -255,40 +169,11 @@ const ManageLeave = ({ EmployeeID }) => {
         }}
       >
         <div className="mb-5">
-          <p className="text-lg text-gray-400">Pages</p>
+          <p className="text-md text-gray-400">Pages</p>
           <p className="text-2xl font-extrabold tracking-tight text-slate-900 mb-2">
-            Manage Leave
+            Set Salary
           </p>
           <Breadcrumbs links={breadcrumbLinks} />
-        </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <button
-            className={`text-lg p-3 hover:drop-shadow-lg`}
-            style={{
-              color: "white",
-              backgroundColor: currentColor,
-              borderRadius: "10px",
-              padding: "8px 16px",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              transition: "box-shadow 0.3s", // Added transition for smooth hover effect
-              // Apply drop shadow on hover
-              ":hover": {
-                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)"
-              }
-            }}
-            title="Create"
-            onClick={handleOpenAdd}
-          >
-            <FiPlus style={{ color: "white" }} />
-          </button>
-          <Popup
-            openPopup={openPopup}
-            setOpenPopup={setOpenPopup}
-            onLeaveCreated={handleLeaveCreated}
-          />
         </div>
       </div>
       <ActionPopup
@@ -334,4 +219,4 @@ const ManageLeave = ({ EmployeeID }) => {
   );
 };
 
-export default ManageLeave;
+export default SetSalary;

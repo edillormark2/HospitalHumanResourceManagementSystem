@@ -11,18 +11,17 @@ import {
   Selection,
   Sort
 } from "@syncfusion/ej2-react-grids";
-import Popup from "../components/LeaveComponents/CreateLeavePopup";
-import Breadcrumbs from "../components/Breadcrumbs";
+import Popup from "../../components/LeaveComponents/CreateLeavePopup";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import { FiPlus } from "react-icons/fi";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { BsPlay } from "react-icons/bs";
-import ActionPopup from "../components/LeaveComponents/ActionLeavePopup";
-import DeleteLeavePopup from "../components/LeaveComponents/DeleteLeavePopup";
-import EditLeavePopup from "../components/LeaveComponents/EditLeavePopup";
+import { AiOutlineEye } from "react-icons/ai";
+import ActionPopup from "../../components/LeaveComponents/ActionLeavePopup";
+import DeleteLeavePopup from "../../components/LeaveComponents/DeleteLeavePopup";
+import EditLeavePopup from "../../components/LeaveComponents/EditLeavePopup";
 
-const ManageLeave = ({ EmployeeID }) => {
+const Payslip = ({ EmployeeID }) => {
   const { currentColor, currentMode } = useStateContext();
   const [openPopup, setOpenPopup] = useState(false);
   const [employeesLeaveData, setEmployeeData] = useState([]); // State to store employee data
@@ -52,7 +51,7 @@ const ManageLeave = ({ EmployeeID }) => {
 
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
-    { to: "/manage leave", label: "Manage Leave" }
+    { to: "/payslip", label: "Payslip" }
   ];
 
   const fetchEmployeeData = async () => {
@@ -171,7 +170,7 @@ const ManageLeave = ({ EmployeeID }) => {
               handleOpenView(props.EmployeeID); // Pass the EmployeeID to the handler
             }}
             style={{
-              backgroundColor: "#2ECC71",
+              backgroundColor: "#F39C12",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
@@ -183,61 +182,11 @@ const ManageLeave = ({ EmployeeID }) => {
               textDecoration: "none"
             }}
           >
-            <BsPlay
+            <AiOutlineEye
               title="View"
               style={{
                 color: "white",
                 fontSize: "18px" // You can adjust the size as needed
-              }}
-            />
-          </button>
-          <button
-            onClick={() => {
-              handleOpenEdit(props.EmployeeID); // Pass the EmployeeID to the handler
-            }}
-            style={{
-              backgroundColor: "#03C9D7",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px", // Set a fixed width
-              height: "28px", // Set a fixed height
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "30%", // To make it a circle
-              textDecoration: "none"
-            }}
-          >
-            <AiOutlineEdit
-              title="Edit"
-              style={{
-                color: "white",
-                fontSize: "18px"
-              }}
-            />
-          </button>
-          <button
-            onClick={() => {
-              handleDeletePopup(props.EmployeeID); // Pass the EmployeeID to the handler
-            }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px", // Set a fixed width
-              height: "28px", // Set a fixed height
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "30%", // To make it a circle
-              textDecoration: "none",
-              backgroundColor: "#DE3163"
-            }}
-          >
-            <AiOutlineDelete
-              title="Delete"
-              style={{
-                color: "white",
-                fontSize: "18px"
               }}
             />
           </button>
@@ -255,9 +204,9 @@ const ManageLeave = ({ EmployeeID }) => {
         }}
       >
         <div className="mb-5">
-          <p className="text-lg text-gray-400">Pages</p>
+          <p className="text-md text-gray-400">Pages</p>
           <p className="text-2xl font-extrabold tracking-tight text-slate-900 mb-2">
-            Manage Leave
+            Payslip
           </p>
           <Breadcrumbs links={breadcrumbLinks} />
         </div>
@@ -334,4 +283,4 @@ const ManageLeave = ({ EmployeeID }) => {
   );
 };
 
-export default ManageLeave;
+export default Payslip;

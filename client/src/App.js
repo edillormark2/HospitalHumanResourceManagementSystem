@@ -22,15 +22,18 @@ import {
   ColorPicker,
   ColorMapping,
   Editor,
+  SetSalary,
+  Payslip
 } from "./pages";
 
-import EditEmployee from "./pages/EditEmployee";
+import EditEmployee from "./pages/PagesEmployees/EditEmployee";
 import CreateEmployee from "./pages/CreateEmployee";
 
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
-import EditLeavePopup from "./components/EditLeavePopup";
+import EditLeavePopup from "./components/LeaveComponents/EditLeavePopup";
+import EmpSetSalary from "./pages/PagesPayroll/EmpSetSalary";
 
 const App = () => {
   const {
@@ -38,10 +41,13 @@ const App = () => {
     themeSettings,
     setThemeSettings,
     currentColor,
-    currentMode,
+    currentMode
   } = useStateContext();
 
-  {/*side bar width updated to ml-60*/}
+  {
+    /*side bar width updated to ml-60*/
+  }
+
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
@@ -58,23 +64,19 @@ const App = () => {
               </button>
             </TooltipComponent>
           </div>
-          {activeMenu ? (
-      <div className="w-60 fixed sidebar dark:bg-secondary-dark-bg bg-white">
-     <Sidebar />
-    </div>
-    ) : (
-  <div className="w-0 dark:bg-secondary-dark-bg">
-    <Sidebar />
-  </div>
-    )}
-    <div
-    className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full
-    ${activeMenu ? "md:ml-60" : "flex-1"}`}
-  >
-            <div
-              className="fixed md:static bg-main-bg dark:bg-main-dark-bg 
-                navbar w-full"
-            >
+          {activeMenu
+            ? <div className="w-60 fixed sidebar dark:bg-secondary-dark-bg bg-white">
+                <Sidebar />
+              </div>
+            : <div className="w-0 dark:bg-secondary-dark-bg">
+                <Sidebar />
+              </div>}
+          <div
+            className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full
+        ${activeMenu ? "md:ml-60" : "flex-1"}`}
+          >
+            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg 
+                navbar w-full">
               <Navbar />
             </div>
 
@@ -102,6 +104,13 @@ const App = () => {
                 />
                 {/* Pages */}
                 <Route path="/manage leave" element={<ManageLeave />} />
+                <Route path="/set salary" element={<SetSalary />} />
+                {/* Employees Set Salary SubPages */}
+                <Route
+                  path="/set salary/emp-set-salary/:EmployeeID"
+                  element={<EmpSetSalary />}
+                />
+                <Route path="/payslip" element={<Payslip />} />
 
                 {/* Apps */}
                 <Route path="/kanban" element={<Kanban />} />
