@@ -83,6 +83,7 @@ const App = () => {
               <ToastContainer />
               <Routes>
                 {/* Dashboard */}
+                <Route path="" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
 
                 {/* Pages */}
