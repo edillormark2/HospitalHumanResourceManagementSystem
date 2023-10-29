@@ -17,13 +17,13 @@ const EditEmployeeAB = ({ EmployeeID }) => {
           border: "none",
           cursor: "pointer",
           borderRadius: "8px",
-          textDecoration: "none",
+          textDecoration: "none"
         }}
       >
         <AiOutlineEdit
           title="Edit"
           style={{
-            color: "white",
+            color: "white"
           }}
         />
       </Link>

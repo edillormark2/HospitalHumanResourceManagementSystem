@@ -1,7 +1,9 @@
 export { default as Dashboard } from "./Dashboard";
 export { default as Kanban } from "./Kanban";
-export { default as Employees } from "./Employees";
+export { default as Employees } from "./PagesEmployees/Employees";
 export { default as ManageLeave } from "./ManageLeave";
+export { default as SetSalary } from "./PagesPayroll/SetSalary";
+export { default as Payslip } from "./PagesPayroll/Payslip";
 export { default as Editor } from "./Editor";
 export { default as ColorPicker } from "./ColorPicker";
 export { default as Calendar } from "./Calendar";

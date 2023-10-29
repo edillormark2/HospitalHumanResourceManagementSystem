@@ -10,7 +10,7 @@ import {
   Month,
   Inject,
   Resize,
-  DragAndDrop,
+  DragAndDrop
 } from "@syncfusion/ej2-react-schedule";
 import { scheduleData } from "../data/dummy";
 
@@ -20,12 +20,12 @@ import {
   notclockin,
   dropdownData,
   SparklineAreaData,
-  ecomPieChartData,
+  ecomPieChartData
 } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import employee from "../data/employee.jpeg";
 
-const DropDown = ({ currentMode }) => (
+const DropDown = ({ currentMode }) =>
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
     <DropDownListComponent
       id="time"
@@ -36,8 +36,7 @@ const DropDown = ({ currentMode }) => (
       popupHeight="220px"
       popupWidth="120px"
     />
-  </div>
-);
+  </div>;
 
 const Dashboard = () => {
   const { currentColor, currentMode } = useStateContext();
@@ -66,7 +65,7 @@ const Dashboard = () => {
         **/}
 
         <div className="flex m-3 flex-wrap justify-center gap-1 items-center drop-shadow-md">
-          {earningData.map((item) => (
+          {earningData.map(item =>
             <div
               key={item.title}
               className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56  p-4 pt-9 rounded-2xl "
@@ -79,11 +78,15 @@ const Dashboard = () => {
                 {item.icon}
               </button>
               <p className="mt-3">
-                <span className="text-lg font-semibold">{item.amount}</span>
+                <span className="text-lg font-semibold">
+                  {item.amount}
+                </span>
               </p>
-              <p className="text-sm text-gray-400  mt-1">{item.title}</p>
+              <p className="text-sm text-gray-400  mt-1">
+                {item.title}
+              </p>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -200,24 +203,28 @@ const Dashboard = () => {
           <div className="flex justify-between items-center gap-2 ">
             <p className="text-xl font-semibold ">Today's Not Clock In</p>
           </div>
-          <div className="flex justify-between items-center mt-5 border-t-1 border-color drop-shadow-md"></div>
+          <div className="flex justify-between items-center mt-5 border-t-1 border-color drop-shadow-md" />
           <div className="flex justify-between mt-4 text-md font-semibold">
             <p>Name</p> <p>Status</p>
           </div>
           <div className="mt- w-72 md:w-400">
-            {notclockin.map((item) => (
+            {notclockin.map(item =>
               <div
                 key={item.name}
                 className="flex justify-between items-center mt-5 border-t-1 border-color"
               >
                 <div className="flex flex-col mt-3">
-                  <p>{item.name}</p>
+                  <p>
+                    {item.name}
+                  </p>
                 </div>
                 <div className="flex flex-col mt-3">
-                  <p>{item.status}</p>
+                  <p>
+                    {item.status}
+                  </p>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760 drop-shadow-md">
@@ -231,7 +238,7 @@ const Dashboard = () => {
               selectedDate={new Date()}
               currentView="Month"
               style={{
-                background: currentMode === "Dark" ? "#33373E" : "#fff",
+                background: currentMode === "Dark" ? "#33373E" : "#fff"
               }}
             >
               <Inject services={[Day, Week, Month, Resize, DragAndDrop]} />
