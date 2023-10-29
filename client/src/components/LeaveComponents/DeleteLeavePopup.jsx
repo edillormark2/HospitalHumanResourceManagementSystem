@@ -7,22 +7,23 @@ import DialogActions from "@mui/joy/DialogActions";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 
-const DeletePopup = (props) => {
+const DeleteLeavePopup = (props) => {
   const { currentColor } = useStateContext();
-  const { openPopup, setOpenPopup, EmployeeID } = props;
-  const navigate = useNavigate();
+  const { openDeletePopup, setOpenDeletePopup, EmployeeID } = props;
 
   const handleDelete = async () => {
     try {
       // Send a DELETE request to your server to delete the employee
-      await axios.delete(`http://localhost:3001/employees/${EmployeeID}`);
-      toast.success("Employee data deleted successfully", {
+      await axios.delete(
+        `http://localhost:3001/deleteEmployeesLeaves/${EmployeeID}`
+      );
+
+      toast.success("Employee Leave deleted ", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -32,17 +33,18 @@ const DeletePopup = (props) => {
         progress: undefined,
         theme: "light",
       });
+
       props.onLeaveCreated();
-      setOpenPopup(false); // Close the delete popup after deletion
+      setOpenDeletePopup(false); // Close the delete popup after deletion
     } catch (error) {
-      // Handle error (e.g., show an error message)
-      toast.error("Error deleting employee", error);
+      // Handle error and display the error message
+      toast.error("Error deleting employee: " + error.message);
     }
   };
 
   return (
     <div className="bg-white dark-bg-[#42464D]">
-      <Modal open={openPopup}>
+      <Modal open={openDeletePopup}>
         <ModalDialog variant="outlined" role="alertdialog">
           <DialogTitle style={{ justifyContent: "center" }}>
             <WarningRoundedIcon />
@@ -66,7 +68,7 @@ const DeletePopup = (props) => {
             <Button
               variant="plain"
               color="neutral"
-              onClick={() => setOpenPopup(false)}
+              onClick={() => setOpenDeletePopup(false)}
             >
               Cancel
             </Button>
@@ -77,4 +79,4 @@ const DeletePopup = (props) => {
   );
 };
 
-export default DeletePopup;
+export default DeleteLeavePopup;

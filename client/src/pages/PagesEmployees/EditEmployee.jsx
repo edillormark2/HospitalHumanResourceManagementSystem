@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import SubPageHeader from "../components/SubPageHeader";
-import { employeesData } from "../data/dummy";
+import SubPageHeader from "../../components/SubPageHeader";
+import { employeesData } from "../../data/dummy";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Divider } from "@mui/joy";
-import CardTitle from "../components/CardTitle";
+import CardTitle from "../../components/CardTitle";
 import Textarea from "@mui/joy/Textarea";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -20,17 +20,16 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "@material-ui/core";
 import { HiOutlineUpload } from "react-icons/hi";
-import Breadcrumbs from "../components/Breadcrumbs";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const designationOptions = {
   Medical: ["Surgery", "Pediatrics", "Anesthesiology", "Pathology"],
   Emergency: ["Nurse", "Med Tech", "Emergency Physician"],
   Administrative: ["Finance", "IT", "Compliance", "Quality"],
-  Specialized: ["Dermatology"],
+  Specialized: ["Dermatology"]
 };
 const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 const EditEmployee = () => {
@@ -40,7 +39,7 @@ const EditEmployee = () => {
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
     { to: "/employees", label: "Employee" },
-    { to: "/edit-employee", label: "Edit Employee" },
+    { to: "/edit-employee", label: "Edit Employee" }
   ];
 
   const [empid, setID] = useState("");
@@ -57,46 +56,49 @@ const EditEmployee = () => {
     : dayjs().format("MM/DD/YYYY");
   const formattedBirthday = dayjs(birthDay).format("MM/DD/YYYY");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/employees/${EmployeeID}`
-        );
-        const userData = response.data;
-        if (userData) {
-          setID(userData.EmployeeID);
-          setName(userData.Name);
-          setPhone(userData.Phone);
-          setBirthDay(userData.BirthDay);
-          setGender(userData.Gender);
-          setAddress(userData.Address);
-          setDepartment(userData.Department);
-          setDesignation(userData.Designation);
-          setHireDate(userData.HireDate);
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3001/employees/${EmployeeID}`
+          );
+          const userData = response.data;
+          if (userData) {
+            setID(userData.EmployeeID);
+            setName(userData.Name);
+            setPhone(userData.Phone);
+            setBirthDay(userData.BirthDay);
+            setGender(userData.Gender);
+            setAddress(userData.Address);
+            setDepartment(userData.Department);
+            setDesignation(userData.Designation);
+            setHireDate(userData.HireDate);
+          }
+        } catch (error) {
+          toast.error("Error fetching employee data", error, {
+            className: isMobile ? "mobile-toast" : "desktop-toast"
+          });
         }
-      } catch (error) {
-        toast.error("Error fetching employee data", error, {
-          className: isMobile ? "mobile-toast" : "desktop-toast",
-        });
-      }
-    };
+      };
 
-    fetchData();
-  }, [EmployeeID]);
+      fetchData();
+    },
+    [EmployeeID]
+  );
 
-  const handleDepartmentChange = (event) => {
+  const handleDepartmentChange = event => {
     const selectedDepartment = event.target.value;
     setDepartment(selectedDepartment);
     setDesignation(""); // Reset designation when department changes
   };
 
-  const handleDesignationChange = (event) => {
+  const handleDesignationChange = event => {
     setDesignation(event.target.value);
   };
 
   const radioStyle = {
-    color: currentColor, // Use the provided color or default to 'primary'
+    color: currentColor // Use the provided color or default to 'primary'
   };
 
   const handleUpdateEmployee = async () => {
@@ -111,7 +113,7 @@ const EditEmployee = () => {
         Address: address,
         Department: department,
         Designation: designation,
-        HireDate: finalHireDate,
+        HireDate: finalHireDate
       };
 
       // Send a PUT request to update the employee data
@@ -120,12 +122,12 @@ const EditEmployee = () => {
         updatedEmployeeData
       );
 
-      toast.success("Employee data updated successfully",{
-        className: isMobile ? "mobile-toast" : "desktop-toast",
+      toast.success("Employee data updated successfully", {
+        className: isMobile ? "mobile-toast" : "desktop-toast"
       });
     } catch (error) {
-      toast.error("Error updating employee data", error,{
-        className: isMobile ? "mobile-toast" : "desktop-toast",
+      toast.error("Error updating employee data", error, {
+        className: isMobile ? "mobile-toast" : "desktop-toast"
       });
     }
   };
@@ -146,7 +148,7 @@ const EditEmployee = () => {
               <FormControl className="w-full">
                 <OutlinedInput
                   value={emname}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={e => setName(e.target.value)}
                 />
               </FormControl>
             </form>
@@ -159,7 +161,7 @@ const EditEmployee = () => {
               <FormControl className="w-full">
                 <OutlinedInput
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={e => setPhone(e.target.value)}
                 />
               </FormControl>
             </form>
@@ -174,10 +176,10 @@ const EditEmployee = () => {
               <DesktopDatePicker
                 className="w-full"
                 value={dayjs(birthDay)}
-                onChange={(date) => setBirthDay(date)} // Handle date change
-                renderInput={(params) => (
+                onChange={date => setBirthDay(date)} // Handle date change
+                renderInput={params =>
                   <TextField {...params} variant="outlined" /> // Adjust the width
-                )}
+                }
               />
             </LocalizationProvider>
           </div>
@@ -189,7 +191,7 @@ const EditEmployee = () => {
               aria-label="gender"
               name="gender"
               value={gender}
-              onChange={(event) => setGender(event.target.value)}
+              onChange={event => setGender(event.target.value)}
               row // Arrange the radio buttons in a row
             >
               <FormControlLabel
@@ -213,7 +215,7 @@ const EditEmployee = () => {
             className="w-full p-2 border rounded"
             defaultValue={address}
             minRows={3} // Adjust the number of rows as needed
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={e => setAddress(e.target.value)}
           />
         </div>
       </div>
@@ -228,7 +230,7 @@ const EditEmployee = () => {
                 <FormControl className="w-full">
                   <OutlinedInput
                     value={empid}
-                    onChange={(e) => setID(e.target.value)}
+                    onChange={e => setID(e.target.value)}
                   />
                 </FormControl>
               </form>
@@ -281,7 +283,7 @@ const EditEmployee = () => {
                   <p>Select Designation</p>
                 </MenuItem>
                 {designationOptions[department] &&
-                  designationOptions[department].map((option, index) => (
+                  designationOptions[department].map((option, index) =>
                     <MenuItem
                       key={index}
                       value={option}
@@ -289,7 +291,7 @@ const EditEmployee = () => {
                     >
                       {option}
                     </MenuItem>
-                  ))}
+                  )}
               </Select>
             </div>
             <div className="mt-5 md:mt-0 md:w-1/2">
@@ -298,10 +300,10 @@ const EditEmployee = () => {
                 <DesktopDatePicker
                   className="w-full"
                   value={dayjs(hireDate)}
-                  onChange={(date) => setHireDate(date)} // Handle date change
-                  renderInput={(params) => (
+                  onChange={date => setHireDate(date)} // Handle date change
+                  renderInput={params =>
                     <TextField {...params} variant="outlined" /> // Adjust the width
-                  )}
+                  }
                 />
               </LocalizationProvider>
             </div>
@@ -332,7 +334,7 @@ const EditEmployee = () => {
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   component="span"
                 >
@@ -363,7 +365,7 @@ const EditEmployee = () => {
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   component="span"
                 >
@@ -392,7 +394,7 @@ const EditEmployee = () => {
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   component="span"
                 >
@@ -413,7 +415,7 @@ const EditEmployee = () => {
             backgroundColor: currentColor,
             color: "white",
             borderRadius: "10px",
-            width: "150px",
+            width: "150px"
           }}
           className={`text-md p-3 hover:drop-shadow-xl`}
           onClick={handleUpdateEmployee}
