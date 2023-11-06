@@ -42,7 +42,7 @@ import "./App.css";
 
 
   const Login = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn } = useStateContext();
     const {
       activeMenu,
       themeSettings,
@@ -57,6 +57,10 @@ import "./App.css";
     const [passwordError, setPasswordError] = useState("");
     const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 
+    const { login } = useStateContext();
+    const handleLogin = () => {
+      login();
+    };
     const handleUsernameChange = (event) => {
         const value = event.target.value;
         setUsername(value);
@@ -98,7 +102,7 @@ import "./App.css";
     
                 if (response.data.success) {
                     toast.success("Login successful");
-                    setIsLoggedIn(true); 
+                    handleLogin();
                 } else {
                     // Login failed, handle the failure case here
                     toast.error("Login failed. Please check your credentials");

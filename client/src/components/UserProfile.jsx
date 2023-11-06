@@ -13,6 +13,11 @@ const UserProfile = () => {
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
   };
+
+  const { logout } = useStateContext();
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <div className="nav-item absolute right-1 top-12 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96 drop-shadow-2xl ">
       <div className="flex justify-between items-center">
@@ -64,7 +69,7 @@ const UserProfile = () => {
         ))}
       </div>
 
-      <div className="mt-5">
+      <div className="mt-5" onClick={handleLogout}>
         <Button
           color="white"
           bgColor={currentColor}

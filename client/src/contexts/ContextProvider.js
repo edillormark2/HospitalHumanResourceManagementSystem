@@ -16,6 +16,8 @@ export const ContextProvider = ({ children }) => {
   const [currentColor, setCurrentColor] = useState("#03C9D7");
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -37,6 +39,14 @@ export const ContextProvider = ({ children }) => {
     setIsClicked({ ...initialState, [clicked]: true });
   };
 
+  const logout = () => {
+    setIsLoggedIn(false);
+  }
+
+  const login = () => {
+    setIsLoggedIn(true);
+  }
+
   return (
     <StateContext.Provider
       value={{
@@ -53,11 +63,17 @@ export const ContextProvider = ({ children }) => {
         setMode,
         themeSettings,
         setThemeSettings,
+        isLoggedIn,
+        setIsLoggedIn,
+        logout,
+        login,
       }}
     >
       {children}
     </StateContext.Provider>
   );
 };
+
+
 
 export const useStateContext = () => useContext(StateContext);
