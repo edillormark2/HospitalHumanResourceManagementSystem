@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const employeeModel = require("./models/employees");
 const employeeleavesModel = require("./models/employeeleaves");
+const accountModel = require("./models/account");
 
 const app = express();
 
@@ -194,6 +195,25 @@ app.put("/updateEmployeesLeave/:id", async (req, res) => {
     res.json(updatedEmployee);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+      // Check if the user with the provided username and password exists in your MongoDB collection
+      const user = await accountModel.findOne({ username, password });
+
+      if (user) {
+          // If the user exists and credentials are correct, send the user data
+          res.json({ success: true, userData: user });
+      } else {
+          // If the credentials are incorrect or the user does not exist, send an error response
+          res.status(401).json({ success: false, message: "Invalid credentials" });
+      }
+  } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
   }
 });
 
