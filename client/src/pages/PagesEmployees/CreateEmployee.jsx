@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import SubPageHeader from "../components/SubPageHeader";
-import { employeesData } from "../data/dummy";
+import SubPageHeader from "../../components/SubPageHeader";
+import { employeesData } from "../../data/dummy";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Divider } from "@mui/joy";
-import CardTitle from "../components/CardTitle";
+import CardTitle from "../../components/CardTitle";
 import Textarea from "@mui/joy/Textarea";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -21,7 +21,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "@material-ui/core";
 import { HiOutlineUpload } from "react-icons/hi";
-import Breadcrumbs from "../components/Breadcrumbs";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,7 +30,7 @@ const designationOptions = {
   Medical: ["Surgery", "Pediatrics", "Anesthesiology", "Pathology"],
   Emergency: ["Nurse", "Med Tech", "Emergency Physician"],
   Administrative: ["Finance", "IT", "Compliance", "Quality"],
-  Specialized: ["Dermatology"],
+  Specialized: ["Dermatology"]
 };
 
 const CreateEmployee = () => {
@@ -39,7 +39,7 @@ const CreateEmployee = () => {
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
     { to: "/employees", label: "Employee" },
-    { to: "/create-employee", label: "Create Employee" },
+    { to: "/create-employee", label: "Create Employee" }
   ];
 
   const [empid, setID] = useState("");
@@ -60,8 +60,8 @@ const CreateEmployee = () => {
   const [genderError, setGenderError] = useState("");
   const [designationError, setDesignationError] = useState("");
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
-  
-  const handleDepartmentChange = (event) => {
+
+  const handleDepartmentChange = event => {
     const selectedDepartment = event.target.value;
     setDepartment(selectedDepartment);
     setDesignation(""); // Reset designation when department changes
@@ -74,7 +74,7 @@ const CreateEmployee = () => {
     }
   };
 
-  const handleDesignationChange = (event) => {
+  const handleDesignationChange = event => {
     setDesignation(event.target.value);
 
     // Validation logic for the Designation field
@@ -86,10 +86,10 @@ const CreateEmployee = () => {
   };
 
   const radioStyle = {
-    color: currentColor, // Use the provided color or default to 'primary'
+    color: currentColor // Use the provided color or default to 'primary'
   };
 
-  const handleNameChange = (event) => {
+  const handleNameChange = event => {
     const value = event.target.value;
     setName(value);
 
@@ -99,7 +99,7 @@ const CreateEmployee = () => {
       setNameError("");
     }
   };
-  const handlePhoneChange = (event) => {
+  const handlePhoneChange = event => {
     const value = event.target.value;
 
     // Use a regular expression to filter out non-numeric characters
@@ -118,7 +118,7 @@ const CreateEmployee = () => {
     }
   };
 
-  const handleAddressChange = (event) => {
+  const handleAddressChange = event => {
     const value = event.target.value;
     setAddress(value);
 
@@ -129,7 +129,7 @@ const CreateEmployee = () => {
     }
   };
 
-  const handleBirthDayChange = (date) => {
+  const handleBirthDayChange = date => {
     setBirthDay(date);
 
     if (!date) {
@@ -139,7 +139,7 @@ const CreateEmployee = () => {
     }
   };
 
-  const handleGenderChange = (event) => {
+  const handleGenderChange = event => {
     const value = event.target.value;
     setSelectedGender(value);
 
@@ -147,7 +147,7 @@ const CreateEmployee = () => {
     setGenderError("");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
 
     if (
@@ -185,11 +185,11 @@ const CreateEmployee = () => {
         Department: department,
         Designation: designation,
         Gender: selectedGender,
-        HireDate: finalHireDate,
+        HireDate: finalHireDate
       })
-      .then((result) => {
+      .then(result => {
         toast.success("Employee created successfully:", {
-          className: isMobile ? "mobile-toast" : "desktop-toast",
+          className: isMobile ? "mobile-toast" : "desktop-toast"
         });
 
         // Clear input fields after successful submission
@@ -203,9 +203,9 @@ const CreateEmployee = () => {
         setDesignation("");
         setSelectedGender("");
       })
-      .catch((err) => {
+      .catch(err => {
         toast.error("Error creating employee" + err.message, {
-          className: isMobile ? "mobile-toast" : "desktop-toast",
+          className: isMobile ? "mobile-toast" : "desktop-toast"
         });
         // Handle error and show an error message
       });
@@ -255,9 +255,9 @@ const CreateEmployee = () => {
               <DesktopDatePicker
                 className="w-full"
                 onChange={handleBirthDayChange} // Handle date change
-                renderInput={(params) => (
+                renderInput={params =>
                   <TextField {...params} variant="outlined" /> // Adjust the width
-                )}
+                }
               />
             </LocalizationProvider>
             <div id="createHelp" className="text-red-500 text-sm">
@@ -318,7 +318,7 @@ const CreateEmployee = () => {
                 <FormControl className="w-full">
                   <OutlinedInput
                     value={empid}
-                    onChange={(event) => setID(event.target.value)}
+                    onChange={event => setID(event.target.value)}
                   />
                 </FormControl>
               </form>
@@ -333,23 +333,23 @@ const CreateEmployee = () => {
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
                 >
-                  <MenuItem className="w-full" value="">
-                    <p>Select Department</p>
+                  <MenuItem className="w-full max-w-xl" value="">
+                    <p className="ml-2 justify-start ">Select Department</p>
                   </MenuItem>
 
-                  <MenuItem className="w-full" value="Medical">
+                  <MenuItem className="w-full  max-w-xl" value="Medical">
                     <p>Medical</p>
                   </MenuItem>
 
-                  <MenuItem className="w-full" value="Emergency">
+                  <MenuItem className="w-full  max-w-xl" value="Emergency">
                     <p>Emergency</p>
                   </MenuItem>
 
-                  <MenuItem className="w-full" value="Administrative">
+                  <MenuItem className="w-full  max-w-xl" value="Administrative">
                     <p>Administrative</p>
                   </MenuItem>
 
-                  <MenuItem className="w-full" value="Specialized">
+                  <MenuItem className="w-full  max-w-xl" value="Specialized">
                     <p>Specialized</p>
                   </MenuItem>
                 </Select>
@@ -374,7 +374,7 @@ const CreateEmployee = () => {
                   <p>Select Designation</p>
                 </MenuItem>
                 {designationOptions[department] &&
-                  designationOptions[department].map((option, index) => (
+                  designationOptions[department].map((option, index) =>
                     <MenuItem
                       key={index}
                       value={option}
@@ -382,7 +382,7 @@ const CreateEmployee = () => {
                     >
                       {option}
                     </MenuItem>
-                  ))}
+                  )}
               </Select>
               <div id="createHelp" className="text-red-500 text-sm">
                 {designationError}
@@ -394,10 +394,10 @@ const CreateEmployee = () => {
                 <DesktopDatePicker
                   className="w-full"
                   value={dayjs(dateFormat)}
-                  onChange={(date) => sethireDate(date)} // Handle date change
-                  renderInput={(params) => (
+                  onChange={date => sethireDate(date)} // Handle date change
+                  renderInput={params =>
                     <TextField {...params} variant="outlined" /> // Adjust the width
-                  )}
+                  }
                 />
               </LocalizationProvider>
             </div>
@@ -428,7 +428,7 @@ const CreateEmployee = () => {
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   component="span"
                 >
@@ -459,7 +459,7 @@ const CreateEmployee = () => {
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   component="span"
                 >
@@ -488,7 +488,7 @@ const CreateEmployee = () => {
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   component="span"
                 >
@@ -510,7 +510,7 @@ const CreateEmployee = () => {
             backgroundColor: currentColor,
             color: "white",
             borderRadius: "10px",
-            width: "150px",
+            width: "150px"
           }}
           className={`text-md p-3 hover:bg-blue-500 hover:drop-shadow-2xl`}
         >

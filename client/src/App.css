@@ -23,7 +23,7 @@
 }
 ::-webkit-scrollbar-thumb {
   background-color: rgb(216, 216, 216);
-  border-radius: 40px;
+  border-radius: 25px;
 }
 ::-webkit-scrollbar-track {
   background-color: transparent;
@@ -79,5 +79,3 @@
   position: top-right;
   z-index: 1000;
 }
-
-

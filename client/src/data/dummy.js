@@ -14,16 +14,17 @@ import {
   BsShield,
   BsChatLeft
 } from "react-icons/bs";
-import { BiColorFill, BiWallet } from "react-icons/bi";
+import { BiTimeFive, BiColorFill, BiWallet } from "react-icons/bi";
 import { RiContactsLine, RiStockLine, RiOpenArmLine } from "react-icons/ri";
 import {
   MdOutlineSupervisorAccount,
   MdOutlineRecentActors,
   MdExitToApp,
-  MdOutlinePayment
+  MdOutlinePayment,
+  MdOutlineStarRate,
+  MdNewspaper
 } from "react-icons/md";
 import { HiLogout } from "react-icons/hi";
-import { GiLouvrePyramid } from "react-icons/gi";
 import { GrLocation } from "react-icons/gr";
 import avatar from "./avatar.jpg";
 import avatar2 from "./avatar2.jpg";
@@ -32,7 +33,7 @@ import avatar4 from "./avatar4.jpg";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
-import * as RiIcons from "react-icons/ri";
+import ViewEmpSalary from ".././components/PayrollComponents/ViewEmpSalary";
 
 export const gridOrderImage = props =>
   <div>
@@ -401,6 +402,27 @@ export const links = [
             subname: "Payslip"
           }
         ]
+      },
+      {
+        name: "timesheet",
+        icon: <BiTimeFive />
+      },
+      {
+        name: "recruitment",
+        icon: <MdNewspaper />,
+        subMenu: [
+          {
+            subname: "Job Application"
+          },
+          {
+            subname: "Career",
+            url: "job-portal-website/index.html"
+          }
+        ]
+      },
+      {
+        name: "performance",
+        icon: <MdOutlineStarRate />
       }
     ]
   },
@@ -425,7 +447,9 @@ export const links = [
         icon: <BiColorFill />
       }
     ]
-  },
+  }
+
+  /* 
   {
     title: "Charts",
     links: [
@@ -463,6 +487,117 @@ export const links = [
         icon: <AiOutlineBarChart />
       }
     ]
+  }
+  */
+];
+
+export const EmployeeSalary = [
+  {
+    EmployeeID: 10001,
+    name: "Daniel Mark",
+    payrollType: "Monthly",
+    salary: "31,000",
+    netSalary: "29,000",
+    Action: "View"
+  },
+  {
+    EmployeeID: 10002,
+    name: "Mickey Sano",
+    payrollType: "Monthly",
+    salary: "38,000",
+    netSalary: "35,000",
+    Action: "View"
+  },
+  {
+    EmployeeID: 10003,
+    name: "Emman Satoru",
+    payrollType: "Hourly",
+    salary: "150",
+    netSalary: "33,000"
+  },
+  {
+    EmployeeID: 10004,
+    name: "Mishy Gonzaga",
+    payrollType: "Monthly",
+    salary: "31,000",
+    netSalary: "29,000"
+  },
+  {
+    EmployeeID: 10005,
+    name: "Alex Johnson",
+    payrollType: "Hourly",
+    salary: "200",
+    netSalary: "35,000"
+  },
+  {
+    EmployeeID: 10006,
+    name: "Ella Smith",
+    payrollType: "Monthly",
+    salary: "40,000",
+    netSalary: "37,000"
+  },
+  {
+    EmployeeID: 10007,
+    name: "Sophia Lee",
+    payrollType: "Monthly",
+    salary: "32,000",
+    netSalary: "29,500"
+  },
+  {
+    EmployeeID: 10008,
+    name: "John Doe",
+    payrollType: "Hourly",
+    salary: "180",
+    netSalary: "29,000"
+  },
+  {
+    EmployeeID: 10009,
+    name: "Sarah Wilson",
+    payrollType: "Hourly",
+    salary: "220",
+    netSalary: "38,000"
+  },
+  {
+    EmployeeID: 10010,
+    name: "Lucas Brown",
+    payrollType: "Monthly",
+    salary: "36,000",
+    netSalary: "33,500"
+  },
+  {
+    EmployeeID: 10011,
+    name: "Eva Taylor",
+    payrollType: "Monthly",
+    salary: "34,000",
+    netSalary: "31,000"
+  },
+  {
+    EmployeeID: 10012,
+    name: "Liam Miller",
+    payrollType: "Hourly",
+    salary: "250",
+    netSalary: "44,000"
+  },
+  {
+    EmployeeID: 10013,
+    name: "Olivia Harris",
+    payrollType: "Monthly",
+    salary: "42,000",
+    netSalary: "39,000"
+  },
+  {
+    EmployeeID: 10014,
+    name: "Ethan Clark",
+    payrollType: "Hourly",
+    salary: "160",
+    netSalary: "34,000"
+  },
+  {
+    EmployeeID: 10015,
+    name: "Ava Lewis",
+    payrollType: "Monthly",
+    salary: "29,000",
+    netSalary: "26,500"
   }
 ];
 

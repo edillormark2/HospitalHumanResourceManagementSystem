@@ -4,6 +4,7 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import {
@@ -23,11 +24,14 @@ import {
   ColorMapping,
   Editor,
   SetSalary,
-  Payslip
+  Payslip,
+  CreateEmployee,
+  Timesheet,
+  JobApplication,
+  Performance
 } from "./pages";
 
 import EditEmployee from "./pages/PagesEmployees/EditEmployee";
-import CreateEmployee from "./pages/CreateEmployee";
 
 import "./App.css";
 
@@ -111,6 +115,9 @@ const App = () => {
                   element={<EmpSetSalary />}
                 />
                 <Route path="/payslip" element={<Payslip />} />
+                <Route path="/timesheet" element={<Timesheet />} />
+                <Route path="/job application" element={<JobApplication />} />
+                <Route path="/performance" element={<Performance />} />
 
                 {/* Apps */}
                 <Route path="/kanban" element={<Kanban />} />
