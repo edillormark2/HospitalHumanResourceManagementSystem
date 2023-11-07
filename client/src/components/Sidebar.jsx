@@ -8,7 +8,7 @@ import {MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
-  const [openSection, setOpenSection] = useState("");
+  const [openSection, setOpenSection] = useState("dashboard");
   const [activeNavLink, setActiveNavLink] = useState("dashboard"); // State to track the active NavLink
 
   const toggleSection = (sectionName) => {

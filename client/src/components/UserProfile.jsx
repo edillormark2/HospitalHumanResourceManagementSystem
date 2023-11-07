@@ -15,6 +15,7 @@ const UserProfile = () => {
   };
 
   const { logout } = useStateContext();
+  
   const handleLogout = () => {
     logout();
   };
