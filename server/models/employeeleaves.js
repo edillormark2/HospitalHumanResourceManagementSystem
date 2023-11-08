@@ -14,8 +14,9 @@ const employeeleavesSchema = new mongoose.Schema({
   Remarks: String,
 });
 
-const employeeleavesModel = mongoose.model(
-  "EmployeeLeave",
+const employeeleaveModel = mongoose.model(
+  "EmployeeLeave", // Use singular form for the model name
   employeeleavesSchema
-); // Use "EmployeeLeave" as the model name
-module.exports = employeeleavesModel;
+);
+
+module.exports = employeeleaveModel;

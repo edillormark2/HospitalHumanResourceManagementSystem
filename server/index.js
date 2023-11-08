@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { format, subDays, isAfter } = require('date-fns');
 const employeeModel = require("./models/employees");
 const employeeleavesModel = require("./models/employeeleaves");
 const accountModel = require("./models/account");
+
 
 const app = express();
 
@@ -214,6 +216,61 @@ app.post("/login", async (req, res) => {
       }
   } catch (error) {
       res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/employeecount', async (req, res) => {
+  try {
+    const count = await employeeModel.countDocuments({});
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+app.get('/newemployeecount', async (req, res) => {
+  try {
+    // Get the current month and year
+    const currentDate = new Date();
+    const currentMonth = format(currentDate, 'MM');
+    const currentYear = format(currentDate, 'yyyy');
+
+    // Count employees whose HireDate matches the current month and year
+    const count = await employeeModel.countDocuments({
+      $and: [
+        {
+          $expr: {
+            $eq: [
+              { $substr: ['$HireDate', 0, 2] }, // Extract the month part
+              currentMonth
+            ]
+          }
+        },
+        {
+          $expr: {
+            $eq: [
+              { $substr: ['$HireDate', 6, 4] }, // Extract the year part
+              currentYear
+            ]
+          }
+        }
+      ]
+    });
+
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+
+app.get('/employeeleavescount', async (req, res) => {
+  try {
+    const count = await employeeleavesModel.countDocuments({});
+    res.json({ count });
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).json({ error: 'An error occurred' });
   }
 });
 
