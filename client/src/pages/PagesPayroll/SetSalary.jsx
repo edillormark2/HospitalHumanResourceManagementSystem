@@ -21,11 +21,78 @@ import ActionPopup from "../../components/LeaveComponents/ActionLeavePopup";
 import DeleteLeavePopup from "../../components/LeaveComponents/DeleteLeavePopup";
 import EditLeavePopup from "../../components/LeaveComponents/EditLeavePopup";
 import ViewEmpSalary from "../../components/PayrollComponents/ViewEmpSalary";
+import { EmployeeSalary } from "../../data/dummy";
 
 const SetSalary = ({ EmployeeID }) => {
+  const [EmployeeSalary, setEmployeeData] = useState([
+    {
+      EmployeeID: 10001,
+      name: "Daniel Mark",
+      payrollType: "Monthly",
+      salary: "31,000",
+      netSalary: "29,000",
+      Action: "View"
+    },
+    {
+      EmployeeID: 10002,
+      name: "Mickey Sano",
+      payrollType: "Monthly",
+      salary: "38,000",
+      netSalary: "35,000",
+      Action: "View"
+    },
+    {
+      EmployeeID: 10003,
+      name: "Emman Satoru",
+      payrollType: "Hourly",
+      salary: "150",
+      netSalary: "33,000"
+    },
+    {
+      EmployeeID: 10004,
+      name: "Mishy Gonzaga",
+      payrollType: "Monthly",
+      salary: "31,000",
+      netSalary: "29,000"
+    },
+    {
+      EmployeeID: 10005,
+      name: "Alex Johnson",
+      payrollType: "Hourly",
+      salary: "200",
+      netSalary: "35,000"
+    },
+    {
+      EmployeeID: 10006,
+      name: "Ella Smith",
+      payrollType: "Monthly",
+      salary: "40,000",
+      netSalary: "37,000"
+    },
+    {
+      EmployeeID: 10007,
+      name: "Sophia Lee",
+      payrollType: "Monthly",
+      salary: "32,000",
+      netSalary: "29,500"
+    },
+    {
+      EmployeeID: 10008,
+      name: "John Doe",
+      payrollType: "Hourly",
+      salary: "180",
+      netSalary: "29,000"
+    },
+    {
+      EmployeeID: 10009,
+      name: "Sarah Wilson",
+      payrollType: "Hourly",
+      salary: "220",
+      netSalary: "38,000"
+    }
+  ]);
   const { currentColor, currentMode } = useStateContext();
   const [openPopup, setOpenPopup] = useState(false);
-  const [employeesLeaveData, setEmployeeData] = useState([]); // State to store employee data
   const [openViewPopup, setOpenViewPopup] = useState(false);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
@@ -40,29 +107,11 @@ const SetSalary = ({ EmployeeID }) => {
     { to: "/set salary", label: "Set Salary" }
   ];
 
-  const fetchEmployeeData = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/employeeLeaves");
-      setEmployeeData(response.data);
-    } catch (error) {
-      console.error("Error fetching employee data: ", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchEmployeeData();
-  }, []);
-
   const pageSizes = [9, 20, 50];
   const [pageSize, setPageSize] = useState(9);
 
   const handlePageSizeChange = e => {
     setPageSize(e.value);
-  };
-
-  const handleLeaveCreated = () => {
-    // Callback function to refresh leave data after creating a leave
-    fetchEmployeeData();
   };
 
   const template = () =>
@@ -95,54 +144,34 @@ const SetSalary = ({ EmployeeID }) => {
   // Define the grid columns directly in the component
   const columns = [
     {
-      field: "Name",
+      field: "EmployeeID",
+      headerText: "Employee ID",
+      width: "120",
+      textAlign: "Left"
+    },
+    {
+      field: "name",
       headerText: "Name",
       width: "140",
       textAlign: "Left"
     },
     {
-      field: "LeaveType",
-      headerText: "Leave Type",
-      width: "140",
-      textAlign: "Center"
-    },
-    {
-      field: "AppliedOn",
-      headerText: "Applied On",
+      field: "payrollType",
+      headerText: "Payroll Type",
       width: "120",
       textAlign: "Center"
     },
     {
-      field: "StartDate",
-      headerText: "Start Date",
+      field: "salary",
+      headerText: "Salary",
       width: "120",
       textAlign: "Center"
     },
     {
-      field: "EndDate",
-      headerText: "End Date",
-      width: "135",
-      format: "yMd",
+      field: "netSalary",
+      headerText: "Net Salary",
+      width: "120",
       textAlign: "Center"
-    },
-    {
-      field: "TotalDays",
-      headerText: "Total Days",
-      width: "115",
-      textAlign: "Center"
-    },
-    {
-      field: "LeaveReason",
-      headerText: "Leave Reason",
-      width: "170",
-      textAlign: "Center"
-    },
-    {
-      field: "Status",
-      headerText: "Status",
-      width: "123",
-      textAlign: "Center",
-      template: employeeGridStatus
     },
     {
       field: "Action",
@@ -180,22 +209,19 @@ const SetSalary = ({ EmployeeID }) => {
         openPopup={openViewPopup}
         setOpenPopup={handleClosePopup}
         EmployeeID={selectedEmployeeID} // Pass the selectedEmployeeID to the popup
-        onLeaveCreated={handleLeaveCreated}
       />
       <EditLeavePopup
         openPopup={openEditPopup}
         setOpenPopup={handleCloseEditPopup}
         EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
-        onLeaveCreated={handleLeaveCreated}
       />
       <DeleteLeavePopup
         openDeletePopup={openDeletePopup}
         setOpenDeletePopup={setOpenDeletePopup}
         EmployeeID={selectedEmployeeID}
-        onLeaveCreated={handleLeaveCreated}
       />
       <GridComponent
-        dataSource={employeesLeaveData}
+        dataSource={EmployeeSalary} // Use the fetched employee data
         allowPaging={true}
         pageSettings={{ pageSize: pageSize }}
         allowSorting={true}
