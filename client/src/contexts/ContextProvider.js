@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const StateContext = createContext();
 
@@ -16,7 +16,9 @@ export const ContextProvider = ({ children }) => {
   const [currentColor, setCurrentColor] = useState("#03C9D7");
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('isLoggedIn') === 'true' ? true : false
+  );
   
 
   const setMode = (e) => {
@@ -40,12 +42,21 @@ export const ContextProvider = ({ children }) => {
   };
 
   const logout = () => {
+    localStorage.setItem('isLoggedIn', 'false');
     setIsLoggedIn(false);
-  }
+  };
 
   const login = () => {
+    localStorage.setItem('isLoggedIn', 'true');
     setIsLoggedIn(true);
-  }
+  };
+
+  useEffect(() => {
+    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    if (storedLoginStatus === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <StateContext.Provider
