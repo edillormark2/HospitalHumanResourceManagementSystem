@@ -16,6 +16,7 @@ export const ContextProvider = ({ children }) => {
   const [currentColor, setCurrentColor] = useState("#03C9D7");
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
+  const [loginID, setLoginID] = useState(undefined);
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem('isLoggedIn') === 'true' ? true : false
   );
@@ -51,6 +52,10 @@ export const ContextProvider = ({ children }) => {
     setIsLoggedIn(true);
   };
 
+  const setID = (ID) => {
+    setLoginID(ID);
+  };
+
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem('isLoggedIn');
     if (storedLoginStatus === 'true') {
@@ -78,6 +83,8 @@ export const ContextProvider = ({ children }) => {
         setIsLoggedIn,
         logout,
         login,
+        loginID,
+        setID,
       }}
     >
       {children}

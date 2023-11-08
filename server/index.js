@@ -209,7 +209,7 @@ app.post("/login", async (req, res) => {
 
       if (user) {
           // If the user exists and credentials are correct, send the user data
-          res.json({ success: true, userData: user });
+          res.json({ success: true, userData: user});
       } else {
           // If the credentials are incorrect or the user does not exist, send an error response
           res.status(401).json({ success: false, message: "Invalid credentials" });
@@ -263,7 +263,6 @@ app.get('/newemployeecount', async (req, res) => {
   }
 });
 
-
 app.get('/employeeleavescount', async (req, res) => {
   try {
     const count = await employeeleavesModel.countDocuments({});
@@ -271,6 +270,22 @@ app.get('/employeeleavescount', async (req, res) => {
   } catch (err) {
     console.error('Error:', err);
     res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+app.get('/employee/account/:id', async (req, res) => {
+  try {
+    const employee = await employeeModel.findOne({ EmployeeID: req.params.id });
+
+    if (employee) {
+      const employeeName = employee.Name; // Assuming 'Name' is the field you want to retrieve
+      res.json({ success: true, Name: employeeName });
+    } else {
+      res.json({ success: false, message: 'Employee not found' });
+    }
+  } catch (error) {
+    console.error('Error retrieving employee data: ', error);
+    res.status(500).json({ success: false, message: 'An error occurred while retrieving employee data' });
   }
 });
 

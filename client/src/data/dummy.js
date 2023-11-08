@@ -788,7 +788,7 @@ export const themeColors = [
 ];
 
 export const userProfileData = [
-  {
+  /* { 
     icon: <BsCurrencyDollar />,
     title: "My Profile",
     desc: "Account Settings",
@@ -801,7 +801,7 @@ export const userProfileData = [
     desc: "Messages & Emails",
     iconColor: "rgb(0, 194, 146)",
     iconBg: "rgb(235, 250, 242)"
-  },
+  }, */
   {
     icon: <FiCreditCard />,
     title: "My Tasks",

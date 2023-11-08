@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
@@ -35,11 +36,13 @@ const Navbar = () => {
     isClicked,
     setScreenSize,
     screenSize,
+    loginID,
   } = useStateContext();
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [employeeName, setEmployeeName] = useState('')
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -58,6 +61,26 @@ const Navbar = () => {
       setActiveMenu(true);
     }
   }, [screenSize]);
+
+  useEffect(() => {
+    // Fetch the employeeName and set it in the state
+    const fetchEmployeeName = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/employee/account/${loginID}`);
+        if (response.data.success) {
+          const name = response.data.Name;
+          setEmployeeName(name);
+        } else {
+          // Handle the case where the employee was not found
+          console.log('Employee not found');
+        }
+      } catch (error) {
+        console.error('Error fetching employee data: ', error);
+      }
+    };
+
+    fetchEmployeeName();
+  }, []);
 
   const handleActiveMenu = () => {
     setActiveMenu(!activeMenu);
@@ -131,7 +154,7 @@ const Navbar = () => {
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Mark
+                {employeeName}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />

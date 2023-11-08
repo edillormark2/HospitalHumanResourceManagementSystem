@@ -50,7 +50,8 @@ const Login = () => {
     themeSettings,
     setThemeSettings,
     currentColor,
-    currentMode
+    currentMode,
+    setID,
   } = useStateContext();
 
   const handleLogin = ()=> { login(); };
@@ -102,6 +103,9 @@ const Login = () => {
 
           if (response.data.success) {
             toast.success("Login successful");
+            const userData = response.data.userData;
+            const employeeID = userData.EmployeeID;
+            setID(employeeID);
             handleLogin();
           } else {
             // Login failed, handle the failure case here

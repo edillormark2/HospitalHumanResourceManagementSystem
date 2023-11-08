@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 
 import { Button } from ".";
@@ -7,8 +8,9 @@ import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../data/avatar.jpg";
 
 const UserProfile = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, loginID } = useStateContext();
   const [popupVisible, setPopupVisible] = useState(false); // Assuming initially visible
+  const [employeeName, setEmployeeName] = useState('')
 
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
@@ -19,6 +21,26 @@ const UserProfile = () => {
   const handleLogout = () => {
     logout();
   };
+  useEffect(() => {
+    // Fetch the employeeName and set it in the state
+    const fetchEmployeeName = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/employee/account/${loginID}`);
+        if (response.data.success) {
+          const name = response.data.Name;
+          setEmployeeName(name);
+        } else {
+          // Handle the case where the employee was not found
+          console.log('Employee not found');
+        }
+      } catch (error) {
+        console.error('Error fetching employee data: ', error);
+      }
+    };
+
+    fetchEmployeeName();
+  }, []);
+
   return (
     <div className="nav-item absolute right-1 top-12 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96 drop-shadow-2xl ">
       <div className="flex justify-between items-center">
@@ -32,8 +54,7 @@ const UserProfile = () => {
         />
         <div>
           <p className="font-semibold text-xl dark:text-gray-200">
-            {" "}
-            Michael Roberts{" "}
+            {employeeName}
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400">
             {" "}
