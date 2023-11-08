@@ -5,6 +5,7 @@ const { format, subDays, isAfter } = require('date-fns');
 const employeeModel = require("./models/employees");
 const employeeleavesModel = require("./models/employeeleaves");
 const accountModel = require("./models/account");
+const performanceModel = require("./models/performance");
 
 
 const app = express();
@@ -284,8 +285,16 @@ app.get('/employee/account/:id', async (req, res) => {
       res.json({ success: false, message: 'Employee not found' });
     }
   } catch (error) {
-    console.error('Error retrieving employee data: ', error);
     res.status(500).json({ success: false, message: 'An error occurred while retrieving employee data' });
+  }
+});
+
+app.get("/performance", async (req, res) => {
+  try {
+    const employeesPerformance = await performanceModel.find();
+    res.json(employeesPerformance);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

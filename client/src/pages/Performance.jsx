@@ -40,95 +40,12 @@ const Performance = ({ EmployeeID }) => {
   const yearFormat = dayjs().format("YYYY");
   const [department, setDepartment] = useState("");
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
-  const [EmployeeSalary, setEmployeeData] = useState([
-    {
-      EmployeeID: 10001,
-      name: "Daniel Mark",
-      department: "Medical",
-      position: "Anesthesiology",
-      rating: "3.5",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10002,
-      name: "Mickey Sano",
-      department: "Medical",
-      position: "surgery",
-      rating: "4.1",
-      overallRating: "4.8",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10003,
-      name: "Emman Satoru",
-      department: "Emergency",
-      position: "Nurse",
-      rating: "3.6",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10004,
-      name: "Mishy Gonzaga",
-      department: "Emergency",
-      position: "MedTech",
-      rating: "4.2",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10005,
-      name: "Alex Johnson",
-      department: "Specialized",
-      position: "Dermatology",
-      rating: "3.8",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10006,
-      name: "Ella Smith",
-      department: "Medical",
-      position: "Anesthesiology",
-      rating: "4.5",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10007,
-      name: "Sophia Lee",
-      department: "Administrative",
-      position: "Finance",
-      rating: "4.5",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10008,
-      name: "John Doe",
-      department: "Administrative",
-      position: "IT",
-      rating: "3.6",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    },
-    {
-      EmployeeID: 10009,
-      name: "Sarah Wilson",
-      department: "Medical",
-      position: "Surgery",
-      rating: "4.8",
-      feedback: "Keep up the  good work!",
-      createdAt: "Sept 20, 2023"
-    }
-  ]);
   const { currentColor, currentMode } = useStateContext();
   const [openPayslipPopup, setOpenPayslipPopup] = useState(false);
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
   const [openTimesheetPopup, setOpenTimesheetPopup] = useState(false);
   const [openRatingPopup, setOpenRatingPopup] = useState(false);
+  const [employeePerformanceData, setEmployeePerformanceData] = useState([]);
 
   const handleDeletePopup = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
@@ -158,14 +75,14 @@ const Performance = ({ EmployeeID }) => {
       <span style={{ marginLeft: "10px" }}>Entries per page</span>
     </div>;
   const employeeStarRatingStatus = props => {
-    const rating = parseFloat(props.rating); // Convert the rating to a float
+    const Rating = parseFloat(props.Rating); // Convert the rating to a float
     const stars = [];
 
     // Calculate the filled stars
-    const filledStars = Math.floor(rating);
+    const filledStars = Math.floor(Rating);
 
     // Calculate the half star
-    const hasHalfStar = rating % 1 !== 0;
+    const hasHalfStar = Rating % 1 !== 0;
 
     // Create filled stars
     for (let i = 0; i < filledStars; i++) {
@@ -190,7 +107,7 @@ const Performance = ({ EmployeeID }) => {
     }
 
     // Create unfilled stars to complete the total of 5 stars
-    const remainingStars = 5 - Math.ceil(rating);
+    const remainingStars = 5 - Math.ceil(Rating);
     for (let i = 0; i < remainingStars; i++) {
       stars.push(
         <FaStar
@@ -203,7 +120,7 @@ const Performance = ({ EmployeeID }) => {
 
     return (
       <div>
-        {stars} ({rating})
+        {stars} ({Rating})
       </div>
     );
   };
@@ -229,38 +146,38 @@ const Performance = ({ EmployeeID }) => {
 
   const columns = [
     {
-      field: "name",
+      field: "Name",
       headerText: "Employee",
       width: "125",
       textAlign: "Left"
     },
     {
-      field: "department",
+      field: "Department",
       headerText: "Department",
       width: "125",
       textAlign: "Left"
     },
     {
-      field: "position",
+      field: "Position",
       headerText: "Posistion",
       width: "125",
       textAlign: "Left"
     },
     {
-      field: "overallRating",
-      headerText: "Overall Rating",
+      field: "Rating",
+      headerText: "Rating",
       width: "130",
       textAlign: "Left",
       template: employeeStarRatingStatus
     },
     {
-      field: "feedback",
+      field: "Feedback",
       headerText: "Feedback",
       width: "110",
       textAlign: "Center"
     },
     {
-      field: "createdAt",
+      field: "CreatedAt",
       headerText: "Created At",
       width: "100",
       textAlign: "Left"
@@ -355,6 +272,19 @@ const Performance = ({ EmployeeID }) => {
     setOpenRatingPopup(true);
   };
 
+  useEffect(() => {
+    const fetchEmployeePerformanceData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/performance"); // Replace with your API endpoint
+        setEmployeePerformanceData(response.data); // Update the employeeData state with the fetched data
+      } catch (error) {
+        console.error("Error fetching employee data: ", error);
+      }
+    };
+
+    fetchEmployeePerformanceData(); // Fetch employee data when the component mounts
+  }, []);
+
   return (
     <div className="m-2 sm:mx-4 md:m-4 mt-24 p-2 md:p-4 ">
       <div
@@ -395,13 +325,11 @@ const Performance = ({ EmployeeID }) => {
                   inputProps={{ "aria-label": "Without label" }}
                 >
                   <MenuItem className="w-full" value="">
-                    <p className="md:w-52 text-xs md:text-md max-w-xs">
-                      Select Department
-                    </p>
+                    <p className="md:w-52 text-xs md:text-md max-w-xs"> Select Department</p>
                   </MenuItem>
 
                   <MenuItem className="w-full" value="Medical">
-                    <p className="md:w-52  text-xs md:text-md">Medical</p>
+                    <p className="md:w-52 text-xs ">Medical</p>
                   </MenuItem>
 
                   <MenuItem className="w-full" value="Emergency">
@@ -487,7 +415,7 @@ const Performance = ({ EmployeeID }) => {
           EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
         />
         <GridComponent
-          dataSource={EmployeeSalary} // Use the fetched employee data
+          dataSource={employeePerformanceData} // Use the fetched employee data
           allowPaging={true}
           pageSettings={{ pageSize: pageSize }}
           allowSorting={true}
