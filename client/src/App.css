@@ -71,11 +71,11 @@
 
 .mobile-toast {
   position: top-right;
-  z-index: 1000;
+  z-index: 2000000;
   top: 50px;
 }
 
 .desktop-toast {
   position: top-right;
-  z-index: 1000;
+  z-index: 2000000;
 }
