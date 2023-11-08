@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 import { Button } from ".";
 import { userProfileData } from "../data/dummy";
@@ -10,14 +11,14 @@ import avatar from "../data/avatar.jpg";
 const UserProfile = () => {
   const { currentColor, loginID } = useStateContext();
   const [popupVisible, setPopupVisible] = useState(false); // Assuming initially visible
-  const [employeeName, setEmployeeName] = useState('')
+  const [employeeName, setEmployeeName] = useState("");
 
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
   };
 
   const { logout } = useStateContext();
-  
+
   const handleLogout = () => {
     logout();
   };
@@ -25,16 +26,18 @@ const UserProfile = () => {
     // Fetch the employeeName and set it in the state
     const fetchEmployeeName = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/employee/account/${loginID}`);
+        const response = await axios.get(
+          `http://localhost:3001/employee/account/${loginID}`
+        );
         if (response.data.success) {
           const name = response.data.Name;
           setEmployeeName(name);
         } else {
           // Handle the case where the employee was not found
-          console.log('Employee not found');
+          console.log("Employee not found");
         }
       } catch (error) {
-        console.error('Error fetching employee data: ', error);
+        console.error("Error fetching employee data: ", error);
       }
     };
 
@@ -57,17 +60,15 @@ const UserProfile = () => {
             {employeeName}
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400">
-            {" "}
-            Administrator{" "}
+            {" "}Administrator{" "}
           </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
-            {" "}
-            info@shop.com{" "}
+            {" "}hhrms@gmail.com{" "}
           </p>
         </div>
       </div>
       <div>
-        {userProfileData.map((item, index) => (
+        {userProfileData.map((item, index) =>
           <a key={index} href={item.link} className="block">
             <div
               key={index}
@@ -79,16 +80,19 @@ const UserProfile = () => {
               >
                 {item.icon}
               </div>
-
-              <div>
-                <p className="font-semibold dark:text-gray-200">{item.title}</p>
-                <p className="text-gray-500 text-sm dark:text-gray-400">
-                  {item.desc}
-                </p>
-              </div>
+              <Link to="/kanban">
+                <div>
+                  <p className="font-semibold dark:text-gray-200">
+                    {item.title}
+                  </p>
+                  <p className="text-gray-500 text-sm dark:text-gray-400">
+                    {item.desc}
+                  </p>
+                </div>
+              </Link>
             </div>
           </a>
-        ))}
+        )}
       </div>
 
       <div className="mt-5" onClick={handleLogout}>
