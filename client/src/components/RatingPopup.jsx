@@ -36,7 +36,7 @@ const RatingPopup = props => {
   const [rating, setRating] = useState("");
   const [feedback, setFeedback] = useState("");
   const [createdAt, setCreatedAt] = useState("");
-  
+
   const [nameError, setNameError] = useState("");
   const [depError, setDepError] = useState("");
   const [positionError, setPositionError] = useState("");
@@ -61,7 +61,6 @@ const RatingPopup = props => {
     axios.get("http://localhost:3001/employees").then(response => {
       setEmployeeData(response.data);
     });
-    
   }, []);
 
   const dynamicPopupStyle = {
@@ -81,7 +80,7 @@ const RatingPopup = props => {
     return averageRating;
   };
 
-  const clearModalInfo = () =>{
+  const clearModalInfo = () => {
     setSelectedEmployee("");
     setEmployeeID("");
     setName("");
@@ -101,7 +100,7 @@ const RatingPopup = props => {
     event.preventDefault();
 
     //setRating(calculateAverageRating(OCLR, OCPMR, TCARR, BCOCR, BCBPR));
-    
+
     if (
       !employeeID ||
       !name ||
@@ -144,6 +143,8 @@ const RatingPopup = props => {
 
         // Clear input fields after successful submission
         clearModalInfo();
+        props.onEvalCreated();
+        setOpenPopup(false);
       })
       .catch(err => {
         toast.error("Error creating employee" + err.message, {
@@ -151,7 +152,6 @@ const RatingPopup = props => {
         });
         // Handle error and show an error message
       });
-
   };
 
   return (
@@ -166,9 +166,13 @@ const RatingPopup = props => {
           }
           className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md  "
         >
-          <ModalClose variant="outlined" onClick={() => {
-            clearModalInfo();
-            setOpenPopup(false)}} />
+          <ModalClose
+            variant="outlined"
+            onClick={() => {
+              clearModalInfo();
+              setOpenPopup(false);
+            }}
+          />
           <CardTitle title="Add Employee Evaluation" />
           <Divider />
           <div className="flex flex-col mt-5 md:flex-row md:items-center gap-5">
@@ -189,7 +193,7 @@ const RatingPopup = props => {
                     setPosition(newValue.Designation);
                   } else {
                     setEmployeeID("");
-                    setName("")
+                    setName("");
                     setDep("");
                     setPosition("");
                   }
@@ -204,11 +208,10 @@ const RatingPopup = props => {
               />
             </div>
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
-              <p className="mb-1 text-sm">Select Month</p>
+              <p className="mb-1 text-sm">Select Month & Year</p>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
                   views={["month", "year"]}
-                  value={dayjs(dateFormat)}
                   onChange={date => setCreatedAt(date)}
                 />
               </LocalizationProvider>
@@ -219,34 +222,49 @@ const RatingPopup = props => {
           <div className="mt-2 mb-3">
             <div className="flex justify-between ">
               <p className="text-md text-slate-500 ">Leadership</p>
-              <StarRating onStarRatingChange={(value) => {
-                setOCLR(value);}} />
+              <StarRating
+                onStarRatingChange={value => {
+                  setOCLR(value);
+                }}
+              />
             </div>
             <div className="flex justify-between mt-2 mb-5">
               <p className="text-md text-slate-500 ">Project Management</p>
-              <StarRating onStarRatingChange={(value) => {
-                setOCPMR(value);}} />
+              <StarRating
+                onStarRatingChange={value => {
+                  setOCPMR(value);
+                }}
+              />
             </div>
 
             <p className="text-md mb-2">Technical Competencies</p>
             <Divider />
             <div className="flex justify-between mt-2 mb-5">
               <p className="text-md text-slate-500 ">Allocating Resources</p>
-              <StarRating onStarRatingChange={(value) => {
-                setTCARR(value);}} />
+              <StarRating
+                onStarRatingChange={value => {
+                  setTCARR(value);
+                }}
+              />
             </div>
 
             <p className="text-md mb-2">Behavioural Competencies</p>
             <Divider />
             <div className="flex justify-between mt-2">
               <p className="text-md text-slate-500 ">Oral Communication</p>
-              <StarRating onStarRatingChange={(value) => {
-                setBCOCR(value);}} />
+              <StarRating
+                onStarRatingChange={value => {
+                  setBCOCR(value);
+                }}
+              />
             </div>
             <div className="flex justify-between mt-2">
               <p className="text-md text-slate-500 ">Business Process</p>
-              <StarRating onStarRatingChange={(value) => {
-                setBCBPR(value);}} />
+              <StarRating
+                onStarRatingChange={value => {
+                  setBCBPR(value);
+                }}
+              />
             </div>
           </div>
           <Divider />
@@ -270,7 +288,8 @@ const RatingPopup = props => {
               className={`text-md p-3  bg-gray-300`}
               onClick={() => {
                 clearModalInfo();
-                setOpenPopup(false)}}
+                setOpenPopup(false);
+              }}
             >
               Close
             </button>

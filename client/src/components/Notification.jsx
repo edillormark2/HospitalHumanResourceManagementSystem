@@ -9,7 +9,7 @@ const Notification = () => {
   const { currentColor } = useStateContext();
 
   return (
-    <div className="nav-item absolute right-5 md:right-40 top-12 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96 drop-shadow-2xl">
+    <div className="nav-item absolute right-5 md:right-20 top-12 bg-white dark:bg-[#42464D] p-8 rounded-lg w-80  sm:w-90 md:w-96 lg:w-96 xl:w-96 drop-shadow-2xl">
       <div className="flex justify-between items-center">
         <div className="flex gap-3">
           <p className="font-semibold text-lg dark:text-gray-200">

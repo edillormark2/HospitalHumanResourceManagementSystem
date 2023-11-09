@@ -278,6 +278,24 @@ const Performance = ({ EmployeeID }) => {
     setOpenRatingPopup(true);
   };
 
+  const handleEvalCreated = () => {
+    // Callback function to refresh performance data after creating a evaluation
+    fetchEmployeePerformanceData();
+  };
+
+  const fetchEmployeePerformanceData = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/performance");
+      setEmployeePerformanceData(response.data);
+    } catch (error) {
+      console.error("Error fetching employee data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployeePerformanceData();
+  }, []);
+
   useEffect(() => {
     const fetchEmployeePerformanceData = async () => {
       try {
@@ -331,7 +349,9 @@ const Performance = ({ EmployeeID }) => {
                   inputProps={{ "aria-label": "Without label" }}
                 >
                   <MenuItem className="w-full" value="">
-                    <p className="md:w-52 text-xs md:text-md max-w-xs"> Select Department</p>
+                    <p className="md:w-52 text-xs md:text-md max-w-xs">
+                      {" "}Select Department
+                    </p>
                   </MenuItem>
 
                   <MenuItem className="w-full" value="Medical">
@@ -419,6 +439,7 @@ const Performance = ({ EmployeeID }) => {
           openPopup={openTimesheetPopup}
           setOpenPopup={handleCloseTimesheetPopup}
           EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
+          onEvalCreated={handleEvalCreated}
         />
         <GridComponent
           dataSource={employeePerformanceData} // Use the fetched employee data

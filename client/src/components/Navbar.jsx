@@ -41,7 +41,7 @@ const Navbar = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [employeeName, setEmployeeName] = useState("");
+  const [employeeName, setEmployeeName] = useState([]);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -64,26 +64,25 @@ const Navbar = () => {
     [screenSize]
   );
 
-  useEffect(() => {
-    // Fetch the employeeName and set it in the state
-    const fetchEmployeeName = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/employee/account/${loginID}`
-        );
-        if (response.data.success) {
-          const name = response.data.Name;
-          setEmployeeName(name);
-        } else {
-          // Handle the case where the employee was not found
-          console.log("Employee not found");
-        }
-      } catch (error) {
-        console.error("Error fetching employee data: ", error);
+  const fetchEmployeeName = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/employee/account/${loginID}`
+      );
+      if (response.data.success) {
+        const name = response.data.Name;
+        setEmployeeName(name);
+      } else {
+        // Handle the case where the employee was not found
+        console.log("Employee not found");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching employee data: ", error);
+    }
+  };
 
-    fetchEmployeeName();
+  useEffect(() => {
+    fetchEmployeeName(); // Fetch employee data when the component mounts
   }, []);
 
   const handleActiveMenu = () => {

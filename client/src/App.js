@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 
-import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
+import { Footer, Navbar, Sidebar, ThemeSettings } from "./components";
 import {
   Dashboard,
   Calendar,
@@ -42,6 +42,9 @@ import {
 import EditEmployee from "./pages/PagesEmployees/EditEmployee";
 
 import "./App.css";
+import LoginHeader from "./components/LoginHeader";
+import { IconButton, InputAdornment } from "@mui/material";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 const Login = () => {
   const {
@@ -63,7 +66,13 @@ const Login = () => {
   const [userNameError, setUsernameError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [visible, setVisible] = useState(false);
+
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
+
+  const togglePasswordVisibility = () => {
+    setVisible(!visible);
+  };
 
   const handleUsernameChange = event => {
     const value = event.target.value;
@@ -165,9 +174,7 @@ const Login = () => {
                   <ToastContainer />
                   <Routes>
                     {/* Dashboard */} {/* TEMPORARY */}
-                    <Route path="" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-
                     {/* Pages */}
                     <Route path="/employees" element={<Employees />} />
                     {/* Employees SubPages */}
@@ -198,13 +205,11 @@ const Login = () => {
                       element={<JobApplication />}
                     />
                     <Route path="/performance" element={<Performance />} />
-
                     {/* Apps */}
                     <Route path="/kanban" element={<Kanban />} />
                     <Route path="/editor" element={<Editor />} />
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/color-picker" element={<ColorPicker />} />
-
                     {/* charts */}
                     <Route path="/line" element={<Line />} />
                     <Route path="/area" element={<Area />} />
@@ -222,8 +227,9 @@ const Login = () => {
               className=" dark:bg-main-dark-bg mt-50 "
               style={{ height: "90vh" }}
             >
+              <LoginHeader />
               <ToastContainer />
-              <div className="flex justify-center 8">
+              <div className="flex justify-center">
                 <div
                   className="fixed right-4 bottom-4"
                   style={{ zIndex: "1000" }}
@@ -240,8 +246,9 @@ const Login = () => {
                   </TooltipComponent>
                 </div>
                 {themeSettings && <ThemeSettings />}
+
                 <div
-                  className=" bg-white sm:rounded-xl rounded-md drop-shadow-2xl p-4  sm:max-w-md w-[80%]"
+                  className=" bg-white dark:text-gray-200 dark:bg-secondary-dark-bg sm:rounded-xl rounded-md drop-shadow-2xl p-4  sm:max-w-md w-[80%]"
                   style={{ marginTop: "120px" }}
                 >
                   <div className="flex justify-center text-3xl font-bold mb-2">
@@ -249,8 +256,9 @@ const Login = () => {
                   </div>
                   <p className="mb-1 text-sm">Username</p>
                   <form onSubmit={handleSubmit}>
-                    <FormControl className="w-full">
+                    <FormControl className="w-full ">
                       <OutlinedInput
+                        sx={{ border: "solid white 1px" }}
                         value={username}
                         onChange={handleUsernameChange}
                         error={!!userNameError}
@@ -262,10 +270,20 @@ const Login = () => {
                     <p className="mb-1 text-sm mt-6">Password</p>
                     <FormControl className="w-full">
                       <OutlinedInput
-                        type="password"
+                        sx={{ border: "solid white 1px" }}
+                        type={visible ? "text" : "password"}
                         value={password}
                         onChange={handlePasswordChange}
-                        error={!!passwordError}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={togglePasswordVisibility}
+                              edge="end"
+                            >
+                              {visible ? <AiFillEye /> : <AiFillEyeInvisible />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                       />
                     </FormControl>
                     <div id="createHelp" className="text-red-500 text-sm">
@@ -288,8 +306,8 @@ const Login = () => {
                 </div>
               </div>
             </div>}
-            <Footer />
       </BrowserRouter>
+      <Footer />
     </div>
   );
 };

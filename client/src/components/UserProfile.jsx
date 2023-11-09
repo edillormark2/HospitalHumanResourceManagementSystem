@@ -45,7 +45,7 @@ const UserProfile = () => {
   }, []);
 
   return (
-    <div className="nav-item absolute right-1 top-12 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96 drop-shadow-2xl ">
+    <div className="nav-item absolute right-1 top-12 bg-white dark:bg-[#42464D] p-8 rounded-lg w-80 drop-shadow-2xl sm:w-90 md:w-96 lg:w-96 xl:w-96">
       <div className="flex justify-between items-center">
         <p className="font-semibold text-lg dark:text-gray-200">User Profile</p>
       </div>

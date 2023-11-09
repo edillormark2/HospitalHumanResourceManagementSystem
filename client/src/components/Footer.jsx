@@ -1,13 +1,11 @@
-import React from 'react';
+import React from "react";
+import { AiOutlineCopyrightCircle } from "react-icons/ai";
 
-const Footer = () => {
-  return (
-    <footer className="bg-gray-800 text-white py-4 text-center" style={{ height: "10vh" }}>
-      <div className="container mx-auto">
-        <p>&#169; 2023 HHRMS</p>
-      </div>
-    </footer>
-  );
-};
+const Footer = () =>
+  <div className="dark:bg-main-dark-bg" style={{ height: "10vh" }}>
+    <p className="dark:text-gray-200 text-gray-700 text-center text-xs md:text-sm">
+      © 2022 All rights reserved by HHRMS Group
+    </p>
+  </div>;
 
 export default Footer;
