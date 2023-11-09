@@ -298,6 +298,15 @@ app.get("/performance", async (req, res) => {
   }
 });
 
+app.post("/createPerformance", async (req, res) => {
+  try {
+    const newEmployee = await performanceModel.create(req.body);
+    res.json(newEmployee);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {

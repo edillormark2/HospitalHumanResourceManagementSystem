@@ -24,51 +24,44 @@ import StarRating from "./StarRating";
 const RatingPopup = props => {
   const { currentColor } = useStateContext();
   const { openPopup, setOpenPopup } = props;
-  const currentDate = dayjs();
+  const dateFormat = dayjs().format("MM/YYYY");
 
-  const [empid, setID] = useState("");
-  const [emname, setName] = useState("");
-  const [LeaveType, setLeaveType] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [totalDays, setTotalDays] = useState("");
-  const [leaveReason, setLeaveReson] = useState("");
-  const [statusLeave, setStatusLeave] = useState("Pending");
-  const [remarks, setRemarks] = useState("");
   const [employeeData, setEmployeeData] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
-  const [selectedEmployeeID, setSelectedEmployeeID] = useState("");
-  const [selectedEmployeeName, setSelectedEmployeeName] = useState("");
+
+  const [employeeID, setEmployeeID] = useState("");
+  const [name, setName] = useState("");
+  const [dep, setDep] = useState("");
+  const [position, setPosition] = useState("");
+  const [rating, setRating] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
+  
+  const [nameError, setNameError] = useState("");
+  const [depError, setDepError] = useState("");
+  const [positionError, setPositionError] = useState("");
+  const [createdAtError, setCreatedAtError] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
+  const [ratingError, setRatingError] = useState("");
+
+  const [OCLR, setOCLR] = useState("");
+  const [OCPMR, setOCPMR] = useState("");
+  const [TCARR, setTCARR] = useState("");
+  const [BCOCR, setBCOCR] = useState("");
+  const [BCBPR, setBCBPR] = useState("");
 
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 
-  const handleLeaveChange = event => {
-    const selectedLeaveType = event.target.value;
-    setLeaveType(selectedLeaveType);
-  };
-
-  const handleLeaveReasonChange = event => {
+  const handleFeedbackChange = event => {
     const value = event.target.value;
-    setLeaveReson(value);
-  };
-
-  const handleRemarksChange = event => {
-    const value = event.target.value;
-    setRemarks(value);
-  };
-
-  const handleStartDateChange = date => {
-    setStartDate(date);
-  };
-
-  const handleEndDateChange = date => {
-    setEndDate(date);
+    setFeedback(value);
   };
 
   useEffect(() => {
     axios.get("http://localhost:3001/employees").then(response => {
       setEmployeeData(response.data);
     });
+    
   }, []);
 
   const dynamicPopupStyle = {
@@ -80,6 +73,85 @@ const RatingPopup = props => {
     transform: "translate(-50%, -50%)",
     overflowY: "auto",
     p: 4
+  };
+
+  const calculateAverageRating = (OCLR, OCPMR, TCARR, BCOCR, BCBPR) => {
+    const totalRating = OCLR + OCPMR + TCARR + BCOCR + BCBPR;
+    const averageRating = totalRating / 5;
+    return averageRating;
+  };
+
+  const clearModalInfo = () =>{
+    setSelectedEmployee("");
+    setEmployeeID("");
+    setName("");
+    setDep("");
+    setPosition("");
+    setFeedback("");
+    setCreatedAt("");
+    setOCLR("");
+    setOCPMR("");
+    setTCARR("");
+    setBCOCR("");
+    setBCBPR("");
+    setRating("");
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    //setRating(calculateAverageRating(OCLR, OCPMR, TCARR, BCOCR, BCBPR));
+    
+    if (
+      !employeeID ||
+      !name ||
+      !dep ||
+      !position ||
+      !feedback ||
+      !OCLR ||
+      !OCPMR ||
+      !TCARR ||
+      !BCOCR ||
+      !BCBPR
+    ) {
+      toast.error("Please fill in all the required fields");
+      return;
+    }
+
+    const finalcreatedAt = createdAt
+      ? dayjs(createdAt).format("MM/YYYY")
+      : dayjs().format("MM/YYYY");
+
+    axios
+      .post("http://localhost:3001/createPerformance", {
+        EmployeeID: employeeID,
+        Name: name,
+        Department: dep,
+        Position: position,
+        Feedback: feedback,
+        CreatedAt: finalcreatedAt,
+        Rating: calculateAverageRating(OCLR, OCPMR, TCARR, BCOCR, BCBPR),
+        OCLR: OCLR,
+        OCPMR: OCPMR,
+        TCARR: TCARR,
+        BCOCR: BCOCR,
+        BCBPR: BCBPR
+      })
+      .then(result => {
+        toast.success("Employee created successfully:", {
+          className: isMobile ? "mobile-toast" : "desktop-toast"
+        });
+
+        // Clear input fields after successful submission
+        clearModalInfo();
+      })
+      .catch(err => {
+        toast.error("Error creating employee" + err.message, {
+          className: isMobile ? "mobile-toast" : "desktop-toast"
+        });
+        // Handle error and show an error message
+      });
+
   };
 
   return (
@@ -94,7 +166,9 @@ const RatingPopup = props => {
           }
           className="m-2 md:m-10 mt-10 p-4 md:p-10 bg-white rounded-md  "
         >
-          <ModalClose variant="outlined" onClick={() => setOpenPopup(false)} />
+          <ModalClose variant="outlined" onClick={() => {
+            clearModalInfo();
+            setOpenPopup(false)}} />
           <CardTitle title="Add Employee Evaluation" />
           <Divider />
           <div className="flex flex-col mt-5 md:flex-row md:items-center gap-5">
@@ -109,11 +183,15 @@ const RatingPopup = props => {
                 onChange={(event, newValue) => {
                   setSelectedEmployee(newValue);
                   if (newValue) {
-                    setSelectedEmployeeID(newValue.EmployeeID);
-                    setSelectedEmployeeName(newValue.Name);
+                    setEmployeeID(newValue.EmployeeID);
+                    setName(newValue.Name);
+                    setDep(newValue.Department);
+                    setPosition(newValue.Designation);
                   } else {
-                    setSelectedEmployeeID("");
-                    setSelectedEmployeeName("");
+                    setEmployeeID("");
+                    setName("")
+                    setDep("");
+                    setPosition("");
                   }
                 }}
                 renderInput={params =>
@@ -130,7 +208,8 @@ const RatingPopup = props => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
                   views={["month", "year"]}
-                  value={currentDate}
+                  value={dayjs(dateFormat)}
+                  onChange={date => setCreatedAt(date)}
                 />
               </LocalizationProvider>
             </div>
@@ -140,29 +219,34 @@ const RatingPopup = props => {
           <div className="mt-2 mb-3">
             <div className="flex justify-between ">
               <p className="text-md text-slate-500 ">Leadership</p>
-              <StarRating />
+              <StarRating onStarRatingChange={(value) => {
+                setOCLR(value);}} />
             </div>
             <div className="flex justify-between mt-2 mb-5">
               <p className="text-md text-slate-500 ">Project Management</p>
-              <StarRating />
+              <StarRating onStarRatingChange={(value) => {
+                setOCPMR(value);}} />
             </div>
 
             <p className="text-md mb-2">Technical Competencies</p>
             <Divider />
             <div className="flex justify-between mt-2 mb-5">
               <p className="text-md text-slate-500 ">Allocating Resources</p>
-              <StarRating />
+              <StarRating onStarRatingChange={(value) => {
+                setTCARR(value);}} />
             </div>
 
             <p className="text-md mb-2">Behavioural Competencies</p>
             <Divider />
             <div className="flex justify-between mt-2">
               <p className="text-md text-slate-500 ">Oral Communication</p>
-              <StarRating />
+              <StarRating onStarRatingChange={(value) => {
+                setBCOCR(value);}} />
             </div>
             <div className="flex justify-between mt-2">
               <p className="text-md text-slate-500 ">Business Process</p>
-              <StarRating />
+              <StarRating onStarRatingChange={(value) => {
+                setBCBPR(value);}} />
             </div>
           </div>
           <Divider />
@@ -170,8 +254,8 @@ const RatingPopup = props => {
             <p className="mb-1 text-md">Feedback</p>
             <Textarea
               className="w-full p-2 border rounded"
-              value={remarks}
-              onChange={handleRemarksChange}
+              value={feedback}
+              onChange={handleFeedbackChange}
               minRows={isMobile ? 2 : 3}
             />
           </div>
@@ -184,12 +268,15 @@ const RatingPopup = props => {
                 width: "100px"
               }}
               className={`text-md p-3  bg-gray-300`}
-              onClick={() => setOpenPopup(false)}
+              onClick={() => {
+                clearModalInfo();
+                setOpenPopup(false)}}
             >
               Close
             </button>
             <button
               type="button"
+              onClick={handleSubmit}
               style={{
                 backgroundColor: currentColor,
                 color: "white",

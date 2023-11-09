@@ -5,9 +5,15 @@ const performanceSchema = new mongoose.Schema({
     Name: String,
     Department: String,
     Position: String,
-    Rating: Number,
+    Rating: String,
     Feedback: String,
-    CreatedAt: String
+    CreatedAt: String,
+    OCLR: String,
+    OCPMR: String,
+    TCARR: String,
+    BCOCR: String,
+    BCBPR: String,
+
 });
 
 const performanceModel = mongoose.model(

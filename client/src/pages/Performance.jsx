@@ -146,6 +146,12 @@ const Performance = ({ EmployeeID }) => {
 
   const columns = [
     {
+      field: "EmployeeID",
+      headerText: "Employee ID",
+      width: "80",
+      textAlign: "Left"
+    },
+    {
       field: "Name",
       headerText: "Employee",
       width: "125",
