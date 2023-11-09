@@ -164,7 +164,8 @@ const Login = () => {
                   {themeSettings && <ThemeSettings />}
                   <ToastContainer />
                   <Routes>
-                    {/* Dashboard */}
+                    {/* Dashboard */} {/* TEMPORARY */}
+                    <Route path="" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
 
                     {/* Pages */}
@@ -219,10 +220,10 @@ const Login = () => {
             </div>
           : <div
               className=" dark:bg-main-dark-bg mt-50 "
-              style={{ height: "100vh" }}
+              style={{ height: "90vh" }}
             >
               <ToastContainer />
-              <div className="flex justify-center ">
+              <div className="flex justify-center 8">
                 <div
                   className="fixed right-4 bottom-4"
                   style={{ zIndex: "1000" }}
@@ -287,6 +288,7 @@ const Login = () => {
                 </div>
               </div>
             </div>}
+            <Footer />
       </BrowserRouter>
     </div>
   );
