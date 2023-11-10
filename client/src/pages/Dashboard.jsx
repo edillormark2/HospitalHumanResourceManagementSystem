@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { BsCurrencyDollar } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 import { IoIosMore } from "react-icons/io";
@@ -16,7 +16,6 @@ import { scheduleData } from "../data/dummy";
 
 import { Stacked, Pie, Button, LineChart, SparkLine } from "../components";
 import {
-  earningData,
   notclockin,
   dropdownData,
   SparklineAreaData,
@@ -24,6 +23,17 @@ import {
 } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import employee from "../data/employee.jpeg";
+
+import {
+  MdOutlineSupervisorAccount,
+  MdOutlineRecentActors,
+  MdExitToApp,
+  MdOutlinePayment
+} from "react-icons/md";
+import { RiContactsLine, RiStockLine, RiOpenArmLine } from "react-icons/ri";
+import { HiLogout } from "react-icons/hi";
+import { BiColorFill, BiWallet } from "react-icons/bi";
+import axios from "axios";
 
 const DropDown = ({ currentMode }) =>
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -41,29 +51,100 @@ const DropDown = ({ currentMode }) =>
 const Dashboard = () => {
   const { currentColor, currentMode } = useStateContext();
 
+  const [employeeCount, setEmployeeCount] = useState(null);
+  const [newEmployeeCount, setnewEmployeeCount] = useState(null);
+  const [employeeleavesCount, setEmployeeleavesCount] = useState(null);
+
+  useEffect(() => {
+    async function fetchEmployeeData() {
+      try {
+        const response = await axios.get('http://localhost:3001/employeecount');
+        setEmployeeCount(response.data.count);
+      } catch (error) {
+        setEmployeeCount('-');
+        console.error('Error:', error);
+      }
+    }
+
+    fetchEmployeeData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchEmployeeleavesData() {
+      try {
+        const response = await axios.get('http://localhost:3001/employeeleavescount');
+        setEmployeeleavesCount(response.data.count);
+      } catch (error) {
+        setEmployeeleavesCount('-');
+        console.error('Error:', error);
+      }
+    }
+    
+    fetchEmployeeleavesData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchNewEmployeeData() {
+      try {
+        const response = await axios.get('http://localhost:3001/newemployeecount');
+        setnewEmployeeCount(response.data.count);
+      } catch (error) {
+        setnewEmployeeCount('-');
+        console.error('Error:', error);
+      }
+    }
+    
+    fetchNewEmployeeData();
+  }, []);
+
+  const earningData = [
+    {
+      icon: <MdOutlineSupervisorAccount />,
+      amount: employeeCount,
+      title: "Employees",
+      iconColor: "#03C9D7",
+      iconBg: "#E5FAFB",
+      pcColor: "red-600"
+    },
+    {
+      icon: <MdOutlineRecentActors />,
+      amount: newEmployeeCount,
+      title: "Recent Hires",
+      iconColor: "rgb(255, 244, 229)",
+      iconBg: "rgb(254, 201, 15)",
+      pcColor: "green-600"
+    },
+    {
+      icon: <RiOpenArmLine />,
+      amount: "-",
+      title: "Vacancies", //TO BE IMPLEMENT IT NEEDS THE EMPLOYEE POSITION LIMITS
+      iconColor: "rgb(228, 106, 118)",
+      iconBg: "rgb(255, 244, 229)",
+  
+      pcColor: "green-600"
+    },
+    {
+      icon: <HiLogout />,
+      amount: employeeleavesCount,
+      title: "Total Leave",
+      iconColor: "rgb(0, 194, 146)",
+      iconBg: "rgb(235, 250, 242)",
+      pcColor: "red-600"
+    },
+    //USER ACCOUNT FEATURES
+    /* {
+      icon: <BiWallet />,
+      amount: "₱ 2,100,000",
+      title: "Account Balanace",
+      iconColor: "#03C9D7",
+      iconBg: "#E5FAFB",
+      pcColor: "red-600"
+    } */
+  ];
+
   return (
     <div className="mt-24">
       <div className="flex flex-wrap lg:flex-nowrap justify-center ">
-        {/*
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-8 pt-9 m-3 bg-hero-pattern bg-no-repeat bg-cover bg-center drop-shadow-md">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className=" text-gray-400">Upcoming Interviews</p>
-              <p className="text-3xl font-bold">10</p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <Button
-              color="white"
-              bgColor={currentColor}
-              text="See more"
-              borderRadius="10px"
-            />
-          </div>
-        </div>
-        
-        **/}
-
         <div className="flex m-3 flex-wrap justify-center gap-1 items-center drop-shadow-md">
           {earningData.map(item =>
             <div

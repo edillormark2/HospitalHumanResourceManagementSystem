@@ -23,7 +23,7 @@
 }
 ::-webkit-scrollbar-thumb {
   background-color: rgb(216, 216, 216);
-  border-radius: 40px;
+  border-radius: 25px;
 }
 ::-webkit-scrollbar-track {
   background-color: transparent;
@@ -71,13 +71,11 @@
 
 .mobile-toast {
   position: top-right;
-  z-index: 1000;
+  z-index: 2000000;
   top: 50px;
 }
 
 .desktop-toast {
   position: top-right;
-  z-index: 1000;
+  z-index: 2000000;
 }
-
-

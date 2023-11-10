@@ -15,6 +15,9 @@ import {
   ColumnsDirective,
   ColumnDirective
 } from "@syncfusion/ej2-react-grids";
+import EditEmployeeAB from "../../components/EmployeesComponents/EditEmployeeAB";
+import { AiOutlineDelete } from "react-icons/ai";
+import DeletePopup from "../../components/EmployeesComponents/DeletePopup";
 
 const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 
@@ -29,23 +32,266 @@ const EmpSetSalary = () => {
     { to: "/set salary", label: "Set Salary" },
     { to: "/emp-set-salary", label: "Employee Set Salary" }
   ];
+  const employeesSalaryData = [
+    {
+      payslipType: "Monthly Payslip",
+      salary: "31,000"
+    }
+  ];
 
   const employeesSalaryGrid = [
     {
-      field: "Name",
-      headerText: "Name",
+      field: "payslipType",
+      headerText: "Payslip Type",
       width: "125",
       textAlign: "Center"
     },
     {
-      field: "EmployeeID",
-      headerText: "Employee Id",
+      field: "salary",
+      headerText: "Salary",
       width: "140",
       textAlign: "Center"
     }
   ];
+  const employeesAllowanceData = [
+    {
+      Name: "Daniel Mark",
+      allowanceOption: "Non Taxable",
+      title: "Food",
+      type: "Fixed",
+      amount: "500"
+    },
+    {
+      Name: "Daniel Mark",
+      allowanceOption: "Non Taxable",
+      title: "Transportation",
+      type: "Fixed",
+      amount: "300"
+    }
+  ];
+  const employeesAllowanceGrid = [
+    {
+      field: "Name",
+      headerText: "Name",
+      width: "115",
+      textAlign: "Center"
+    },
+    {
+      field: "allowanceOption",
+      headerText: "Allowance Option",
+      width: "140",
+      textAlign: "Center"
+    },
+    {
+      field: "title",
+      headerText: "Title",
+      width: "125",
+      textAlign: "Center"
+    },
+    {
+      field: "type",
+      headerText: "Type",
+      width: "95",
+      textAlign: "Center"
+    },
+    {
+      field: "amount",
+      headerText: "Amount",
+      width: "95",
+      textAlign: "Center"
+    },
+    {
+      field: "Action",
+      headerText: "Action",
+      width: "125",
+      textAlign: "Center",
+      template: props =>
+        <div className="flex justify-center">
+          <EditEmployeeAB EmployeeID={props.EmployeeID} />
+          <button
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "28px", // Set a fixed width
+              height: "28px", // Set a fixed height
+              border: "none",
+              cursor: "pointer",
+              borderRadius: "30%", // To make it a circle
+              textDecoration: "none",
+              backgroundColor: "#DE3163"
+            }}
+          >
+            <AiOutlineDelete
+              title="Delete"
+              style={{
+                color: "white",
+                fontSize: "18px"
+              }}
+            />
+          </button>
+        </div>
+    }
+  ];
 
-  useEffect(
+  const employeesDeductionData = [
+    {
+      Name: "Daniel Mark",
+      deductionOption: "PhilHealth",
+      type: "Percentage",
+      amount: "2%(200)"
+    },
+    {
+      Name: "Daniel Mark",
+      deductionOption: "SSS",
+      type: "Fixed",
+      amount: "250"
+    }
+  ];
+
+  const employeesDeductionGrid = [
+    {
+      field: "Name",
+      headerText: "Name",
+      width: "115",
+      textAlign: "Center"
+    },
+    {
+      field: "deductionOption",
+      headerText: "Deduction Option",
+      width: "140",
+      textAlign: "Center"
+    },
+    {
+      field: "type",
+      headerText: "Type",
+      width: "110",
+      textAlign: "Center"
+    },
+    {
+      field: "amount",
+      headerText: "Amount",
+      width: "100",
+      textAlign: "Center"
+    },
+    {
+      field: "Action",
+      headerText: "Action",
+      width: "125",
+      textAlign: "Center",
+      template: props =>
+        <div className="flex justify-center">
+          <EditEmployeeAB EmployeeID={props.EmployeeID} />
+          <button
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "28px", // Set a fixed width
+              height: "28px", // Set a fixed height
+              border: "none",
+              cursor: "pointer",
+              borderRadius: "30%", // To make it a circle
+              textDecoration: "none",
+              backgroundColor: "#DE3163"
+            }}
+          >
+            <AiOutlineDelete
+              title="Delete"
+              style={{
+                color: "white",
+                fontSize: "18px"
+              }}
+            />
+          </button>
+        </div>
+    }
+  ];
+
+  const employeesOvertimeData = [
+    {
+      Name: "Daniel Mark",
+      overtimeTitle: "Holiday",
+      numberDays: "3",
+      hours: "8",
+      rate: "1,800"
+    },
+    {
+      Name: "Daniel Mark",
+      overtimeTitle: "Regular",
+      numberDays: "1",
+      hours: "8",
+      rate: "600"
+    }
+  ];
+
+  const employeesOvertimeGrid = [
+    {
+      field: "Name",
+      headerText: "Name",
+      width: "115",
+      textAlign: "Center"
+    },
+    {
+      field: "overtimeTitle",
+      headerText: "Overtime Title",
+      width: "130",
+      textAlign: "Center"
+    },
+    {
+      field: "numberDays",
+      headerText: "No. of Days",
+      width: "100",
+      textAlign: "Center"
+    },
+    {
+      field: "hours",
+      headerText: "Hours",
+      width: "80",
+      textAlign: "Center"
+    },
+    {
+      field: "rate",
+      headerText: "Rate",
+      width: "80",
+      textAlign: "Center"
+    },
+    {
+      field: "Action",
+      headerText: "Action",
+      width: "115",
+      textAlign: "Center",
+      template: props =>
+        <div className="flex justify-center">
+          <EditEmployeeAB EmployeeID={props.EmployeeID} />
+          <button
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "28px", // Set a fixed width
+              height: "28px", // Set a fixed height
+              border: "none",
+              cursor: "pointer",
+              borderRadius: "30%", // To make it a circle
+              textDecoration: "none",
+              backgroundColor: "#DE3163"
+            }}
+          >
+            <AiOutlineDelete
+              title="Delete"
+              style={{
+                color: "white",
+                fontSize: "18px"
+              }}
+            />
+          </button>
+        </div>
+    }
+  ];
+
+  {
+    /*useEffect(
     () => {
       // Fetch employee data based on EmployeeID
       const fetchData = async () => {
@@ -67,7 +313,8 @@ const EmpSetSalary = () => {
       fetchData();
     },
     [EmployeeID]
-  );
+  );*/
+  }
 
   const handleLeaveCreated = () => {
     // Handle leave creation
@@ -82,18 +329,18 @@ const EmpSetSalary = () => {
   };
   return (
     <div className="m-2 flex flex-wrap lg:flex-nowrap justify-center ">
-      <div className=" md:m-6 mt-24 p-2 md:p-10 sm:rounded-3xl rounded-md min-w-[100%] max-w-[100%] ">
+      <div className=" md:m-2 mt-24 p-2 md:p-10 sm:rounded-3xl rounded-md min-w-[100%] max-w-[100%] ">
         <SubPageHeader title="Employee Set Salary" />
         <Breadcrumbs links={breadcrumbLinks} />
-        <div className="flex m-3 flex-wrap justify-center gap-6 items-center drop-shadow-md">
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-md min-w-[45%] max-w-[88%]">
+        <div className="md:flex justify-center m-3 gap-6 ">
+          <div className=" bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 mb-4 pt-9 rounded-md drop-shadow-md min-w-[50%] max-w-[100%]">
             <div className="flex items-center justify-between mb-4">
               <CardTitle title="Employee Salary" />
               <CreateButton onClick={handleOpenAdd} title="Create" />
             </div>
             <Divider />
             <div>
-              <GridComponent dataSource={employeeData}>
+              <GridComponent dataSource={employeesSalaryData}>
                 <ColumnsDirective>
                   {employeesSalaryGrid.map((item, index) =>
                     <ColumnDirective key={index} {...item} />
@@ -102,16 +349,16 @@ const EmpSetSalary = () => {
               </GridComponent>
             </div>
           </div>
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-md min-w-[45%] max-w-[88%]">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 mb-4 pt-9 rounded-md drop-shadow-md min-w-[50%] max-w-[100%]">
             <div className="flex items-center justify-between mb-4">
               <CardTitle title="Allowance" />
               <CreateButton onClick={handleOpenAdd} title="Create" />
             </div>
             <Divider />
             <div>
-              <GridComponent dataSource={employeeData}>
+              <GridComponent dataSource={employeesAllowanceData}>
                 <ColumnsDirective>
-                  {employeesSalaryGrid.map((item, index) =>
+                  {employeesAllowanceGrid.map((item, index) =>
                     <ColumnDirective key={index} {...item} />
                   )}
                 </ColumnsDirective>
@@ -119,33 +366,39 @@ const EmpSetSalary = () => {
             </div>
           </div>
         </div>
-        <div className="flex m-3 flex-wrap justify-center gap-6 items-center drop-shadow-md">
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-md min-w-[45%] max-w-[88%]">
+        <div className="md:flex justify-center m-3 gap-6 ">
+          <div className=" bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 mb-4 pt-9 rounded-md drop-shadow-md min-w-[50%] max-w-[100%]">
             <div className="flex items-center justify-between mb-4">
               <CardTitle title="Saturation Deduction" />
               <CreateButton onClick={handleOpenAdd} title="Create" />
             </div>
             <Divider />
             <div>
-              <GridComponent dataSource={employeeData} className="md:w-full">
+              <GridComponent
+                dataSource={employeesDeductionData}
+                className="md:w-full"
+              >
                 <ColumnsDirective>
-                  {employeesSalaryGrid.map((item, index) =>
+                  {employeesDeductionGrid.map((item, index) =>
                     <ColumnDirective key={index} {...item} />
                   )}
                 </ColumnsDirective>
               </GridComponent>
             </div>
           </div>
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-md min-w-[45%] max-w-[88%]">
+          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 mb-4 pt-9 rounded-md drop-shadow-md min-w-[50%] max-w-[100%]">
             <div className="flex items-center justify-between mb-4">
               <CardTitle title="Overtime" />
               <CreateButton onClick={handleOpenAdd} title="Create" />
             </div>
             <Divider />
             <div>
-              <GridComponent dataSource={employeeData} className="md:w-full">
+              <GridComponent
+                dataSource={employeesOvertimeData}
+                className="md:w-full"
+              >
                 <ColumnsDirective>
-                  {employeesSalaryGrid.map((item, index) =>
+                  {employeesOvertimeGrid.map((item, index) =>
                     <ColumnDirective key={index} {...item} />
                   )}
                 </ColumnsDirective>

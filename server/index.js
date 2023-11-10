@@ -1,8 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { format, subDays, isAfter } = require('date-fns');
 const employeeModel = require("./models/employees");
 const employeeleavesModel = require("./models/employeeleaves");
+const accountModel = require("./models/account");
+const performanceModel = require("./models/performance");
+
 
 const app = express();
 
@@ -192,6 +196,160 @@ app.put("/updateEmployeesLeave/:id", async (req, res) => {
     }
 
     res.json(updatedEmployee);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+      // Check if the user with the provided username and password exists in your MongoDB collection
+      const user = await accountModel.findOne({ username, password });
+
+      if (user) {
+          // If the user exists and credentials are correct, send the user data
+          res.json({ success: true, userData: user});
+      } else {
+          // If the credentials are incorrect or the user does not exist, send an error response
+          res.status(401).json({ success: false, message: "Invalid credentials" });
+      }
+  } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/employeecount', async (req, res) => {
+  try {
+    const count = await employeeModel.countDocuments({});
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+app.get('/newemployeecount', async (req, res) => {
+  try {
+    // Get the current month and year
+    const currentDate = new Date();
+    const currentMonth = format(currentDate, 'MM');
+    const currentYear = format(currentDate, 'yyyy');
+
+    // Count employees whose HireDate matches the current month and year
+    const count = await employeeModel.countDocuments({
+      $and: [
+        {
+          $expr: {
+            $eq: [
+              { $substr: ['$HireDate', 0, 2] }, // Extract the month part
+              currentMonth
+            ]
+          }
+        },
+        {
+          $expr: {
+            $eq: [
+              { $substr: ['$HireDate', 6, 4] }, // Extract the year part
+              currentYear
+            ]
+          }
+        }
+      ]
+    });
+
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+app.get('/employeeleavescount', async (req, res) => {
+  try {
+    const count = await employeeleavesModel.countDocuments({});
+    res.json({ count });
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+app.get('/employee/account/:id', async (req, res) => {
+  try {
+    const employee = await employeeModel.findOne({ EmployeeID: req.params.id });
+
+    if (employee) {
+      const employeeName = employee.Name; // Assuming 'Name' is the field you want to retrieve
+      res.json({ success: true, Name: employeeName });
+    } else {
+      res.json({ success: false, message: 'Employee not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'An error occurred while retrieving employee data' });
+  }
+});
+
+app.get("/performance", async (req, res) => {
+  try {
+    const employeesPerformance = await performanceModel.find();
+    res.json(employeesPerformance);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/createPerformance", async (req, res) => {
+  try {
+    const newEmployee = await performanceModel.create(req.body);
+    res.json(newEmployee);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete("/deletePerformance", async (req, res) => {
+  try {
+    const result = await performanceModel.deleteMany();
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "No performance found to delete" });
+    }
+    res.json({ message: "All Performance deleted successfully", deletedCount: result.deletedCount });
+  } catch (err) {
+    console.error("Error deleting Performance:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/editPerformance/:id", async (req, res) => {
+  try {
+    const performanceData = await performanceModel.find({
+      EmployeeID: req.params.id, // Update the field to match EmployeeID
+    });
+    if (!performanceData && performanceData.length === 0) {
+      return res.status(404).json({ error: "No employee leave records found" });
+    }
+    res.json(performanceData);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/updatePerformance/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedPerformance = await performanceModel.findOneAndUpdate(
+      { EmployeeID: id },
+      { $set: req.body }, // Update employee with the request body
+      { new: true } // Return the updated employee
+    );
+
+    if (!updatedPerformance) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.json(updatedPerformance);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

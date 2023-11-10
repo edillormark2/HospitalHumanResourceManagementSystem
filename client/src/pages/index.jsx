@@ -1,7 +1,11 @@
 export { default as Dashboard } from "./Dashboard";
 export { default as Kanban } from "./Kanban";
 export { default as Employees } from "./PagesEmployees/Employees";
+export { default as CreateEmployee } from "./PagesEmployees/CreateEmployee";
 export { default as ManageLeave } from "./ManageLeave";
+export { default as Timesheet } from "./Timesheet";
+export { default as JobApplication } from "./JobApplication";
+export { default as Performance } from "./Performance";
 export { default as SetSalary } from "./PagesPayroll/SetSalary";
 export { default as Payslip } from "./PagesPayroll/Payslip";
 export { default as Editor } from "./Editor";

@@ -28,8 +28,6 @@ const SalaryPopup = props => {
     setSalary(""); // Reset designation when department changes
   };
 
-
-
   const handleSalaryChange = event => {
     setSalary(event.target.value);
   };
@@ -76,15 +74,15 @@ const SalaryPopup = props => {
                   sx={{ width: "100%" }}
                   style={{ width: "100%" }}
                 >
-                  <MenuItem value="">
+                  <MenuItem className="w-full" value="">
                     <p className="text-gray-400 text-sm">Select Payslip Type</p>
                   </MenuItem>
 
-                  <MenuItem value="Hourly">
+                  <MenuItem className="w-full" value="Hourly">
                     <p>Hourly Payslip</p>
                   </MenuItem>
 
-                  <MenuItem value="Monthly">
+                  <MenuItem className="w-full" value="Monthly">
                     <p>Monthly Payslip</p>
                   </MenuItem>
                 </Select>
