@@ -15,6 +15,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import { useStateContext } from "../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import DeleteAllPerformancePopup from "../components/DeleteAllPerformancePopup";
+import EditRatingPopup from "../components/EditRatingPopup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -38,6 +39,7 @@ const Performance = ({ EmployeeID }) => {
   const [department, setDepartment] = useState("");
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const [openDeleteAllPerformancePopup, setOpenDeleteAllPerformancePopup] = useState(false);
+  const [openEditRatingPopup, setOpenEditRatingPopup] = useState(false);
   const { currentColor, currentMode } = useStateContext();
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
   const [openAddPerformancePopup, setOpenAddPerformancePopup] = useState(false);
@@ -51,6 +53,15 @@ const Performance = ({ EmployeeID }) => {
 
   const handleDeleteAllPerformancePopup = () => {
     setOpenDeleteAllPerformancePopup(true);
+  };
+
+  const handleOpenEditRatingPopup = EmployeeID => {
+    setSelectedEmployeeID(EmployeeID);
+    setOpenEditRatingPopup(true);
+  };
+
+  const handleCloseEditRatingPopup = () => {
+    setOpenEditRatingPopup(false);
   };
 
   const breadcrumbLinks = [
@@ -75,7 +86,7 @@ const Performance = ({ EmployeeID }) => {
       />
       <span style={{ marginLeft: "10px" }}>Entries per page</span>
     </div>;
-  const employeeStarRatingStatus = props => {
+    const employeeStarRatingStatus = props => {
     const Rating = parseFloat(props.Rating); // Convert the rating to a float
     const stars = [];
 
@@ -140,7 +151,7 @@ const Performance = ({ EmployeeID }) => {
   const columns = [
     {
       field: "EmployeeID",
-      headerText: "Employee ID",
+      headerText: "ID",
       width: "80",
       textAlign: "Left"
     },
@@ -172,13 +183,13 @@ const Performance = ({ EmployeeID }) => {
     {
       field: "Feedback",
       headerText: "Feedback",
-      width: "110",
+      width: "130",
       textAlign: "Center"
     },
     {
       field: "CreatedAt",
       headerText: "Created At",
-      width: "100",
+      width: "80",
       textAlign: "Left"
     },
 
@@ -223,6 +234,9 @@ const Performance = ({ EmployeeID }) => {
               cursor: "pointer",
               borderRadius: "30%", // To make it a circle
               textDecoration: "none"
+            }}
+            onClick={() => {
+              handleOpenEditRatingPopup(props.EmployeeID); // Pass the EmployeeID to the handler
             }}
           >
             <AiOutlineEdit
@@ -271,7 +285,7 @@ const Performance = ({ EmployeeID }) => {
     setOpenRatingPopup(true);
   };
 
-  const handleEvalCreated = () => {
+  const updateData = () => {
     // Callback function to refresh performance data after creating a evaluation
     fetchEmployeePerformanceData();
   };
@@ -342,7 +356,7 @@ const Performance = ({ EmployeeID }) => {
                   inputProps={{ "aria-label": "Without label" }}
                 >
                   <MenuItem className="w-full" value="">
-                    <p className="md:w-52 text-xs md:text-md max-w-xs">
+                    <p className="md:w-52 text-xs ">
                       {" "}Select Department
                     </p>
                   </MenuItem>
@@ -413,13 +427,19 @@ const Performance = ({ EmployeeID }) => {
         <DeleteAllPerformancePopup
           openPopup={openDeleteAllPerformancePopup}
           setOpenPopup={setOpenDeleteAllPerformancePopup}
-          onEvalCreated={handleEvalCreated}
+          onEvalDeleted={updateData}
         />
         <RatingPopup
           openPopup={openAddPerformancePopup}
-          setOpenPopup={handleCloseAddPerformancePopup}
+          setOpenPopup={setOpenAddPerformancePopup}
           EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
-          onEvalCreated={handleEvalCreated}
+          onEvalCreated={updateData}
+        />
+        <EditRatingPopup
+          openPopup={openEditRatingPopup}
+          setOpenPopup={setOpenEditRatingPopup}
+          EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
+          onEvalCreated={updateData}
         />
         <GridComponent
           dataSource={employeePerformanceData} // Use the fetched employee data

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 
 const colors = {
@@ -7,9 +7,13 @@ const colors = {
 };
 
 const StarRating = (props) => {
-  const [currentValue, setCurrentValue] = useState(0);
+  const [currentValue, setCurrentValue] = useState(props.initialValue || 0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0);
+
+  useEffect(() => {
+    setCurrentValue(props.initialValue || 0);
+  }, [props.initialValue]);
 
   const handleClick = (value) => {
     setCurrentValue(value);
@@ -20,9 +24,7 @@ const StarRating = (props) => {
     setHoverValue(newHoverValue);
   };
 
-  const
- 
-handleMouseLeave = () => {
+  const handleMouseLeave = () => {
     setHoverValue(undefined);
   };
 

@@ -32,7 +32,7 @@ const DeleteAllPerformancePopup = props => {
         progress: undefined,
         theme: "light"
       });
-      props.onEvalCreated();
+      props.onEvalDeleted();
       setOpenPopup(false);
     } catch (error) {
       toast.error("Error deleting performance Data", error);

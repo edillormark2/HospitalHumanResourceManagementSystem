@@ -321,6 +321,40 @@ app.delete("/deletePerformance", async (req, res) => {
   }
 });
 
+app.get("/editPerformance/:id", async (req, res) => {
+  try {
+    const performanceData = await performanceModel.find({
+      EmployeeID: req.params.id, // Update the field to match EmployeeID
+    });
+    if (!performanceData && performanceData.length === 0) {
+      return res.status(404).json({ error: "No employee leave records found" });
+    }
+    res.json(performanceData);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/updatePerformance/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedPerformance = await performanceModel.findOneAndUpdate(
+      { EmployeeID: id },
+      { $set: req.body }, // Update employee with the request body
+      { new: true } // Return the updated employee
+    );
+
+    if (!updatedPerformance) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.json(updatedPerformance);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
