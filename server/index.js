@@ -307,6 +307,20 @@ app.post("/createPerformance", async (req, res) => {
   }
 });
 
+app.delete("/deletePerformance", async (req, res) => {
+  try {
+    const result = await performanceModel.deleteMany();
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "No performance found to delete" });
+    }
+    res.json({ message: "All Performance deleted successfully", deletedCount: result.deletedCount });
+  } catch (err) {
+    console.error("Error deleting Performance:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {

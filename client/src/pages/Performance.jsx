@@ -14,9 +14,7 @@ import {
 import Breadcrumbs from "../components/Breadcrumbs";
 import { useStateContext } from "../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import ActionPopup from "../components/LeaveComponents/ActionLeavePopup";
-import DeleteLeavePopup from "../components/LeaveComponents/DeleteLeavePopup";
-import TimesheetPopup from "../components/TimesheetPopup";
+import DeleteAllPerformancePopup from "../components/DeleteAllPerformancePopup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -29,7 +27,6 @@ import Select from "@mui/material/Select";
 import { AiOutlineSearch, AiOutlineEye } from "react-icons/ai";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { GoPersonAdd } from "react-icons/go";
-import EditEmployeeAB from "../components/EmployeesComponents/EditEmployeeAB";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
@@ -40,16 +37,20 @@ const Performance = ({ EmployeeID }) => {
   const yearFormat = dayjs().format("YYYY");
   const [department, setDepartment] = useState("");
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
+  const [openDeleteAllPerformancePopup, setOpenDeleteAllPerformancePopup] = useState(false);
   const { currentColor, currentMode } = useStateContext();
-  const [openPayslipPopup, setOpenPayslipPopup] = useState(false);
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
-  const [openTimesheetPopup, setOpenTimesheetPopup] = useState(false);
+  const [openAddPerformancePopup, setOpenAddPerformancePopup] = useState(false);
   const [openRatingPopup, setOpenRatingPopup] = useState(false);
   const [employeePerformanceData, setEmployeePerformanceData] = useState([]);
 
   const handleDeletePopup = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
     setOpenDeletePopup(true);
+  };
+
+  const handleDeleteAllPerformancePopup = () => {
+    setOpenDeleteAllPerformancePopup(true);
   };
 
   const breadcrumbLinks = [
@@ -125,21 +126,13 @@ const Performance = ({ EmployeeID }) => {
     );
   };
 
-  const handleOpenTimesheet = EmployeeID => {
+  const handleOpenAddPerformance = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
-    setOpenTimesheetPopup(true);
+    setOpenAddPerformancePopup(true);
   };
 
-  const handleCloseTimesheetPopup = () => {
-    setOpenTimesheetPopup(false);
-  };
-  const handleClosePopup = () => {
-    setOpenPayslipPopup(false);
-  };
-
-  const handleOpenPayslip = EmployeeID => {
-    setSelectedEmployeeID(EmployeeID);
-    setOpenPayslipPopup(true);
+  const handleCloseAddPerformancePopup = () => {
+    setOpenAddPerformancePopup(false);
   };
 
   // Define the grid columns directly in the component
@@ -375,22 +368,9 @@ const Performance = ({ EmployeeID }) => {
             <div className="flex gap-1">
               <button
                 className="mt-8 h-8 md:w-8 w-8"
-                style={{
-                  backgroundColor: currentColor, // Color for "Download"
-                  color: "white",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "none",
-                  cursor: "pointer",
-                  borderRadius: "20%",
-                  textDecoration: "none"
+                onClick={() => {
+                  handleDeleteAllPerformancePopup();
                 }}
-              >
-                <AiOutlineSearch title="Find" />
-              </button>
-              <button
-                className="mt-8 h-8 md:w-8 w-8"
                 style={{
                   backgroundColor: "#DE3163", // Color for "Download"
                   color: "white",
@@ -408,7 +388,7 @@ const Performance = ({ EmployeeID }) => {
               <button
                 className="mt-8 h-8 md:w-8 w-8"
                 onClick={() => {
-                  handleOpenTimesheet(EmployeeID); // Pass the EmployeeID to the handler
+                  handleOpenAddPerformance(EmployeeID); // Pass the EmployeeID to the handler
                 }}
                 style={{
                   backgroundColor: currentColor, // Color for "Download"
@@ -430,14 +410,14 @@ const Performance = ({ EmployeeID }) => {
       </div>
 
       <div className=" md:m-4 mt-15 p-2 md:p-4 bg-white sm:rounded-xl rounded-md drop-shadow-2xl ">
-        <DeleteLeavePopup
-          openDeletePopup={openDeletePopup}
-          setOpenDeletePopup={setOpenDeletePopup}
-          EmployeeID={selectedEmployeeID}
+        <DeleteAllPerformancePopup
+          openPopup={openDeleteAllPerformancePopup}
+          setOpenPopup={setOpenDeleteAllPerformancePopup}
+          onEvalCreated={handleEvalCreated}
         />
         <RatingPopup
-          openPopup={openTimesheetPopup}
-          setOpenPopup={handleCloseTimesheetPopup}
+          openPopup={openAddPerformancePopup}
+          setOpenPopup={handleCloseAddPerformancePopup}
           EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
           onEvalCreated={handleEvalCreated}
         />
