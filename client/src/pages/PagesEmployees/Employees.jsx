@@ -21,6 +21,7 @@ import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import EditEmployeeAB from "../../components/EmployeesComponents/EditEmployeeAB";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeletePopup from "../../components/EmployeesComponents/DeletePopup";
+import { Footer } from "../../components";
 
 const Employees = ({ EmployeeID }) => {
   const { currentColor, currentMode } = useStateContext();
@@ -230,7 +231,9 @@ const Employees = ({ EmployeeID }) => {
         </ColumnsDirective>
         <Inject services={[Page, Search, Toolbar, Selection, Sort]} />
       </GridComponent>
+     
     </div>
+    
   );
 };
 

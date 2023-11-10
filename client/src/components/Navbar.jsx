@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
@@ -9,7 +10,7 @@ import avatar from "../data/avatar.jpg";
 import { Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 
-const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
+const NavButton = ({ title, customFunc, icon, color, dotColor }) =>
   <TooltipComponent content={title} position="BottomCenter">
     <button
       type="button"
@@ -23,8 +24,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
       />
       {icon}
     </button>
-  </TooltipComponent>
-);
+  </TooltipComponent>;
 
 const Navbar = () => {
   const {
@@ -35,11 +35,13 @@ const Navbar = () => {
     isClicked,
     setScreenSize,
     screenSize,
+    loginID
   } = useStateContext();
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [employeeName, setEmployeeName] = useState([]);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -51,13 +53,37 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    if (screenSize <= 1550) {
-      setActiveMenu(false);
-    } else {
-      setActiveMenu(true);
+  useEffect(
+    () => {
+      if (screenSize <= 1550) {
+        setActiveMenu(false);
+      } else {
+        setActiveMenu(true);
+      }
+    },
+    [screenSize]
+  );
+
+  const fetchEmployeeName = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/employee/account/${loginID}`
+      );
+      if (response.data.success) {
+        const name = response.data.Name;
+        setEmployeeName(name);
+      } else {
+        // Handle the case where the employee was not found
+        console.log("Employee not found");
+      }
+    } catch (error) {
+      console.error("Error fetching employee data: ", error);
     }
-  }, [screenSize]);
+  };
+
+  useEffect(() => {
+    fetchEmployeeName(); // Fetch employee data when the component mounts
+  }, []);
 
   const handleActiveMenu = () => {
     setActiveMenu(!activeMenu);
@@ -103,7 +129,7 @@ const Navbar = () => {
           color={currentColor}
           icon={<BsChatLeft />}
           style={{
-            boxShadow: isChatOpen ? "0 4px 8px rgba(0, 0, 0, 0.25)" : "none",
+            boxShadow: isChatOpen ? "0 4px 8px rgba(0, 0, 0, 0.25)" : "none"
           }}
         />
         <NavButton
@@ -115,7 +141,7 @@ const Navbar = () => {
           style={{
             boxShadow: isNotificationOpen
               ? "0 4px 8px rgba(0, 0, 0, 0.25)"
-              : "none",
+              : "none"
           }}
         />
         <TooltipComponent content="Profile" position="BottomCenter">
@@ -131,7 +157,7 @@ const Navbar = () => {
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Mark
+                {employeeName}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />

@@ -3,6 +3,7 @@
 </center>
 
 ## NOTE
+- **This branch is maintained by Pyromagne DO NOT MERGE to master branch yet**
 - This are the initial code for Hospital Human Resource Management System (HHRMS)
 - Do not share links
 
@@ -26,8 +27,8 @@ Kung gusto niyo ma download buong file sa desktop or laptop at pwede niyo din ma
 need niyo i clone yung github link sa local computer niyo or laptop. sundan niyo yung steps kung paano.
 
 1. punta ka sa command prompt or git bash propmt
-2. type "cd desktop" para sa desktop  siya ma sa-save at mabilis niyo makita yung file.
-3. type "git clone https://github.com/edillormark2/HHRMS"
+2. type `cd desktop` para sa desktop  siya ma sa-save at mabilis niyo makita yung file.
+3. type `git clone https://github.com/edillormark2/HospitalHumanResourceManagementSystem.git`
 
 *then okay na yan na save na yan sa desktop niyo tignan niyo nalang.* 
 
@@ -55,7 +56,7 @@ need niyo i clone yung github link sa local computer niyo or laptop. sundan niyo
 - `git init` make a repository
 - `git branch` check created branches
 - `git branch <branch name>` create branch
-- `branch -rm <branch name>` remove branch
+- `git ranch -rm <branch name>` remove branch
 - `git switch <branch name>` switch to a diffent branch
 - `git status` check file changes
 - `git add .` stage all file for commit
