@@ -15,6 +15,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import { useStateContext } from "../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import DeleteAllPerformancePopup from "../components/DeleteAllPerformancePopup";
+import DeletePerformancePopup from "../components/DeletePerformancePopup";
 import EditRatingPopup from "../components/EditRatingPopup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -37,8 +38,8 @@ const Performance = ({ EmployeeID }) => {
   const monthFormat = dayjs().format("MM/DD/YYYY");
   const yearFormat = dayjs().format("YYYY");
   const [department, setDepartment] = useState("");
-  const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const [openDeleteAllPerformancePopup, setOpenDeleteAllPerformancePopup] = useState(false);
+  const [openDeletePerformancePopup, setOpenDeletePerformancePopup] = useState(false);
   const [openEditRatingPopup, setOpenEditRatingPopup] = useState(false);
   const { currentColor, currentMode } = useStateContext();
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
@@ -46,9 +47,9 @@ const Performance = ({ EmployeeID }) => {
   const [openRatingPopup, setOpenRatingPopup] = useState(false);
   const [employeePerformanceData, setEmployeePerformanceData] = useState([]);
 
-  const handleDeletePopup = EmployeeID => {
+  const handleDeletePerformancePopup = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
-    setOpenDeletePopup(true);
+    setOpenDeletePerformancePopup(true);
   };
 
   const handleDeleteAllPerformancePopup = () => {
@@ -249,7 +250,7 @@ const Performance = ({ EmployeeID }) => {
           </button>
           <button
             onClick={() => {
-              handleDeletePopup(props.EmployeeID); // Pass the EmployeeID to the handler
+              handleDeletePerformancePopup(props.EmployeeID); // Pass the EmployeeID to the handler
             }}
             style={{
               display: "inline-flex",
@@ -427,6 +428,12 @@ const Performance = ({ EmployeeID }) => {
         <DeleteAllPerformancePopup
           openPopup={openDeleteAllPerformancePopup}
           setOpenPopup={setOpenDeleteAllPerformancePopup}
+          onEvalDeleted={updateData}
+        />
+        <DeletePerformancePopup
+          openPopup={openDeletePerformancePopup}
+          setOpenPopup={setOpenDeletePerformancePopup}
+          EmployeeID={selectedEmployeeID}
           onEvalDeleted={updateData}
         />
         <RatingPopup
