@@ -416,7 +416,7 @@ export const links = [
           },
           {
             subname: "Career",
-            url: "job-portal-website/index.html"
+            url: "job-portal-hhrms/index.html"
           }
         ]
       },
