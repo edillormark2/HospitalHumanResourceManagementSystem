@@ -112,10 +112,12 @@ const EditRatingPopup = props => {
   };
 
   const calculateAverageRating = (OCLR, OCPMR, TCARR, BCOCR, BCBPR) => {
-    const totalRating = OCLR + OCPMR + TCARR + BCOCR + BCBPR;
+    // Calculate total rating and average rating without parsing
+    const totalRating = parseFloat(OCLR) + parseFloat(OCPMR) + parseFloat(TCARR) + parseFloat(BCOCR) + parseFloat(BCBPR);
     const averageRating = totalRating / 5;
     return averageRating;
-  };
+};
+
 
   const clearModalInfo = () => {
     setSelectedEmployee("");
