@@ -173,6 +173,7 @@ const Login = () => {
                   {themeSettings && <ThemeSettings />}
                   <ToastContainer />
                   <Routes>
+                    <Route path="" element={<Dashboard />} />
                     {/* Dashboard */} {/* TEMPORARY */}
                     <Route path="/dashboard" element={<Dashboard />} />
                     {/* Pages */}

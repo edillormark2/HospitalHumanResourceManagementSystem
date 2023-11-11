@@ -17,6 +17,7 @@ import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import DeleteAllPerformancePopup from "../components/DeleteAllPerformancePopup";
 import DeletePerformancePopup from "../components/DeletePerformancePopup";
 import EditRatingPopup from "../components/EditRatingPopup";
+import ViewRatingPopup from "../components/ViewRatingPopup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -41,6 +42,7 @@ const Performance = ({ EmployeeID }) => {
   const [openDeleteAllPerformancePopup, setOpenDeleteAllPerformancePopup] = useState(false);
   const [openDeletePerformancePopup, setOpenDeletePerformancePopup] = useState(false);
   const [openEditRatingPopup, setOpenEditRatingPopup] = useState(false);
+  const [openViewRatingPopup, setOpenViewRatingPopup] = useState(false);
   const { currentColor, currentMode } = useStateContext();
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
   const [openAddPerformancePopup, setOpenAddPerformancePopup] = useState(false);
@@ -59,6 +61,11 @@ const Performance = ({ EmployeeID }) => {
   const handleOpenEditRatingPopup = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
     setOpenEditRatingPopup(true);
+  };
+
+  const handleOpenViewRatingPopup = EmployeeID => {
+    setSelectedEmployeeID(EmployeeID);
+    setOpenViewRatingPopup(true);
   };
 
   const handleCloseEditRatingPopup = () => {
@@ -87,7 +94,8 @@ const Performance = ({ EmployeeID }) => {
       />
       <span style={{ marginLeft: "10px" }}>Entries per page</span>
     </div>;
-    const employeeStarRatingStatus = props => {
+
+  const employeeStarRatingStatus = props => {
     const Rating = parseFloat(props.Rating); // Convert the rating to a float
     const stars = [];
 
@@ -213,6 +221,9 @@ const Performance = ({ EmployeeID }) => {
               cursor: "pointer",
               borderRadius: "30%", // To make it a circle
               textDecoration: "none"
+            }}
+            onClick={() => {
+              handleOpenViewRatingPopup(props.EmployeeID); // Pass the EmployeeID to the handler
             }}
           >
             <AiOutlineEye
@@ -445,6 +456,12 @@ const Performance = ({ EmployeeID }) => {
         <EditRatingPopup
           openPopup={openEditRatingPopup}
           setOpenPopup={setOpenEditRatingPopup}
+          EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
+          onEvalCreated={updateData}
+        />
+        <ViewRatingPopup
+          openPopup={openViewRatingPopup}
+          setOpenPopup={setOpenViewRatingPopup}
           EmployeeID={selectedEmployeeID} // Pass the EmployeeID to the popup
           onEvalCreated={updateData}
         />
