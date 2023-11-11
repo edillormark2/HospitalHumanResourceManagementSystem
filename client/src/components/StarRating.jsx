@@ -27,60 +27,47 @@ const StarRating = (props) => {
   const handleMouseLeave = () => {
     setHoverValue(undefined);
   };
+  const styles = {
+    container: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    stars: {
+      display: "flex",
+      flexDirection: "row",
+    },
+  
+    button: {
+      border: "1px solid #a9a9a9",
+      borderRadius: 5,
+      width: 300,
+      padding: 10,
+    },
+  };
 
   return (
-    <div
- 
-style={styles.container}>
-
-      
-<div
- 
-style={styles.stars}>
-        {stars.map((_, index) => (
-          <FaStar
-
-            
-key={index}
-
-            
-size={20}
-            onClick={() => handleClick(index + 1)}
-            onMouseOver={() => handleMouseOver(index + 1)}
-            onMouseLeave={handleMouseLeave}
-            color={
-              (hoverValue || currentValue) > index ? colors.orange : colors.grey
-            }
-            style={{
-              marginRight: 10,
-              cursor: "pointer",
-            }}
-          />
-        ))}
-      </div>
-
-    
-</div>
-  );
-};
-
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  stars: {
-    display: "flex",
-    flexDirection: "row",
-  },
-
-  button: {
-    border: "1px solid #a9a9a9",
-    borderRadius: 5,
-    width: 300,
-    padding: 10,
-  },
+    <div style={styles.container}>  
+      <div
+        style={styles.stars}>
+            {stars.map((_, index) => (
+              <FaStar
+                key={index}
+                size={20}
+                onClick={() => handleClick(index + 1)}
+                onMouseOver={() => handleMouseOver(index + 1)}
+                onMouseLeave={handleMouseLeave}
+                color={
+                  (hoverValue || currentValue) > index ? colors.orange : colors.grey
+                }
+                style={{
+                  marginRight: 10,
+                  cursor: "pointer",
+                }}
+              />
+            ))}
+      </div>  
+    </div>);
 };
 
 export default StarRating;

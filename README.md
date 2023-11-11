@@ -3,7 +3,6 @@
 </center>
 
 ## NOTE
-- **This branch is maintained by Pyromagne DO NOT MERGE to master branch yet**
 - This are the initial code for Hospital Human Resource Management System (HHRMS)
 - Do not share links
 
