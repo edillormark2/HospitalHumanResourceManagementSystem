@@ -14,16 +14,16 @@ import {
 import Breadcrumbs from "../components/Breadcrumbs";
 import { useStateContext } from "../contexts/ContextProvider";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import DeleteAllPerformancePopup from "../components/DeleteAllPerformancePopup";
-import DeletePerformancePopup from "../components/DeletePerformancePopup";
-import EditRatingPopup from "../components/EditRatingPopup";
-import ViewRatingPopup from "../components/ViewRatingPopup";
+import DeleteAllPerformancePopup from "../components/PerformanceComponents/DeleteAllPerformancePopup";
+import DeletePerformancePopup from "../components/PerformanceComponents/DeletePerformancePopup";
+import EditRatingPopup from "../components/PerformanceComponents/EditRatingPopup";
+import ViewRatingPopup from "../components/PerformanceComponents/ViewRatingPopup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import CardTitle from "../components/CardTitle";
 import dayjs from "dayjs";
-import RatingPopup from "../components/RatingPopup";
+import RatingPopup from "../components/PerformanceComponents/RatingPopup";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -39,8 +39,13 @@ const Performance = ({ EmployeeID }) => {
   const monthFormat = dayjs().format("MM/DD/YYYY");
   const yearFormat = dayjs().format("YYYY");
   const [department, setDepartment] = useState("");
-  const [openDeleteAllPerformancePopup, setOpenDeleteAllPerformancePopup] = useState(false);
-  const [openDeletePerformancePopup, setOpenDeletePerformancePopup] = useState(false);
+  const [
+    openDeleteAllPerformancePopup,
+    setOpenDeleteAllPerformancePopup
+  ] = useState(false);
+  const [openDeletePerformancePopup, setOpenDeletePerformancePopup] = useState(
+    false
+  );
   const [openEditRatingPopup, setOpenEditRatingPopup] = useState(false);
   const [openViewRatingPopup, setOpenViewRatingPopup] = useState(false);
   const { currentColor, currentMode } = useStateContext();
@@ -185,7 +190,7 @@ const Performance = ({ EmployeeID }) => {
     {
       field: "Rating",
       headerText: "Rating",
-      width: "130",
+      width: "150",
       textAlign: "Left",
       template: employeeStarRatingStatus
     },
@@ -198,7 +203,7 @@ const Performance = ({ EmployeeID }) => {
     {
       field: "CreatedAt",
       headerText: "Created At",
-      width: "80",
+      width: "110",
       textAlign: "Left"
     },
 
@@ -210,6 +215,9 @@ const Performance = ({ EmployeeID }) => {
       template: props =>
         <div className="flex justify-center gap-1">
           <button
+            onClick={() => {
+              handleOpenViewRatingPopup(props.EmployeeID); // Pass the EmployeeID to the handler
+            }}
             style={{
               backgroundColor: "#F39C12",
               display: "inline-flex",
@@ -221,9 +229,6 @@ const Performance = ({ EmployeeID }) => {
               cursor: "pointer",
               borderRadius: "30%", // To make it a circle
               textDecoration: "none"
-            }}
-            onClick={() => {
-              handleOpenViewRatingPopup(props.EmployeeID); // Pass the EmployeeID to the handler
             }}
           >
             <AiOutlineEye
@@ -297,11 +302,6 @@ const Performance = ({ EmployeeID }) => {
     setOpenRatingPopup(true);
   };
 
-  const updateData = () => {
-    // Callback function to refresh performance data after creating a evaluation
-    fetchEmployeePerformanceData();
-  };
-
   const fetchEmployeePerformanceData = async () => {
     try {
       const response = await axios.get("http://localhost:3001/performance");
@@ -315,18 +315,10 @@ const Performance = ({ EmployeeID }) => {
     fetchEmployeePerformanceData();
   }, []);
 
-  useEffect(() => {
-    const fetchEmployeePerformanceData = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/performance"); // Replace with your API endpoint
-        setEmployeePerformanceData(response.data); // Update the employeeData state with the fetched data
-      } catch (error) {
-        console.error("Error fetching employee data: ", error);
-      }
-    };
-
-    fetchEmployeePerformanceData(); // Fetch employee data when the component mounts
-  }, []);
+  const updateData = () => {
+    // Callback function to refresh performance data after creating a evaluation
+    fetchEmployeePerformanceData();
+  };
 
   return (
     <div className="m-2 sm:mx-4 md:m-4 mt-24 p-2 md:p-4 ">
@@ -368,9 +360,7 @@ const Performance = ({ EmployeeID }) => {
                   inputProps={{ "aria-label": "Without label" }}
                 >
                   <MenuItem className="w-full" value="">
-                    <p className="md:w-52 text-xs ">
-                      {" "}Select Department
-                    </p>
+                    <p className="md:w-52 text-xs "> Select Department</p>
                   </MenuItem>
 
                   <MenuItem className="w-full" value="Medical">

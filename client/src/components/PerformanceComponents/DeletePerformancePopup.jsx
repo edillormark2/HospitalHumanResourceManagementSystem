@@ -7,20 +7,22 @@ import DialogActions from "@mui/joy/DialogActions";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-const DeletePerformancePopup = (props) => {
+const DeletePerformancePopup = props => {
   const { currentColor } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
   const navigate = useNavigate();
 
   const deletePerformanceData = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3001/deletePerformance/${EmployeeID}`);
+      const response = await axios.delete(
+        `http://localhost:3001/deletePerformance/${EmployeeID}`
+      );
       toast.success("Employee performance data deleted successfully", {
         position: "top-right",
         autoClose: 5000,
@@ -36,7 +38,7 @@ const DeletePerformancePopup = (props) => {
     } catch (error) {
       toast.error("Error deleting performance Data", error);
       setOpenPopup(false);
-      console.error('Error deleting employees:', error);
+      console.error("Error deleting employees:", error);
     }
   };
 

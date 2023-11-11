@@ -1,12 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { format, subDays, isAfter } = require('date-fns');
+const { format, subDays, isAfter } = require("date-fns");
 const employeeModel = require("./models/employees");
 const employeeleavesModel = require("./models/employeeleaves");
 const accountModel = require("./models/account");
 const performanceModel = require("./models/performance");
-
 
 const app = express();
 
@@ -17,7 +16,7 @@ app.use(express.json());
 // Connect to MongoDB
 mongoose.connect("mongodb://127.0.0.1:27017/hhrms", {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 });
 
 const db = mongoose.connection;
@@ -86,7 +85,7 @@ app.delete("/employees/:id", async (req, res) => {
 
   try {
     const deletedEmployee = await employeeModel.findOneAndDelete({
-      EmployeeID: id,
+      EmployeeID: id
     });
 
     if (!deletedEmployee) {
@@ -126,7 +125,7 @@ app.post("/createEmployeeLeave", async (req, res) => {
 app.get("/employeeLeaves/:id", async (req, res) => {
   try {
     const employeeLeaves = await employeeleavesModel.find({
-      EmployeeID: req.params.id, // Update the field to match EmployeeID
+      EmployeeID: req.params.id // Update the field to match EmployeeID
     });
     if (!employeeLeaves && employeeLeaves.length === 0) {
       return res.status(404).json({ error: "No employee leave records found" });
@@ -143,7 +142,7 @@ app.delete("/deleteEmployeesLeaves/:id", async (req, res) => {
 
   try {
     const deletedEmployee = await employeeleavesModel.findOneAndDelete({
-      EmployeeID: id,
+      EmployeeID: id
     });
 
     if (!deletedEmployee) {
@@ -205,36 +204,36 @@ app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-      // Check if the user with the provided username and password exists in your MongoDB collection
-      const user = await accountModel.findOne({ username, password });
+    // Check if the user with the provided username and password exists in your MongoDB collection
+    const user = await accountModel.findOne({ username, password });
 
-      if (user) {
-          // If the user exists and credentials are correct, send the user data
-          res.json({ success: true, userData: user});
-      } else {
-          // If the credentials are incorrect or the user does not exist, send an error response
-          res.status(401).json({ success: false, message: "Invalid credentials" });
-      }
+    if (user) {
+      // If the user exists and credentials are correct, send the user data
+      res.json({ success: true, userData: user });
+    } else {
+      // If the credentials are incorrect or the user does not exist, send an error response
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
   } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
-app.get('/employeecount', async (req, res) => {
+app.get("/employeecount", async (req, res) => {
   try {
     const count = await employeeModel.countDocuments({});
     res.json({ count });
   } catch (err) {
-    res.status(500).json({ error: 'An error occurred' });
+    res.status(500).json({ error: "An error occurred" });
   }
 });
 
-app.get('/newemployeecount', async (req, res) => {
+app.get("/newemployeecount", async (req, res) => {
   try {
     // Get the current month and year
     const currentDate = new Date();
-    const currentMonth = format(currentDate, 'MM');
-    const currentYear = format(currentDate, 'yyyy');
+    const currentMonth = format(currentDate, "MM");
+    const currentYear = format(currentDate, "yyyy");
 
     // Count employees whose HireDate matches the current month and year
     const count = await employeeModel.countDocuments({
@@ -242,7 +241,7 @@ app.get('/newemployeecount', async (req, res) => {
         {
           $expr: {
             $eq: [
-              { $substr: ['$HireDate', 0, 2] }, // Extract the month part
+              { $substr: ["$HireDate", 0, 2] }, // Extract the month part
               currentMonth
             ]
           }
@@ -250,7 +249,7 @@ app.get('/newemployeecount', async (req, res) => {
         {
           $expr: {
             $eq: [
-              { $substr: ['$HireDate', 6, 4] }, // Extract the year part
+              { $substr: ["$HireDate", 6, 4] }, // Extract the year part
               currentYear
             ]
           }
@@ -260,21 +259,21 @@ app.get('/newemployeecount', async (req, res) => {
 
     res.json({ count });
   } catch (err) {
-    res.status(500).json({ error: 'An error occurred' });
+    res.status(500).json({ error: "An error occurred" });
   }
 });
 
-app.get('/employeeleavescount', async (req, res) => {
+app.get("/employeeleavescount", async (req, res) => {
   try {
     const count = await employeeleavesModel.countDocuments({});
     res.json({ count });
   } catch (err) {
-    console.error('Error:', err);
-    res.status(500).json({ error: 'An error occurred' });
+    console.error("Error:", err);
+    res.status(500).json({ error: "An error occurred" });
   }
 });
 
-app.get('/employee/account/:id', async (req, res) => {
+app.get("/employee/account/:id", async (req, res) => {
   try {
     const employee = await employeeModel.findOne({ EmployeeID: req.params.id });
 
@@ -282,10 +281,15 @@ app.get('/employee/account/:id', async (req, res) => {
       const employeeName = employee.Name; // Assuming 'Name' is the field you want to retrieve
       res.json({ success: true, Name: employeeName });
     } else {
-      res.json({ success: false, message: 'Employee not found' });
+      res.json({ success: false, message: "Employee not found" });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: 'An error occurred while retrieving employee data' });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while retrieving employee data"
+      });
   }
 });
 
@@ -314,7 +318,10 @@ app.delete("/deletePerformance", async (req, res) => {
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "No performance found to delete" });
     }
-    res.json({ message: "All Performance deleted successfully", deletedCount: result.deletedCount });
+    res.json({
+      message: "All Performance deleted successfully",
+      deletedCount: result.deletedCount
+    });
   } catch (err) {
     console.error("Error deleting Performance:", err);
     res.status(500).json({ error: "Internal server error" });
@@ -324,7 +331,7 @@ app.delete("/deletePerformance", async (req, res) => {
 app.get("/editPerformance/:id", async (req, res) => {
   try {
     const performanceData = await performanceModel.find({
-      EmployeeID: req.params.id, // Update the field to match EmployeeID
+      EmployeeID: req.params.id // Update the field to match EmployeeID
     });
     if (!performanceData && performanceData.length === 0) {
       return res.status(404).json({ error: "No employee leave records found" });
@@ -360,7 +367,7 @@ app.delete("/deletePerformance/:id", async (req, res) => {
 
   try {
     const deletePerformance = await performanceModel.findOneAndDelete({
-      EmployeeID: id,
+      EmployeeID: id
     });
 
     if (!deletePerformance) {

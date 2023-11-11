@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ModalClose from "@mui/joy/ModalClose";
-import CardTitle from "./CardTitle";
+import CardTitle from "../CardTitle";
 import { Divider } from "@mui/joy";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -16,11 +16,12 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Autocomplete from "@mui/material/Autocomplete";
 import StarRating from "./StarRating";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 const EditRatingPopup = props => {
   const { currentColor } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
-  const dateFormat = dayjs().format("MM/YYYY");
 
   const [employeeData, setEmployeeData] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
@@ -33,13 +34,6 @@ const EditRatingPopup = props => {
   const [feedback, setFeedback] = useState("");
   const [createdAt, setCreatedAt] = useState("");
 
-  const [nameError, setNameError] = useState("");
-  const [depError, setDepError] = useState("");
-  const [positionError, setPositionError] = useState("");
-  const [createdAtError, setCreatedAtError] = useState("");
-  const [feedbackError, setFeedbackError] = useState("");
-  const [ratingError, setRatingError] = useState("");
-
   const [OCLR, setOCLR] = useState("");
   const [OCPMR, setOCPMR] = useState("");
   const [TCARR, setTCARR] = useState("");
@@ -51,6 +45,10 @@ const EditRatingPopup = props => {
   const handleFeedbackChange = event => {
     const value = event.target.value;
     setFeedback(value);
+  };
+
+  const handleCteatedAtChange = date => {
+    setCreatedAt(date);
   };
 
   useEffect(
@@ -73,6 +71,7 @@ const EditRatingPopup = props => {
             setEmployeeID(userDataItem.EmployeeID);
             setName(userDataItem.Name);
             setDep(userDataItem.Department);
+            setCreatedAt(userDataItem.CreatedAt);
             setPosition(userDataItem.Position);
             setFeedback(userDataItem.Feedback);
             setOCLR(userDataItem.OCLR);
@@ -93,9 +92,7 @@ const EditRatingPopup = props => {
         }
       };
 
-      fetchData(); // Always fetch data when the component mounts
-
-      // You can also pass EmployeeID as a dependency if it changes over time
+      fetchData(); // Always fetch data when the component mounts or when EmployeeID changes
     },
     [EmployeeID]
   );
@@ -105,7 +102,7 @@ const EditRatingPopup = props => {
     top: isMobile ? "48%" : "43%",
     left: "50%",
     width: "min(80%, 600px)", // Adjust the maximum width as needed (600px in this example)
-    height: isMobile ? "90vh" : "min(82%, 90vh)", // Adjust the maximum height as needed (1500px in this example)
+    height: isMobile ? "90vh" : "min(88%, 90vh)", // Adjust the maximum height as needed (1500px in this example)
     transform: "translate(-50%, -50%)",
     overflowY: "auto",
     p: 4
@@ -113,26 +110,14 @@ const EditRatingPopup = props => {
 
   const calculateAverageRating = (OCLR, OCPMR, TCARR, BCOCR, BCBPR) => {
     // Calculate total rating and average rating without parsing
-    const totalRating = parseFloat(OCLR) + parseFloat(OCPMR) + parseFloat(TCARR) + parseFloat(BCOCR) + parseFloat(BCBPR);
+    const totalRating =
+      parseFloat(OCLR) +
+      parseFloat(OCPMR) +
+      parseFloat(TCARR) +
+      parseFloat(BCOCR) +
+      parseFloat(BCBPR);
     const averageRating = totalRating / 5;
     return averageRating;
-};
-
-
-  const clearModalInfo = () => {
-    setSelectedEmployee("");
-    setEmployeeID("");
-    setName("");
-    setDep("");
-    setPosition("");
-    setFeedback("");
-    setCreatedAt("");
-    setOCLR("");
-    setOCPMR("");
-    setTCARR("");
-    setBCOCR("");
-    setBCBPR("");
-    setRating("");
   };
 
   const handleUpdatePerformance = async event => {
@@ -154,9 +139,9 @@ const EditRatingPopup = props => {
         return;
       }
 
-      const finalcreatedAt = createdAt
-      ? dayjs(createdAt).format("MM/YYYY")
-      : dayjs().format("MM/YYYY");
+      const finalcreatedAt = dayjs(createdAt)
+        .startOf("day")
+        .format("MM/DD/YYYY");
       try {
         // Create a payload with the updated employee data
         const updatedPerformance = {
@@ -175,19 +160,16 @@ const EditRatingPopup = props => {
           `http://localhost:3001/updatePerformance/${EmployeeID}`,
           updatedPerformance
         );
-          
+
         toast.success("Employee performance updated successfully", {
           className: isMobile ? "mobile-toast" : "desktop-toast"
         });
-        clearModalInfo();
         props.onEvalCreated();
         setOpenPopup(false);
       } catch (error) {
         toast.error("Error updating employee performance: " + error.message, {
           className: isMobile ? "mobile-toast" : "desktop-toast"
         });
-        clearModalInfo();
-        props.onEvalCreated();
         setOpenPopup(false);
       }
     }
@@ -208,7 +190,6 @@ const EditRatingPopup = props => {
           <ModalClose
             variant="outlined"
             onClick={() => {
-              clearModalInfo();
               setOpenPopup(false);
             }}
           />
@@ -217,14 +198,25 @@ const EditRatingPopup = props => {
           <div className="flex flex-col mt-5 md:flex-row md:items-center gap-5">
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
               <p className="mb-1 text-sm">Employee</p>
-                <p>{name} ({employeeID})</p>
+              <FormControl className="w-full ">
+                <OutlinedInput
+                  value={`(${EmployeeID}) ${name}`}
+                  readOnly={true}
+                  inputProps={{ readOnly: true }}
+                  className="text-gray-400"
+                />
+              </FormControl>
             </div>
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
-              <p className="mb-1 text-sm">Select Month & Year</p>
+              <p className="mb-1 text-sm">Select Date</p>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
-                  views={["month", "year"]}
-                  onChange={date => setCreatedAt(date)}
+                  className="w-full"
+                  value={dayjs(createdAt)}
+                  onChange={handleCteatedAtChange}
+                  renderInput={params =>
+                    <TextField {...params} variant="outlined" /> // Adjust the width
+                  }
                 />
               </LocalizationProvider>
             </div>
@@ -233,11 +225,15 @@ const EditRatingPopup = props => {
           <div className="flex flex-col mt-5 md:flex-row md:items-center gap-5">
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
               <p className="mb-1 text-sm">Department</p>
-                <p>{dep}</p>
+              <p>
+                {dep}
+              </p>
             </div>
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
               <p className="mb-1 text-sm">Position</p>
-                <p>{position}</p>
+              <p>
+                {position}
+              </p>
             </div>
           </div>
           <Divider />
@@ -305,7 +301,7 @@ const EditRatingPopup = props => {
               minRows={isMobile ? 2 : 3}
             />
           </div>
-          <div class="mt-6 flex justify-end items-center gap-3">
+          <div className="mt-6 flex justify-end items-center gap-3">
             <button
               type="button"
               style={{
@@ -315,7 +311,6 @@ const EditRatingPopup = props => {
               }}
               className={`text-md p-3  bg-gray-300`}
               onClick={() => {
-                clearModalInfo();
                 setOpenPopup(false);
               }}
             >

@@ -50,7 +50,7 @@ const ActionLeavePopup = props => {
         fetchData();
       }
 
-      // Set up a timer to periodically refresh the data (e.g., every 5 seconds)
+      // Set up a timer to periodically refresh the data (e.g., every 1 seconds)
       const interval = setInterval(() => {
         if (EmployeeID) {
           fetchData();

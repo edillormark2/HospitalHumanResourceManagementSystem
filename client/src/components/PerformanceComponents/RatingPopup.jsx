@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ModalClose from "@mui/joy/ModalClose";
-import CardTitle from "./CardTitle";
+import CardTitle from "../CardTitle";
 import { Divider } from "@mui/joy";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -16,12 +16,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Autocomplete from "@mui/material/Autocomplete";
 import StarRating from "./StarRating";
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-const EditRatingPopup = props => {
+const RatingPopup = props => {
   const { currentColor } = useStateContext();
-  const { openPopup, setOpenPopup, EmployeeID } = props;
+  const { openPopup, setOpenPopup } = props;
+  const dateFormat = dayjs().format("MM/YYYY");
 
+  const [employeeData, setEmployeeData] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
 
   const [employeeID, setEmployeeID] = useState("");
@@ -45,63 +46,22 @@ const EditRatingPopup = props => {
   const [BCOCR, setBCOCR] = useState("");
   const [BCBPR, setBCBPR] = useState("");
 
-    const onlyRead = true;
-
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
+
+  const handleCreatedDateChange = date => {
+    setCreatedAt(date);
+  };
 
   const handleFeedbackChange = event => {
     const value = event.target.value;
     setFeedback(value);
   };
 
-  useEffect(
-    () => {
-      const fetchData = async () => {
-        try {
-          // Ensure that EmployeeID is valid before making the request
-          if (!EmployeeID) {
-            return;
-          }
-
-          const response = await axios.get(
-            `http://localhost:3001/editPerformance/${EmployeeID}`
-          );
-          const userData = response.data;
-
-          if (userData && userData.length > 0) {
-            // Assuming you want the first item from the response
-            const userDataItem = userData[0];
-            setEmployeeID(userDataItem.EmployeeID);
-            setName(userDataItem.Name);
-            setDep(userDataItem.Department);
-            setPosition(userDataItem.Position);
-            setFeedback(userDataItem.Feedback);
-            setCreatedAt(userDataItem.CreatedAt);
-            setRating(userDataItem.Rating);
-            setOCLR(userDataItem.OCLR);
-            setOCPMR(userDataItem.OCPMR);
-            setTCARR(userDataItem.TCARR);
-            setBCOCR(userDataItem.BCOCR);
-            setBCBPR(userDataItem.BCBPR);
-          } else {
-            // Handle the case where no data is found for the given EmployeeID
-            toast.error("No employee leave records found for this ID.", {
-              className: isMobile ? "mobile-toast" : "desktop-toast"
-            });
-          }
-        } catch (error) {
-          toast.error("Error fetching employee data: " + error.message, {
-            className: isMobile ? "mobile-toast" : "desktop-toast"
-          });
-        }
-      };
-
-      fetchData(); // Always fetch data when the component mounts
-
-      // You can also pass EmployeeID as a dependency if it changes over time
-    },
-    [EmployeeID]
-  );
+  useEffect(() => {
+    axios.get("http://localhost:3001/employees").then(response => {
+      setEmployeeData(response.data);
+    });
+  }, []);
 
   const dynamicPopupStyle = {
     position: "absolute",
@@ -112,6 +72,12 @@ const EditRatingPopup = props => {
     transform: "translate(-50%, -50%)",
     overflowY: "auto",
     p: 4
+  };
+
+  const calculateAverageRating = (OCLR, OCPMR, TCARR, BCOCR, BCBPR) => {
+    const totalRating = OCLR + OCPMR + TCARR + BCOCR + BCBPR;
+    const averageRating = totalRating / 5;
+    return averageRating;
   };
 
   const clearModalInfo = () => {
@@ -130,55 +96,60 @@ const EditRatingPopup = props => {
     setRating("");
   };
 
-  const employeeStarRatingStatus = (starValue) => {
-    const Rating = parseFloat(starValue); // Convert the rating to a float
-    const stars = [];
+  const handleSubmit = event => {
+    event.preventDefault();
 
-    // Calculate the filled stars
-    const filledStars = Math.floor(Rating);
+    //setRating(calculateAverageRating(OCLR, OCPMR, TCARR, BCOCR, BCBPR));
 
-    // Calculate the half star
-    const hasHalfStar = Rating % 1 !== 0;
-
-    // Create filled stars
-    for (let i = 0; i < filledStars; i++) {
-      stars.push(
-        <FaStar
-          key={i}
-          color="#FFBA5A"
-          style={{ display: "inline", fontSize: "20px" }}
-        />
-      );
+    if (
+      !employeeID ||
+      !name ||
+      !dep ||
+      !position ||
+      !feedback ||
+      !OCLR ||
+      !OCPMR ||
+      !TCARR ||
+      !BCOCR ||
+      !BCBPR
+    ) {
+      toast.error("Please fill in all the required fields");
+      return;
     }
 
-    // Create the half star (if applicable)
-    if (hasHalfStar) {
-      stars.push(
-        <FaStarHalfAlt
-          key={filledStars}
-          color="#FFBA5A"
-          style={{ display: "inline", fontSize: "20px" }}
-        />
-      );
-    }
+    const finalcreatedAt = dayjs(createdAt).startOf("day").format("MM/DD/YYYY");
 
-    // Create unfilled stars to complete the total of 5 stars
-    const remainingStars = 5 - Math.ceil(Rating);
-    for (let i = 0; i < remainingStars; i++) {
-      stars.push(
-        <FaStar
-          key={filledStars + (hasHalfStar ? 1 : 0) + i}
-          color="#808B96 "
-          style={{ display: "inline", fontSize: "20px" }}
-        />
-      );
-    }
+    axios
+      .post("http://localhost:3001/createPerformance", {
+        EmployeeID: employeeID,
+        Name: name,
+        Department: dep,
+        Position: position,
+        Feedback: feedback,
+        CreatedAt: finalcreatedAt,
+        Rating: calculateAverageRating(OCLR, OCPMR, TCARR, BCOCR, BCBPR),
+        OCLR: OCLR,
+        OCPMR: OCPMR,
+        TCARR: TCARR,
+        BCOCR: BCOCR,
+        BCBPR: BCBPR
+      })
+      .then(result => {
+        toast.success("Employee created successfully:", {
+          className: isMobile ? "mobile-toast" : "desktop-toast"
+        });
 
-    return (
-      <div>
-        {stars} ({Rating})
-      </div>
-    );
+        // Clear input fields after successful submission
+        clearModalInfo();
+        props.onEvalCreated();
+        setOpenPopup(false);
+      })
+      .catch(err => {
+        toast.error("Error creating employee" + err.message, {
+          className: isMobile ? "mobile-toast" : "desktop-toast"
+        });
+        // Handle error and show an error message
+      });
   };
 
   return (
@@ -200,60 +171,100 @@ const EditRatingPopup = props => {
               setOpenPopup(false);
             }}
           />
-          <CardTitle title="View Employee Evaluation" />
+          <CardTitle title="Add Employee Evaluation" />
           <Divider />
           <div className="flex flex-col mt-5 md:flex-row md:items-center gap-5">
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
               <p className="mb-1 text-sm">Employee</p>
-                <p>{name} ({employeeID})</p>
+
+              <Autocomplete
+                options={employeeData}
+                getOptionLabel={option =>
+                  option ? `(${option.EmployeeID}) ${option.Name}` : ""}
+                value={selectedEmployee}
+                onChange={(event, newValue) => {
+                  setSelectedEmployee(newValue);
+                  if (newValue) {
+                    setEmployeeID(newValue.EmployeeID);
+                    setName(newValue.Name);
+                    setDep(newValue.Department);
+                    setPosition(newValue.Designation);
+                  } else {
+                    setEmployeeID("");
+                    setName("");
+                    setDep("");
+                    setPosition("");
+                  }
+                }}
+                renderInput={params =>
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Select Employee"
+                  />}
+              />
             </div>
             <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
-              <p className="mb-1 text-sm">Rating</p>
-                <p>{employeeStarRatingStatus(rating)}</p>
-            </div>
-            <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
-              <p className="mb-1 text-sm">Date Created</p>
-                <p>{createdAt}</p>
+              <p className="mb-1 text-sm">Select Date</p>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                  className="w-full"
+                  onChange={handleCreatedDateChange}
+                  renderInput={params =>
+                    <TextField {...params} variant="outlined" />}
+                />
+              </LocalizationProvider>
             </div>
           </div>
-          <Divider />
-          <div className="flex flex-col mt-5 md:flex-row md:items-center gap-5">
-            <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
-              <p className="mb-1 text-sm">Department</p>
-                <p>{dep}</p>
-            </div>
-            <div className="mt-5 md:mt-0 md:w-1/2 mb-5">
-              <p className="mb-1 text-sm">Position</p>
-                <p>{position}</p>
-            </div>
-          </div>
-          <Divider />
           <p className="text-md mb-2">Organizational Competencies</p>
+          <Divider />
           <div className="mt-2 mb-3">
             <div className="flex justify-between ">
               <p className="text-md text-slate-500 ">Leadership</p>
-              <p>{employeeStarRatingStatus(OCLR)}</p>
+              <StarRating
+                onStarRatingChange={value => {
+                  setOCLR(value);
+                }}
+              />
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-2 mb-5">
               <p className="text-md text-slate-500 ">Project Management</p>
-              <p>{employeeStarRatingStatus(OCPMR)}</p>
+              <StarRating
+                onStarRatingChange={value => {
+                  setOCPMR(value);
+                }}
+              />
             </div>
+
             <p className="text-md mb-2">Technical Competencies</p>
             <Divider />
             <div className="flex justify-between mt-2 mb-5">
               <p className="text-md text-slate-500 ">Allocating Resources</p>
-              <p>{employeeStarRatingStatus(TCARR)}</p>
+              <StarRating
+                onStarRatingChange={value => {
+                  setTCARR(value);
+                }}
+              />
             </div>
 
             <p className="text-md mb-2">Behavioural Competencies</p>
             <Divider />
             <div className="flex justify-between mt-2">
               <p className="text-md text-slate-500 ">Oral Communication</p>
-              {employeeStarRatingStatus(BCOCR)}
+              <StarRating
+                onStarRatingChange={value => {
+                  setBCOCR(value);
+                }}
+              />
             </div>
             <div className="flex justify-between mt-2">
               <p className="text-md text-slate-500 ">Business Process</p>
-              {employeeStarRatingStatus(BCBPR)}
+              <StarRating
+                onStarRatingChange={value => {
+                  setBCBPR(value);
+                }}
+              />
             </div>
           </div>
           <Divider />
@@ -261,8 +272,8 @@ const EditRatingPopup = props => {
             <p className="mb-1 text-md">Feedback</p>
             <Textarea
               className="w-full p-2 border rounded"
-              readOnly={true}
               value={feedback}
+              onChange={handleFeedbackChange}
               minRows={isMobile ? 2 : 3}
             />
           </div>
@@ -282,6 +293,19 @@ const EditRatingPopup = props => {
             >
               Close
             </button>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              style={{
+                backgroundColor: currentColor,
+                color: "white",
+                borderRadius: "10px",
+                width: "100px"
+              }}
+              className={`text-md p-3`}
+            >
+              Create
+            </button>
           </div>
         </Box>
       </Modal>
@@ -289,4 +313,4 @@ const EditRatingPopup = props => {
   );
 };
 
-export default EditRatingPopup;
+export default RatingPopup;
