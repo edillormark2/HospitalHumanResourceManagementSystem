@@ -355,6 +355,26 @@ app.put("/updatePerformance/:id", async (req, res) => {
   }
 });
 
+app.delete("/deletePerformance/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletePerformance = await performanceModel.findOneAndDelete({
+      EmployeeID: id,
+    });
+
+    if (!deletePerformance) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Employee deleted successfully", deletePerformance });
+  } catch (err) {
+    console.error("Error deleting employee:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
