@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Button } from "@material-ui/core";
 import { HiOutlineUpload } from "react-icons/hi";
 import Breadcrumbs from "../../components/Breadcrumbs";
@@ -252,7 +253,7 @@ const CreateEmployee = () => {
               Date of Birth<span className="text-red-500">*</span>
             </p>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
+              <DatePicker
                 className="w-full"
                 onChange={handleBirthDayChange} // Handle date change
                 renderInput={params =>
@@ -391,7 +392,7 @@ const CreateEmployee = () => {
             <div className="mt-5 md:mt-0 md:w-1/2">
               <p className="mb-1 text-sm">Company Date Of Joining</p>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
+                <DatePicker
                   className="w-full"
                   value={dayjs(dateFormat)}
                   onChange={date => sethireDate(date)} // Handle date change

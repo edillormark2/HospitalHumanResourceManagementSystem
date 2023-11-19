@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 import { IoIosMore } from "react-icons/io";
@@ -58,11 +58,11 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchEmployeeData() {
       try {
-        const response = await axios.get('http://localhost:3001/employeecount');
+        const response = await axios.get("http://localhost:3001/employeecount");
         setEmployeeCount(response.data.count);
       } catch (error) {
-        setEmployeeCount('-');
-        console.error('Error:', error);
+        setEmployeeCount("-");
+        console.error("Error:", error);
       }
     }
 
@@ -72,28 +72,32 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchEmployeeleavesData() {
       try {
-        const response = await axios.get('http://localhost:3001/employeeleavescount');
+        const response = await axios.get(
+          "http://localhost:3001/employeeleavescount"
+        );
         setEmployeeleavesCount(response.data.count);
       } catch (error) {
-        setEmployeeleavesCount('-');
-        console.error('Error:', error);
+        setEmployeeleavesCount("-");
+        console.error("Error:", error);
       }
     }
-    
+
     fetchEmployeeleavesData();
   }, []);
 
   useEffect(() => {
     async function fetchNewEmployeeData() {
       try {
-        const response = await axios.get('http://localhost:3001/newemployeecount');
+        const response = await axios.get(
+          "http://localhost:3001/newemployeecount"
+        );
         setnewEmployeeCount(response.data.count);
       } catch (error) {
-        setnewEmployeeCount('-');
-        console.error('Error:', error);
+        setnewEmployeeCount("-");
+        console.error("Error:", error);
       }
     }
-    
+
     fetchNewEmployeeData();
   }, []);
 
@@ -120,7 +124,7 @@ const Dashboard = () => {
       title: "Vacancies", //TO BE IMPLEMENT IT NEEDS THE EMPLOYEE POSITION LIMITS
       iconColor: "rgb(228, 106, 118)",
       iconBg: "rgb(255, 244, 229)",
-  
+
       pcColor: "green-600"
     },
     {
@@ -130,7 +134,7 @@ const Dashboard = () => {
       iconColor: "rgb(0, 194, 146)",
       iconBg: "rgb(235, 250, 242)",
       pcColor: "red-600"
-    },
+    }
     //USER ACCOUNT FEATURES
     /* {
       icon: <BiWallet />,
@@ -194,7 +198,7 @@ const Dashboard = () => {
             <div className=" border-r-1 border-color m-4 pr-10">
               <div>
                 <p>
-                  <span className="text-3xl font-semibold">$93,438</span>
+                  <span className="text-3xl font-semibold">₱700,438</span>
                   <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
                     23%
                   </span>
@@ -202,7 +206,7 @@ const Dashboard = () => {
                 <p className="text-gray-500 mt-1">Total Income</p>
               </div>
               <div className="mt-8">
-                <p className="text-3xl font-semibold">$48,487</p>
+                <p className="text-3xl font-semibold">₱180,487</p>
 
                 <p className="text-gray-500 mt-1">Total Expense</p>
               </div>
@@ -242,7 +246,7 @@ const Dashboard = () => {
 
               <div>
                 <p className="text-2xl text-white font-semibold mt-8">
-                  $63,448.78
+                  ₱63,448.78
                 </p>
                 <p className="text-gray-200">Monthly revenue</p>
               </div>

@@ -36,11 +36,14 @@ import {
   CreateEmployee,
   Timesheet,
   JobApplication,
-  Performance
+  Performance,
+  Trainer,
+  Learning,
+  ManageClaims
 } from "./pages";
 
 import EditEmployee from "./pages/PagesEmployees/EditEmployee";
-
+import TrainingList from "./pages/PagesTraining/TrainingList";
 import "./App.css";
 import LoginHeader from "./components/LoginHeader";
 import { IconButton, InputAdornment } from "@mui/material";
@@ -206,6 +209,10 @@ const Login = () => {
                       element={<JobApplication />}
                     />
                     <Route path="/performance" element={<Performance />} />
+                    <Route path="/training list" element={<TrainingList />} />
+                    <Route path="/trainer" element={<Trainer />} />
+                    <Route path="/learning materials" element={<Learning />} />
+                    <Route path="/manage claims" element={<ManageClaims />} />
                     {/* Apps */}
                     <Route path="/kanban" element={<Kanban />} />
                     <Route path="/editor" element={<Editor />} />

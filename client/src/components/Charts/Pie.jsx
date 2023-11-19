@@ -7,7 +7,7 @@ import {
   PieSeries,
   AccumulationDataLabel,
   Inject,
-  AccumulationTooltip,
+  AccumulationTooltip
 } from "@syncfusion/ej2-react-charts";
 
 import { useStateContext } from "../../contexts/ContextProvider";
@@ -28,12 +28,12 @@ const Doughnut = ({ id, data, legendVisiblity, height }) => {
           AccumulationLegend,
           PieSeries,
           AccumulationDataLabel,
-          AccumulationTooltip,
+          AccumulationTooltip
         ]}
       />
       <AccumulationSeriesCollectionDirective>
         <AccumulationSeriesDirective
-          name="Sale"
+          name="Claims"
           dataSource={data}
           xName="x"
           yName="y"
@@ -50,8 +50,8 @@ const Doughnut = ({ id, data, legendVisiblity, height }) => {
             position: "Inside",
             font: {
               fontWeight: "600",
-              color: "#fff",
-            },
+              color: "#fff"
+            }
           }}
         />
       </AccumulationSeriesCollectionDirective>

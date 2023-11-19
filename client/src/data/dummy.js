@@ -30,11 +30,8 @@ import avatar from "./avatar.jpg";
 import avatar2 from "./avatar2.jpg";
 import avatar3 from "./avatar3.jpg";
 import avatar4 from "./avatar4.jpg";
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
-import ViewEmpSalary from ".././components/PayrollComponents/ViewEmpSalary";
-
+import { PiGraduationCap } from "react-icons/pi";
+import { LuReceipt } from "react-icons/lu";
 export const gridOrderImage = props =>
   <div>
     <img
@@ -423,6 +420,25 @@ export const links = [
       {
         name: "performance",
         icon: <MdOutlineStarRate />
+      },
+      {
+        name: "Training",
+        icon: <PiGraduationCap />,
+        subMenu: [
+          {
+            subname: "Training List"
+          },
+          {
+            subname: "Trainer"
+          },
+          {
+            subname: "Learning Materials"
+          }
+        ]
+      },
+      {
+        name: "manage claims",
+        icon: <LuReceipt />
       }
     ]
   },
@@ -441,10 +457,6 @@ export const links = [
       {
         name: "editor",
         icon: <FiEdit />
-      },
-      {
-        name: "color-picker",
-        icon: <BiColorFill />
       }
     ]
   }
