@@ -8,13 +8,15 @@ const accountModel = require("./models/account");
 const performanceModel = require("./models/performance");
 
 const app = express();
+const urlAtlas = "mongodb+srv://hhrms:Fkifj9fqMctwvcHz@hhrms.vpyjwk3.mongodb.net/hhrms";
+const url = "mongodb://127.0.0.1:27017/hhrms";
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/hhrms", {
+mongoose.connect(urlAtlas , {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

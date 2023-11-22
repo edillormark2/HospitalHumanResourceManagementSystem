@@ -58,8 +58,11 @@ const Login = () => {
     setThemeSettings,
     currentColor,
     currentMode,
-    setID
+    setID,
+    getEndPoint
   } = useStateContext();
+
+  const endPoint = getEndPoint();
 
   const handleLogin = () => {
     login();
@@ -111,7 +114,7 @@ const Login = () => {
 
     const fetchAccount = async () => {
       try {
-        const response = await axios.post("http://localhost:3001/login", {
+        const response = await axios.post(`${endPoint}/login`, {
           username: username,
           password: password
         });

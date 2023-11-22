@@ -19,6 +19,7 @@ export const ContextProvider = ({ children }) => {
   const [loginID, setLoginID] = useState(
     localStorage.getItem("loginID")
   );
+  const endPoint = "https://hhrms.onrender.com";
 
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true" ? true : false
@@ -60,6 +61,10 @@ export const ContextProvider = ({ children }) => {
     setLoginID(ID);
   };
 
+  const getEndPoint = () => {
+    return endPoint;
+  };
+
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
     if (storedLoginStatus === "true") {
@@ -88,7 +93,8 @@ export const ContextProvider = ({ children }) => {
         logout,
         login,
         loginID,
-        setID
+        setID,
+        getEndPoint
       }}
     >
       {children}
