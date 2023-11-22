@@ -53,7 +53,7 @@ const Performance = ({ EmployeeID }) => {
   const [openAddPerformancePopup, setOpenAddPerformancePopup] = useState(false);
   const [openRatingPopup, setOpenRatingPopup] = useState(false);
   const [employeePerformanceData, setEmployeePerformanceData] = useState([]);
-  const { getEndpoint } = useStateContext();
+  const { getEndPoint } = useStateContext();
   const endPoint = getEndPoint();
 
   const handleDeletePerformancePopup = EmployeeID => {

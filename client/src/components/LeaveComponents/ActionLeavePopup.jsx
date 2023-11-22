@@ -12,7 +12,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 const ActionLeavePopup = props => {
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
   const { openPopup, setOpenPopup, EmployeeID } = props;
-  const { getEndpoint } = useStateContext();
+  const { getEndPoint } = useStateContext();
   const endPoint = getEndPoint();
 
   const [leaveData, setLeaveData] = useState({
