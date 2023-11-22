@@ -1,10 +1,7 @@
 <center>
    <h1> Hospital Human Resource Management System </h1>
+   <h1> (Live Version) </h1>
 </center>
-
-## NOTE
-- This are the initial code for Hospital Human Resource Management System (HHRMS)
-- Do not share links
 
 <center>
     <img width="1024" src=".resources/screenshot1.png">
@@ -55,7 +52,7 @@ need niyo i clone yung github link sa local computer niyo or laptop. sundan niyo
 - `git init` make a repository
 - `git branch` check created branches
 - `git branch <branch name>` create branch
-- `git ranch -rm <branch name>` remove branch
+- `git branch -rm <branch name>` remove branch
 - `git switch <branch name>` switch to a diffent branch
 - `git status` check file changes
 - `git add .` stage all file for commit
