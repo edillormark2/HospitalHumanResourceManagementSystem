@@ -18,7 +18,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import StarRating from "./StarRating";
 
 const RatingPopup = props => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup } = props;
   const dateFormat = dayjs().format("MM/YYYY");
 
@@ -45,6 +45,7 @@ const RatingPopup = props => {
   const [TCARR, setTCARR] = useState("");
   const [BCOCR, setBCOCR] = useState("");
   const [BCBPR, setBCBPR] = useState("");
+  const endPoint = getEndPoint();
 
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 
@@ -58,7 +59,7 @@ const RatingPopup = props => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/employees").then(response => {
+    axios.get(`${endPoint}/employees`).then(response => {
       setEmployeeData(response.data);
     });
   }, []);
@@ -120,7 +121,7 @@ const RatingPopup = props => {
     const finalcreatedAt = dayjs(createdAt).startOf("day").format("MM/DD/YYYY");
 
     axios
-      .post("http://localhost:3001/createPerformance", {
+      .post(`${endPoint}/createPerformance`, {
         EmployeeID: employeeID,
         Name: name,
         Department: dep,

@@ -21,7 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const CreateLeavePopup = props => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup } = props;
 
   const [empid, setID] = useState("");
@@ -39,6 +39,7 @@ const CreateLeavePopup = props => {
   const [selectedEmployeeName, setSelectedEmployeeName] = useState("");
 
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
+  const endPoint = getEndPoint();
 
   const handleLeaveChange = event => {
     const selectedLeaveType = event.target.value;
@@ -78,7 +79,7 @@ const CreateLeavePopup = props => {
     setTotalDays(daysDifference);
 
     axios
-      .post("http://localhost:3001/createEmployeeLeave", {
+      .post(`${endPoint}/createEmployeeLeave`, {
         EmployeeID: selectedEmployeeID,
         Name: selectedEmployeeName,
         LeaveType: LeaveType,
@@ -107,7 +108,7 @@ const CreateLeavePopup = props => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/employees").then(response => {
+    axios.get(`${endPoint}/employees`).then(response => {
       setEmployeeData(response.data);
     });
   }, []);

@@ -24,10 +24,11 @@ import DeletePopup from "../../components/EmployeesComponents/DeletePopup";
 import { Footer } from "../../components";
 
 const Employees = ({ EmployeeID }) => {
-  const { currentColor, currentMode } = useStateContext();
+  const { currentColor, currentMode, getEndPoint } = useStateContext();
   const [openPopup, setOpenPopup] = useState(false);
   const [employeeData, setEmployeeData] = useState([]); // State to store employee data
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
+  const endPoint = getEndPoint();
 
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
@@ -119,7 +120,7 @@ const Employees = ({ EmployeeID }) => {
 
   const fetchEmployeeData = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/employees"); // Replace with your API endpoint
+      const response = await axios.get(`${endPoint}/employees`); // Replace with your API endpoint
       setEmployeeData(response.data); // Update the employeeData state with the fetched data
     } catch (error) {
       console.error("Error fetching employee data: ", error);

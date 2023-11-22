@@ -14,14 +14,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const DeleteAllPerformancePopup = props => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
   const navigate = useNavigate();
-
+  const endPoint = getEndPoint();
   const deleteAllperformanceData = async () => {
     try {
       const response = await axios.delete(
-        "http://localhost:3001/deletePerformance"
+        `${endPoint}/deletePerformance`
       );
       console.log(response.data); // Log the response from the server
       toast.success("All performance data deleted successfully", {

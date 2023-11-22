@@ -11,16 +11,19 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const DeleteLeavePopup = (props) => {
   const { currentColor } = useStateContext();
   const { openDeletePopup, setOpenDeletePopup, EmployeeID } = props;
+  const { getEndpoint } = useStateContext();
+  const endPoint = getEndPoint();
 
   const handleDelete = async () => {
     try {
       // Send a DELETE request to your server to delete the employee
       await axios.delete(
-        `http://localhost:3001/deleteEmployeesLeaves/${EmployeeID}`
+        `${endPoint}/deleteEmployeesLeaves/${EmployeeID}`
       );
 
       toast.success("Employee Leave deleted ", {

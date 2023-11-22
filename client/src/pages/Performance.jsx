@@ -53,6 +53,8 @@ const Performance = ({ EmployeeID }) => {
   const [openAddPerformancePopup, setOpenAddPerformancePopup] = useState(false);
   const [openRatingPopup, setOpenRatingPopup] = useState(false);
   const [employeePerformanceData, setEmployeePerformanceData] = useState([]);
+  const { getEndpoint } = useStateContext();
+  const endPoint = getEndPoint();
 
   const handleDeletePerformancePopup = EmployeeID => {
     setSelectedEmployeeID(EmployeeID);
@@ -304,7 +306,7 @@ const Performance = ({ EmployeeID }) => {
 
   const fetchEmployeePerformanceData = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/performance");
+      const response = await axios.get(`${endPoint}/performance`);
       setEmployeePerformanceData(response.data);
     } catch (error) {
       console.error("Error fetching employee data: ", error);

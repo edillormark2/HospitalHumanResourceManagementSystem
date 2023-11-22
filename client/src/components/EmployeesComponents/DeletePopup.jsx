@@ -14,14 +14,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const DeletePopup = props => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndpoint } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
   const navigate = useNavigate();
-
+  const endPoint = getEndPoint();
   const handleDelete = async () => {
     try {
       // Send a DELETE request to your server to delete the employee
-      await axios.delete(`http://localhost:3001/employees/${EmployeeID}`);
+      await axios.delete(`${endPoint}/employees/${EmployeeID}`);
       toast.success("Employee data deleted successfully", {
         position: "top-right",
         autoClose: 5000,

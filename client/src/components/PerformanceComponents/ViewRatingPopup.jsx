@@ -19,7 +19,7 @@ import StarRating from "./StarRating";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 const EditRatingPopup = props => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
 
   const [selectedEmployee, setSelectedEmployee] = useState("");
@@ -46,7 +46,7 @@ const EditRatingPopup = props => {
   const [BCBPR, setBCBPR] = useState("");
 
   const onlyRead = true;
-
+  const endPoint = getEndPoint();
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 
   const handleFeedbackChange = event => {
@@ -65,7 +65,7 @@ const EditRatingPopup = props => {
           }
 
           const response = await axios.get(
-            `http://localhost:3001/editPerformance/${EmployeeID}`
+            `${endPoint}/editPerformance/${EmployeeID}`
           );
           const userData = response.data;
 

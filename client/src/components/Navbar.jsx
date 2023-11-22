@@ -35,13 +35,15 @@ const Navbar = () => {
     isClicked,
     setScreenSize,
     screenSize,
-    loginID
+    loginID,
+    getEndPoint
   } = useStateContext();
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [employeeName, setEmployeeName] = useState([]);
+  const endPoint = getEndPoint();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -67,7 +69,7 @@ const Navbar = () => {
   const fetchEmployeeName = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/employee/account/${loginID}`
+        `${endPoint}/employee/account/${loginID}`
       );
       if (response.data.success) {
         const name = response.data.Name;

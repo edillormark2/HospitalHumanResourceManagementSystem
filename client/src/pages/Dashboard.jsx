@@ -49,16 +49,17 @@ const DropDown = ({ currentMode }) =>
   </div>;
 
 const Dashboard = () => {
-  const { currentColor, currentMode } = useStateContext();
+  const { currentColor, currentMode, getEndPoint } = useStateContext();
 
   const [employeeCount, setEmployeeCount] = useState(null);
   const [newEmployeeCount, setnewEmployeeCount] = useState(null);
   const [employeeleavesCount, setEmployeeleavesCount] = useState(null);
+  const endPoint = getEndPoint();
 
   useEffect(() => {
     async function fetchEmployeeData() {
       try {
-        const response = await axios.get("http://localhost:3001/employeecount");
+        const response = await axios.get(`${endPoint}/employeecount`);
         setEmployeeCount(response.data.count);
       } catch (error) {
         setEmployeeCount("-");
@@ -73,7 +74,7 @@ const Dashboard = () => {
     async function fetchEmployeeleavesData() {
       try {
         const response = await axios.get(
-          "http://localhost:3001/employeeleavescount"
+          `${endPoint}/employeeleavescount`
         );
         setEmployeeleavesCount(response.data.count);
       } catch (error) {
@@ -89,7 +90,7 @@ const Dashboard = () => {
     async function fetchNewEmployeeData() {
       try {
         const response = await axios.get(
-          "http://localhost:3001/newemployeecount"
+          `${endPoint}/newemployeecount`
         );
         setnewEmployeeCount(response.data.count);
       } catch (error) {

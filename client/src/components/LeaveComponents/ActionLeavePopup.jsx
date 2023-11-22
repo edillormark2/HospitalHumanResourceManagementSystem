@@ -7,10 +7,13 @@ import CardTitle from "../CardTitle";
 import { Divider } from "@mui/joy";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const ActionLeavePopup = props => {
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
   const { openPopup, setOpenPopup, EmployeeID } = props;
+  const { getEndpoint } = useStateContext();
+  const endPoint = getEndPoint();
 
   const [leaveData, setLeaveData] = useState({
     emname: "",
@@ -29,7 +32,7 @@ const ActionLeavePopup = props => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3001/employeeLeaves/${EmployeeID}`
+            `${endPoint}/employeeLeaves/${EmployeeID}`
           );
           const leaveData = response.data;
           if (isMounted) {
@@ -76,7 +79,7 @@ const ActionLeavePopup = props => {
 
     try {
       await axios.put(
-        `http://localhost:3001/updateEmployeeLeaveStatus/${leaveData.EmployeeID}`,
+        `${endPoint}/updateEmployeeLeaveStatus/${leaveData.EmployeeID}`,
         {
           Status: "Approved",
           StatusBg: "#2ECC71"
@@ -105,7 +108,7 @@ const ActionLeavePopup = props => {
 
     try {
       await axios.put(
-        `http://localhost:3001/updateEmployeeLeaveStatus/${leaveData.EmployeeID}`,
+        `${endPoint}/updateEmployeeLeaveStatus/${leaveData.EmployeeID}`,
         {
           Status: "Rejected",
           StatusBg: "#DE3163"

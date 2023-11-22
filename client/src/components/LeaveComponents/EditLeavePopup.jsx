@@ -21,8 +21,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 const EditLeavePopup = props => {
   const { openPopup, setOpenPopup, EmployeeID } = props;
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
+  const endPoint = getEndPoint();
   const handleLeaveChange = event => {
     const selectedLeaveType = event.target.value;
     setLeaveType(selectedLeaveType);
@@ -58,7 +59,7 @@ const EditLeavePopup = props => {
           }
 
           const response = await axios.get(
-            `http://localhost:3001/employeeLeaves/${EmployeeID}`
+            `${endPoint}/employeeLeaves/${EmployeeID}`
           );
           const userData = response.data;
 
@@ -106,7 +107,7 @@ const EditLeavePopup = props => {
 
         // Send a PUT request to update the employee data
         await axios.put(
-          `http://localhost:3001/updateEmployeesLeave/${EmployeeID}`,
+          `${endPoint}/updateEmployeesLeave/${EmployeeID}`,
           updatedEmployeeData
         );
 

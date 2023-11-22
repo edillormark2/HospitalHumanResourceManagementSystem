@@ -9,10 +9,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../data/avatar.jpg";
 
 const UserProfile = () => {
-  const { currentColor, loginID } = useStateContext();
+  const { currentColor, loginID, getEndPoint } = useStateContext();
   const [popupVisible, setPopupVisible] = useState(false); // Assuming initially visible
   const [employeeName, setEmployeeName] = useState("");
-
+  const endPoint = getEndPoint();
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
   };
@@ -27,7 +27,7 @@ const UserProfile = () => {
     const fetchEmployeeName = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/employee/account/${loginID}`
+          `${endPoint}/employee/account/${loginID}`
         );
         if (response.data.success) {
           const name = response.data.Name;

@@ -21,15 +21,17 @@ import { BsPlay } from "react-icons/bs";
 import ActionPopup from "../components/LeaveComponents/ActionLeavePopup";
 import DeleteLeavePopup from "../components/LeaveComponents/DeleteLeavePopup";
 import EditLeavePopup from "../components/LeaveComponents/EditLeavePopup";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const ManageLeave = ({ EmployeeID }) => {
-  const { currentColor, currentMode } = useStateContext();
+  const { currentColor, currentMode, getEndPoint } = useStateContext();
   const [openPopup, setOpenPopup] = useState(false);
   const [employeesLeaveData, setEmployeeData] = useState([]); // State to store employee data
   const [openViewPopup, setOpenViewPopup] = useState(false);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
   const [openEditPopup, setOpenEditPopup] = useState(false);
+  const endPoint = getEndPoint();
 
   const handleOpenView = EmployeeID => {
     setSelectedEmployeeID(EmployeeID); // Set the selected employee ID
@@ -57,7 +59,7 @@ const ManageLeave = ({ EmployeeID }) => {
 
   const fetchEmployeeData = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/employeeLeaves");
+      const response = await axios.get(`${endPoint}/employeeLeaves`);
       setEmployeeData(response.data);
     } catch (error) {
       console.error("Error fetching employee data: ", error);

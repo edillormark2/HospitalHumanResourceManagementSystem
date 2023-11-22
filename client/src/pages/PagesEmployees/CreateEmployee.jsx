@@ -35,7 +35,7 @@ const designationOptions = {
 };
 
 const CreateEmployee = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
 
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
@@ -61,7 +61,7 @@ const CreateEmployee = () => {
   const [genderError, setGenderError] = useState("");
   const [designationError, setDesignationError] = useState("");
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
-
+  const endPoint = getEndPoint();
   const handleDepartmentChange = event => {
     const selectedDepartment = event.target.value;
     setDepartment(selectedDepartment);
@@ -177,7 +177,7 @@ const CreateEmployee = () => {
       : dayjs().format("MM/DD/YYYY");
     const formattedBirthday = dayjs(birthDay).format("MM/DD/YYYY");
     axios
-      .post("http://localhost:3001/createEmployee", {
+      .post(`${endPoint}/createEmployee`, {
         EmployeeID: empid,
         Name: emname,
         Phone: phone,

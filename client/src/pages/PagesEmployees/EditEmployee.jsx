@@ -33,8 +33,9 @@ const designationOptions = {
 };
 const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 const EditEmployee = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { EmployeeID } = useParams();
+  const endPoint = getEndPoint();
 
   const breadcrumbLinks = [
     { to: "/dashboard", label: "Home" },
@@ -61,7 +62,7 @@ const EditEmployee = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3001/employees/${EmployeeID}`
+            `${endPoint}/employees/${EmployeeID}`
           );
           const userData = response.data;
           if (userData) {
@@ -118,7 +119,7 @@ const EditEmployee = () => {
 
       // Send a PUT request to update the employee data
       await axios.put(
-        `http://localhost:3001/employees/${EmployeeID}`,
+        `${endPoint}/employees/${EmployeeID}`,
         updatedEmployeeData
       );
 

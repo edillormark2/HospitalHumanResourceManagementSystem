@@ -20,7 +20,7 @@ import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
 const EditRatingPopup = props => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
 
   const [employeeData, setEmployeeData] = useState([]);
@@ -39,7 +39,7 @@ const EditRatingPopup = props => {
   const [TCARR, setTCARR] = useState("");
   const [BCOCR, setBCOCR] = useState("");
   const [BCBPR, setBCBPR] = useState("");
-
+  const endPoint = getEndPoint();
   const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
 
   const handleFeedbackChange = event => {
@@ -61,7 +61,7 @@ const EditRatingPopup = props => {
           }
 
           const response = await axios.get(
-            `http://localhost:3001/editPerformance/${EmployeeID}`
+            `${endPoint}/editPerformance/${EmployeeID}`
           );
           const userData = response.data;
 
@@ -157,7 +157,7 @@ const EditRatingPopup = props => {
 
         // Send a PUT request to update the employee data
         await axios.put(
-          `http://localhost:3001/updatePerformance/${EmployeeID}`,
+          `${endPoint}/updatePerformance/${EmployeeID}`,
           updatedPerformance
         );
 
