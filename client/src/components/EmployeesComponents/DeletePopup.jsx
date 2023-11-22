@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const DeletePopup = props => {
-  const { currentColor, getEndpoint } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
   const navigate = useNavigate();
   const endPoint = getEndPoint();

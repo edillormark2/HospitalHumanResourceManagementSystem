@@ -21,7 +21,6 @@ import { BsPlay } from "react-icons/bs";
 import ActionPopup from "../components/LeaveComponents/ActionLeavePopup";
 import DeleteLeavePopup from "../components/LeaveComponents/DeleteLeavePopup";
 import EditLeavePopup from "../components/LeaveComponents/EditLeavePopup";
-import { useStateContext } from "../../contexts/ContextProvider";
 
 const ManageLeave = ({ EmployeeID }) => {
   const { currentColor, currentMode, getEndPoint } = useStateContext();
@@ -68,7 +67,7 @@ const ManageLeave = ({ EmployeeID }) => {
 
   useEffect(() => {
     fetchEmployeeData();
-  }, []);
+  },);
 
   const pageSizes = [9, 20, 50];
   const [pageSize, setPageSize] = useState(9);

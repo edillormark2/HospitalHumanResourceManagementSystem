@@ -11,10 +11,9 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useStateContext } from "../../contexts/ContextProvider";
 
 const DeleteLeavePopup = (props) => {
-  const { currentColor } = useStateContext();
+  const { currentColor, getEndPoint } = useStateContext();
   const { openDeletePopup, setOpenDeletePopup, EmployeeID } = props;
   const { getEndpoint } = useStateContext();
   const endPoint = getEndPoint();
