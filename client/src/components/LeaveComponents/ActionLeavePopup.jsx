@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -6,12 +5,14 @@ import ModalClose from "@mui/joy/ModalClose";
 import CardTitle from "../CardTitle";
 import { Divider } from "@mui/joy";
 import { toast } from "react-toastify";
+import React, { useState, useEffect } from "react";
+
 import "react-toastify/dist/ReactToastify.css";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 const ActionLeavePopup = props => {
-  const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
   const { openPopup, setOpenPopup, EmployeeID } = props;
+  const isMobile = window.innerWidth <= 768 && window.innerHeight <= 1024;
   const { getEndPoint } = useStateContext();
   const endPoint = getEndPoint();
 
@@ -25,49 +26,26 @@ const ActionLeavePopup = props => {
     status: ""
   });
 
-  useEffect(
-    () => {
-      let isMounted = true; // Add this to prevent state updates after component unmounts
+  const {
+    Name,
+    LeaveType,
+    AppliedOn,
+    StartDate,
+    EndDate,
+    LeaveReason,
+    Status
+  } = leaveData;
 
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(
-            `${endPoint}/employeeLeaves/${EmployeeID}`
-          );
-          const leaveData = response.data;
-          if (isMounted) {
-            if (leaveData && leaveData.length > 0) {
-              const firstLeaveRecord = leaveData[0];
-              setLeaveData(firstLeaveRecord);
-            }
-          }
-        } catch (error) {
-          toast.error("Error fetching employee leave data", {
-            className: isMobile ? "mobile-toast" : "desktop-toast"
-          });
-        }
-      };
-
-      // Fetch data initially
-      if (EmployeeID) {
-        fetchData();
-      }
-
-      // Set up a timer to periodically refresh the data (e.g., every 1 seconds)
-      const interval = setInterval(() => {
-        if (EmployeeID) {
-          fetchData();
-        }
-      }, 1000); // Adjust the interval as needed (in milliseconds)
-
-      // Cleanup function to clear the interval when the component unmounts
-      return () => {
-        isMounted = false;
-        clearInterval(interval);
-      };
-    },
-    [EmployeeID]
-  );
+  const dynamicPopupStyle = {
+    position: "absolute",
+    top: isMobile ? "35%" : "28%",
+    left: "50%",
+    width: "min(80%, 600px)", // Adjust the maximum width as needed (600px in this example)
+    height: isMobile ? "60vh" : "min(60%, 60vh)", // Adjust the maximum height as needed (1500px in this example)
+    transform: "translate(-50%, -50%)",
+    overflowY: "auto",
+    p: 4
+  };
 
   const handleApprove = async () => {
     if (!leaveData.EmployeeID) {
@@ -125,26 +103,49 @@ const ActionLeavePopup = props => {
     }
   };
 
-  const {
-    Name,
-    LeaveType,
-    AppliedOn,
-    StartDate,
-    EndDate,
-    LeaveReason,
-    Status
-  } = leaveData;
+  useEffect(
+    () => {
+      let isMounted = true; // Add this to prevent state updates after component unmounts
 
-  const dynamicPopupStyle = {
-    position: "absolute",
-    top: isMobile ? "35%" : "28%",
-    left: "50%",
-    width: "min(80%, 600px)", // Adjust the maximum width as needed (600px in this example)
-    height: isMobile ? "60vh" : "min(60%, 60vh)", // Adjust the maximum height as needed (1500px in this example)
-    transform: "translate(-50%, -50%)",
-    overflowY: "auto",
-    p: 4
-  };
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${endPoint}/employeeLeaves/${EmployeeID}`
+          );
+          const leaveData = response.data;
+          if (isMounted) {
+            if (leaveData && leaveData.length > 0) {
+              const firstLeaveRecord = leaveData[0];
+              setLeaveData(firstLeaveRecord);
+            }
+          }
+        } catch (error) {
+          toast.error("Error fetching employee leave data", {
+            className: isMobile ? "mobile-toast" : "desktop-toast"
+          });
+        }
+      };
+
+      // Fetch data initially
+      if (EmployeeID) {
+        fetchData();
+      }
+
+      // Set up a timer to periodically refresh the data (e.g., every 1 seconds)
+      const interval = setInterval(() => {
+        if (EmployeeID) {
+          fetchData();
+        }
+      }, 1000); // Adjust the interval as needed (in milliseconds)
+
+      // Cleanup function to clear the interval when the component unmounts
+      return () => {
+        isMounted = false;
+        clearInterval(interval);
+      };
+    },
+    [EmployeeID]
+  );
 
   return (
     <div>

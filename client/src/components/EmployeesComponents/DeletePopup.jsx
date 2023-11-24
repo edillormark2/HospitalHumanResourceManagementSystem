@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
 import DialogTitle from "@mui/joy/DialogTitle";
@@ -7,20 +8,20 @@ import DialogActions from "@mui/joy/DialogActions";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
-import { useStateContext } from "../../contexts/ContextProvider";
-import axios from "axios";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
+import "react-toastify/dist/ReactToastify.css";
+import { useStateContext } from "../../contexts/ContextProvider";
+
 const DeletePopup = props => {
-  const { currentColor, getEndPoint } = useStateContext();
   const { openPopup, setOpenPopup, EmployeeID } = props;
+  const { currentColor, getEndPoint } = useStateContext();
   const navigate = useNavigate();
   const endPoint = getEndPoint();
+
   const handleDelete = async () => {
     try {
-      // Send a DELETE request to your server to delete the employee
       await axios.delete(`${endPoint}/employees/${EmployeeID}`);
       toast.success("Employee data deleted successfully", {
         position: "top-right",
@@ -33,9 +34,8 @@ const DeletePopup = props => {
         theme: "light"
       });
       props.onLeaveCreated();
-      setOpenPopup(false); // Close the delete popup after deletion
+      setOpenPopup(false);
     } catch (error) {
-      // Handle error (e.g., show an error message)
       toast.error("Error deleting employee", error);
     }
   };

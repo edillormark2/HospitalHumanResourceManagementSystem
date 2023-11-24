@@ -19,7 +19,9 @@ export const ContextProvider = ({ children }) => {
   const [loginID, setLoginID] = useState(
     localStorage.getItem("loginID")
   );
-  const endPoint = "https://hhrms.onrender.com";
+  //const endPoint = "https://hhrms.onrender.com";
+  //const endPoint = "http://localhost:3001";
+  const endPoint = "https://bcp-hhrms-api.onrender.com";
 
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true" ? true : false
