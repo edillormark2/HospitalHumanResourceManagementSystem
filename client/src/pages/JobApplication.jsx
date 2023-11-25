@@ -121,7 +121,7 @@ const JobApplication = ({ EmployeeID }) => {
         </div>
       </div>
       <div className="md:m-4 mt-15 p-2 md:p-4 bg-white sm:rounded-xl rounded-md drop-shadow-lg mb-8 md:mb-8">
-        <CardTitle title="Find Employee Attendance" />
+        <CardTitle title="Find Job Application" />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div className="flex md:justify-end justify-between gap-2">
             <div className="text-start">
